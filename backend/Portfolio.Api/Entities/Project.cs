@@ -6,12 +6,15 @@ public class Project
     public string Title { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;
-    public string DescriptionMarkdown { get; set; } = string.Empty;
-    public string? FeaturedImageUrl { get; set; }
-    public bool isPublished { get; set; } = false;
+    
+    public string? PreviewMediaUrl { get; set; }
+    public bool IsFeatured { get; set; } = false;
+    public int DisplayOrder { get; set; } = 0;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 
-    public List<ProjectMedia> Media { get; set; } = new List<ProjectMedia>();
-    public List<Tag> Tags { get; set; } = new List<Tag>();
+    public List<ProjectBlock> Blocks { get; set; } = new();
+    public List<ProjectLink> Links { get; set; } = new();
+    public List<ProjectMedia> Media { get; set; } = new();
+    public List<SkillTag> Skills { get; set; } = new();
 }

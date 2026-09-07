@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:services": "docker compose up -d",
+    "stop:services": "docker compose down",
+    "start:backend": "cd backend/Portfolio.Api && dotnet watch run",
+    "start:frontend": "cd frontend && ng serve",
+    "db:migrate": "cd backend/Portfolio.Api && dotnet ef database update",
+    "db:migration:add": "cd backend/Portfolio.Api && dotnet ef migrations add"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

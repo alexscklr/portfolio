@@ -1,0 +1,63 @@
+@if (project(); as p) {
+  <a
+    [routerLink]="['/projects', p.slug]"
+    class="group relative flex flex-col justify-between overflow-hidden pt-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/70"
+  >
+    <!-- Top Preview Container -->
+    <div>
+      <!-- Image / Media Container -->
+      <div
+        class="relative aspect-video w-full overflow-hidden bg-primary-900/70"
+      >
+        @if (p.previewMediaUrl) {
+          <img
+            [src]="p.previewMediaUrl"
+            [alt]="p.title"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        } @else {
+          <!-- Fallback Gradient Canvas -->
+          <div
+            class="flex h-full w-full items-center justify-center bg-primary-900 font-mono text-xs text-slate-500 transition-colors duration-300 group-hover:bg-secondary-800"
+          >
+            // Generative Preview
+          </div>
+        }
+      </div>
+
+      <!-- Title & Description -->
+      <div class="mt-5">
+        <h3 class="font-heading text-xl font-bold tracking-tight text-white group-hover:text-accent-primary transition-colors">
+          {{ p.title }}
+        </h3>
+        <p class="mt-2 line-clamp-2 text-sm text-slate-300 leading-relaxed">
+          {{ p.shortDescription }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom Metadata & Skill Tags -->
+    <div class="mt-6 pt-1">
+      <!-- Skill Badges -->
+      <div class="mb-4 flex flex-wrap gap-x-3 gap-y-1">
+        @for (skill of p.skills; track skill.id) {
+          <span
+            class="font-mono text-xs text-accent-secondary"
+          >
+            {{ skill.name }}
+          </span>
+        }
+      </div>
+
+      <!-- Action Button -->
+      <div class="flex justify-between">
+        <span
+          class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 transition-colors duration-300 group-hover:text-accent-primary"
+        >
+          <span>Zum Projekt</span>
+          <span class="font-mono text-accent-primary">-></span>
+        </span>
+      </div>
+    </div>
+  </a>
+}

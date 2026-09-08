@@ -1,0 +1,69 @@
+.editorial-home {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-primary-950);
+}
+
+.hero-editorial {
+  display: grid;
+  min-height: 42rem;
+  grid-template-columns: minmax(0, 0.95fr) minmax(18rem, 1.05fr);
+  align-items: center;
+  gap: clamp(3rem, 9vw, 9rem);
+}
+
+.hero-copy { position: relative; z-index: 1; max-width: 42rem; }
+.eyebrow { margin: 0 0 1.25rem; color: var(--color-accent-secondary); font: 600 0.68rem/1.4 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.hero-copy h1, .work-heading h2, .statement-copy h2, .note-copy h2 { margin: 0; color: var(--color-text-primary); font-family: var(--font-heading); font-weight: 600; letter-spacing: -0.03em; }
+.hero-copy h1 { max-width: 38rem; font-size: clamp(3.6rem, 7vw, 7.2rem); line-height: 0.95; }
+.hero-copy em, .note-copy em { color: var(--color-accent-primary); font-style: italic; }
+.hero-lede { max-width: 34rem; margin: 2rem 0 0; color: rgba(240, 234, 223, 0.74); font-size: 1.05rem; line-height: 1.8; }
+.hero-actions { display: flex; align-items: center; gap: 1.75rem; margin-top: 2.5rem; }
+.text-link { color: var(--color-text-primary); font-size: 0.9rem; text-decoration: none; }
+.text-link span { color: var(--color-accent-primary); margin-left: 0.35rem; transition: margin 180ms ease; }
+.text-link:hover span, .text-link:focus-visible span { margin-left: 0.65rem; }
+
+.statement-editorial { display: grid; grid-template-columns: 5rem minmax(0, 1fr) 10rem; gap: 2rem; align-items: start; }
+.statement-mark { color: var(--color-accent-primary); font: 600 0.85rem var(--font-mono); }
+.statement-copy { max-width: 42rem; }
+.statement-copy h2 { font-size: clamp(2.2rem, 4vw, 4rem); line-height: 1.02; }
+.statement-copy p, .note-copy > p { max-width: 38rem; margin: 1.5rem 0 0; color: rgba(240, 234, 223, 0.68); line-height: 1.8; }
+.statement-note { color: var(--color-accent-secondary); font: 0.72rem/1.8 var(--font-mono); text-align: right; }
+
+.work-heading { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; margin-bottom: 4rem; }
+.work-heading .eyebrow { grid-column: 1 / -1; margin-bottom: 0; }
+.work-heading h2 { font-size: clamp(2.4rem, 5vw, 5rem); line-height: 0.98; }
+.project-gallery { display: grid; grid-template-columns: repeat(12, 1fr); align-items: start; column-gap: clamp(1.25rem, 4vw, 4rem); row-gap: 8rem; }
+.project-piece { position: relative; }
+.project-piece--1 { grid-column: 1 / span 7; }
+.project-piece--2 { grid-column: 8 / -1; margin-top: 8rem; }
+.project-piece--3 { grid-column: 3 / span 7; margin-top: -1rem; }
+.project-index { position: absolute; top: -1.7rem; left: 0; color: var(--color-accent-primary); font: 0.7rem var(--font-mono); }
+.empty-state { grid-column: 1 / -1; color: rgba(240, 234, 223, 0.6); font: 0.8rem var(--font-mono); }
+
+.note-editorial { display: grid; grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1fr); gap: clamp(3rem, 10vw, 10rem); align-items: center; }
+.note-map { overflow: hidden; background: var(--color-secondary-800); }
+.note-map img { display: block; width: 100%; height: auto; mix-blend-mode: screen; opacity: 0.92; }
+.note-copy h2 { font-size: clamp(2.8rem, 5vw, 5rem); line-height: 0.98; }
+
+:host ::ng-deep .reveal-item { opacity: 0; transform: translateY(1.5rem); transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+:host ::ng-deep .reveal-item.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 800px) {
+  .hero-editorial, .note-editorial { grid-template-columns: 1fr; }
+  .statement-editorial { grid-template-columns: 3rem 1fr; }
+  .statement-note { grid-column: 2; text-align: left; }
+  .project-piece--1, .project-piece--2, .project-piece--3 { grid-column: 1 / -1; margin-top: 0; }
+  .project-gallery { row-gap: 5rem; }
+}
+
+@media (max-width: 520px) {
+  .hero-actions { align-items: flex-start; flex-direction: column; gap: 1.25rem; }
+  .statement-editorial { grid-template-columns: 1fr; gap: 1rem; }
+  .statement-note { grid-column: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .reveal-item, .text-link span { transition: none; }
+  :host ::ng-deep .reveal-item { opacity: 1; transform: none; }
+}

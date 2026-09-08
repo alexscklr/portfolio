@@ -1,0 +1,58 @@
+<div class="editorial-home">
+  <section class="hero-editorial mx-auto max-w-7xl px-6 pb-24 pt-16 md:pb-36 md:pt-24">
+    <div class="hero-copy" appRevealOnScroll>
+      <p class="eyebrow">Alexander Sickler // Developer & Designer</p>
+      <h1>Interfaces for<br /><em>complex systems.</em></h1>
+      <p class="hero-lede">
+        Ich entwickle digitale Produkte, in denen technische Tiefe und menschliche Orientierung zusammenfinden.
+      </p>
+      <div class="hero-actions">
+        <button appButton variant="primary" size="lg" routerLink="/projects">Arbeiten ansehen</button>
+        <a routerLink="/about" class="text-link">Mehr über mich <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <app-avatar-orbit appRevealOnScroll />
+  </section>
+
+  <section class="statement-editorial mx-auto max-w-7xl px-6 py-16 md:py-24" appRevealOnScroll>
+    <div class="statement-mark">01</div>
+    <div class="statement-copy">
+      <h2>Good interfaces give complexity a rhythm.</h2>
+      <p>Meine Arbeit bewegt sich zwischen Softwareentwicklung, UI/UX und interaktiven Medien. Ich suche nicht nach maximaler Oberfläche, sondern nach dem richtigen Maß an Klarheit.</p>
+    </div>
+    <div class="statement-note">Observe<br />Structure<br />Refine</div>
+  </section>
+
+  <section id="selected-work" class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24">
+    <div class="work-heading" appRevealOnScroll>
+      <p class="eyebrow">02 / Selected work</p>
+      <h2>Things I made tangible.</h2>
+      <a routerLink="/projects" class="text-link">Alle Projekte <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="project-gallery">
+      @if (projectService.featuredProjects(); as projects) {
+        @for (project of projects; track project.id; let index = $index) {
+          <article appRevealOnScroll class="project-piece project-piece--{{ index + 1 }}">
+            <span class="project-index">0{{ index + 1 }}</span>
+            <app-project-card [project]="project" />
+          </article>
+        } @empty {
+          <p class="empty-state">Keine Featured-Projekte geladen. API-Verbindung wird geprüft...</p>
+        }
+      }
+    </div>
+  </section>
+
+  <section class="note-editorial mx-auto max-w-7xl px-6 pb-28 md:pb-40" appRevealOnScroll>
+    <div class="note-map">
+      <img src="/media/fixtures/japan-route-placeholder.svg" alt="Placeholder-Karte mit einer Verbindung von Deutschland nach Japan" />
+    </div>
+    <div class="note-copy">
+      <p class="eyebrow">03 / A personal note</p>
+      <h2>Between structure<br /><em>and atmosphere.</em></h2>
+      <p>Mein Auslandssemester in Japan hat meinen Blick für Räume, Rhythmus und Orientierung geschärft. Diese Perspektive bringe ich in digitale Produkte ein: reduziert, aufmerksam und mit Platz für den Menschen dahinter.</p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,27 @@
+<footer class="w-full border-t border-secondary-700 bg-primary-900/50 py-8 text-slate-400 text-sm">
+  <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    
+    <div class="flex flex-col gap-1 text-center md:text-left">
+      <p class="text-white font-medium">&copy; {{ currentYear }} Alexander. Alle Rechte vorbehalten.</p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      @if (profileService.profile(); as profile) {
+        @for (link of profile.socialLinks; track link.id) {
+          <a [href]="link.url" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="px-3 py-1.5 rounded-lg bg-secondary-800 border border-secondary-700 text-slate-300 hover:text-accent-primary transition text-xs font-mono">
+            {{ link.platformName }}
+          </a>
+        }
+      }
+    </div>
+
+    <div class="flex items-center gap-4 text-xs font-mono">
+      <a routerLink="/impressum" class="hover:text-slate-200 transition">Impressum</a>
+      <a routerLink="/datenschutz" class="hover:text-slate-200 transition">Datenschutz</a>
+    </div>
+
+  </div>
+</footer>

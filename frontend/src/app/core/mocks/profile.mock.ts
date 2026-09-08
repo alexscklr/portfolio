@@ -6,7 +6,7 @@ export const mockProfile: Profile = {
   jobTitle: 'Full-Stack Developer',
   bioMarkdown:
     'Ich entwickle digitale Produkte mit einem Fokus auf klare Interfaces, robuste APIs und nachhaltige Architektur.',
-  avatarUrl: undefined,
+  avatarUrl: '/media/fixtures/avatar-alexander.svg',
   location: 'Deutschland',
   publicEmail: 'hello@example.com',
   streetAddress: 'Musterstraße 1',

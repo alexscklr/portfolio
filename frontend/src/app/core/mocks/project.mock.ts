@@ -6,7 +6,7 @@ export const mockProjects: Project[] = [
     title: 'Generative Cinema Engine',
     slug: 'generative-cinema-engine',
     shortDescription: 'Echtzeit-Renderpipeline und interaktives WebGL/Shader-Interface integriert in Angular 18 & .NET 8.',
-    previewMediaUrl: '',
+    previewMediaUrl: '/media/fixtures/placeholder.svg',
     isFeatured: true,
     displayOrder: 1,
     createdAt: '2026-05-15T10:00:00Z',
@@ -30,14 +30,24 @@ export const mockProjects: Project[] = [
       { id: 'link-1-1', projectId: 'proj-1', type: ProjectLinkType.GitHub, url: 'https://github.com/alex/generative-cinema', label: 'GitHub' },
       { id: 'link-1-2', projectId: 'proj-1', type: ProjectLinkType.LiveDemo, url: 'https://demo.cinema.dev', label: 'Live Demo' }
     ],
-    media: []
+    media: [
+      {
+        id: 'media-1-1',
+        projectId: 'proj-1',
+        fileName: 'demo-video.mp4',
+        contentType: 'video/mp4',
+        fileUrl: '/media/fixtures/demo-video.mp4',
+        altText: 'Kurze Demo-Animation fuer die Generative Cinema Engine',
+        createdAt: '2026-05-15T10:00:00Z'
+      }
+    ]
   },
   {
     id: 'proj-2',
     title: 'Realtime Pipeline Automation',
     slug: 'realtime-pipeline-automation',
     shortDescription: 'Automatisierter Asset-Import & Build-Job Dispatcher für 3D-Pipelines via gRPC und SignalR.',
-    previewMediaUrl: '',
+    previewMediaUrl: '/media/fixtures/placeholder.svg',
     isFeatured: true,
     displayOrder: 2,
     createdAt: '2026-02-10T14:30:00Z',
@@ -66,7 +76,7 @@ export const mockProjects: Project[] = [
     title: 'Anamorphic UI Kit & Component Library',
     slug: 'anamorphic-ui-kit',
     shortDescription: 'Performance-fokussierte UI-Komponentenbibliothek im Cinematique-Style mit Tailwind CSS v4.',
-    previewMediaUrl: '',
+    previewMediaUrl: '/media/fixtures/placeholder.svg',
     isFeatured: true,
     displayOrder: 3,
     createdAt: '2026-08-01T09:00:00Z',

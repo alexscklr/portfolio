@@ -1,29 +1,15 @@
-<header class="sticky top-0 z-50 w-full bg-primary-950/90 backdrop-blur-md">
+<header class="fixed top-0 z-50 w-full backdrop-blur-md">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
     
-    <a routerLink="/" class="group flex items-center gap-2 text-lg font-bold tracking-tight text-white">
-      <span class="h-2.5 w-2.5 rounded-full bg-accent-primary shadow-sm shadow-red-950/50 group-hover:scale-125 transition-transform"></span>
-      <span class="font-heading">Alexander Sickler</span>
-      <span class="text-xs font-mono text-slate-500 font-normal">// portfolio</span>
+    <a routerLink="/" class="group flex items-center gap-2 text-lg font-bold text-white">
+      <span class="font-heading">Alexander Sickler <span class="font-mono text-xs text-accent-primary whitespace-nowrap">// portfolio</span></span>
+      
     </a>
 
-    <nav class="flex items-center gap-4 sm:gap-6 text-sm font-medium">
-      <a routerLink="/" 
-         routerLinkActive="text-accent-primary font-semibold"
-         [routerLinkActiveOptions]="{exact: true}"
-         class="px-2 py-1 text-slate-300 hover:text-white transition">
-        Start
-      </a>
-      <a routerLink="/projects" 
-         routerLinkActive="text-accent-primary font-semibold"
-         class="px-2 py-1 text-slate-300 hover:text-white transition">
-        Projekte
-      </a>
-      <a routerLink="/about" 
-         routerLinkActive="text-accent-primary font-semibold"
-         class="px-2 py-1 text-slate-300 hover:text-white transition">
-        Über mich
-      </a>
+    <nav class="hidden sm:flex items-center gap-6">
+      <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav">Start</a>
+      <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav">Projekte</a>
+      <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav">Über mich</a>
     </nav>
 
     <div class="hidden sm:block">
@@ -31,6 +17,34 @@
         Kontakt
       </button>
     </div>
+
+    <details class="mobile-menu sm:hidden">
+      <summary class="hamburger-btn" aria-label="Menü öffnen oder schließen">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </summary>
+
+    <div class="mobile-menu-flyout px-6 py-6">
+      <nav class="flex flex-col gap-4 items-end">
+        <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav" class="text-base py-2 text-right">
+          Start
+        </a>
+        <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+          Projekte
+        </a>
+        <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+          Über mich
+        </a>
+        
+        <div class="pt-4">
+          <button appButton variant="secondary" size="md" routerLink="/contact" class="w-full justify-center">
+            Kontakt aufnehmen
+          </button>
+        </div>
+      </nav>
+    </div>
+    </details>
 
   </div>
 </header>

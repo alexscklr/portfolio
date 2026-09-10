@@ -1,4 +1,6 @@
 @use "tailwindcss";
+@use "./app/shared/directives/link.directive";
+@use "./app/shared/directives/reveal-on-scroll.directive";
 
 :root {
   /* Semantic foundation tokens */

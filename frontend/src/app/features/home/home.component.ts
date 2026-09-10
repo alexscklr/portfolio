@@ -4,12 +4,13 @@ import { ProjectService } from '@/app/core/services/project.service';
 import { ProjectCardComponent } from '@/app/shared/components/project-card/project-card.component';
 import { ButtonDirective } from '@/app/shared/directives/button.directive';
 import { RevealOnScrollDirective } from '@/app/shared/directives/reveal-on-scroll.directive';
+import { LinkDirective } from '@/app/shared/directives/link.directive';
 import { AvatarOrbitComponent } from './components/avatar-orbit/avatar-orbit.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent],
+  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

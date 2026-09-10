@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnDestroy, Renderer2, inject } from '@angular/core';
+import { Directive, ElementRef, HostBinding, OnDestroy, Renderer2, inject, input } from '@angular/core';
 
 @Directive({
   selector: '[appRevealOnScroll]',
@@ -6,6 +6,8 @@ import { Directive, ElementRef, OnDestroy, Renderer2, inject } from '@angular/co
   host: { class: 'reveal-item' }
 })
 export class RevealOnScrollDirective implements OnDestroy {
+  reveal = input('', { alias: 'appRevealOnScroll', transform: (value: string) => value || 'fade slide-up' });
+
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
   private readonly observer = new IntersectionObserver(([entry]) => {
@@ -17,6 +19,14 @@ export class RevealOnScrollDirective implements OnDestroy {
 
   constructor() {
     this.observer.observe(this.element.nativeElement);
+  }
+
+  @HostBinding('class.reveal-item')
+  readonly revealItem = true;
+
+  @HostBinding('attr.data-reveal')
+  get revealAnimations(): string {
+    return this.reveal();
   }
 
   ngOnDestroy(): void {

@@ -28,11 +28,11 @@ export class ProjectService {
     });
   }
 
-  loadFeaturedProjects(): void {
+  loadFeaturedProjects(maxItems: number = 3): void {
     this.isLoading.set(true);
     this.http.get<Project[]>('/api/projects/featured').subscribe({
       next: (data) => {
-        this.featuredProjects.set(data);
+        this.featuredProjects.set(data.length > maxItems ? data.slice(0, maxItems) : data);
         this.isLoading.set(false);
       },
       error: () => {

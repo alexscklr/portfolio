@@ -1,14 +1,14 @@
 <div class="editorial-home">
   <section class="hero-editorial mx-auto max-w-7xl px-6 pb-24 pt-16 md:pb-36 md:pt-24">
     <div class="hero-copy" appRevealOnScroll>
-      <p class="eyebrow">Alexander Sickler // Developer & Designer</p>
+      <p class="eyebrow">Developer & Designer</p>
       <h1>Interfaces for<br /><em>complex systems.</em></h1>
       <p class="hero-lede">
         Ich entwickle digitale Produkte, in denen technische Tiefe und menschliche Orientierung zusammenfinden.
       </p>
       <div class="hero-actions">
         <button appButton variant="primary" size="lg" routerLink="/projects">Arbeiten ansehen</button>
-        <a routerLink="/about" class="text-link">Mehr über mich <span aria-hidden="true">↗</span></a>
+        <a routerLink="/about" appLink variant="secondary">Mehr über mich <span aria-hidden="true">↗</span></a>
       </div>
     </div>
 
@@ -28,13 +28,16 @@
     <div class="work-heading" appRevealOnScroll>
       <p class="eyebrow">02 / Selected work</p>
       <h2>Things I made tangible.</h2>
-      <a routerLink="/projects" class="text-link">Alle Projekte <span aria-hidden="true">↗</span></a>
+      <a routerLink="/projects" appLink variant="secondary">Alle Projekte <span aria-hidden="true">↗</span></a>
     </div>
 
     <div class="project-gallery">
       @if (projectService.featuredProjects(); as projects) {
         @for (project of projects; track project.id; let index = $index) {
-          <article appRevealOnScroll class="project-piece project-piece--{{ index + 1 }}">
+          <article
+            [appRevealOnScroll]="index === 0 ? 'fade slide-right' : index === 1 ? 'fade slide-left' : 'fade slide-up'"
+            class="project-piece project-piece--{{ index + 1 }}"
+          >
             <span class="project-index">0{{ index + 1 }}</span>
             <app-project-card [project]="project" />
           </article>

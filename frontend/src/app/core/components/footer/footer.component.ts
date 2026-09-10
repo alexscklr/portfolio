@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProfileService } from '@/app/core/services/profile.service';
+import { LinkDirective } from '@/app/shared/directives/link.directive';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, LinkDirective],
   templateUrl: './footer.component.html'
 })
 export class FooterComponent implements OnInit {

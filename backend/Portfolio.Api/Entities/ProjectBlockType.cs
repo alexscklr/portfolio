@@ -1,6 +1,6 @@
 namespace Portfolio.Api.Entities;
 
-public enum BlockType
+public enum ProjectBlockType
 {
     MarkdownText,
     ImageGallery,

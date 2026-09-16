@@ -1,14 +1,14 @@
 <div class="editorial-home">
   <section class="hero-editorial mx-auto max-w-7xl px-6 pb-24 pt-16 md:pb-36 md:pt-24">
     <div class="hero-copy" appRevealOnScroll>
-      <p class="eyebrow">Developer & Designer</p>
-      <h1>Interfaces for<br /><em>complex systems.</em></h1>
+      <p class="eyebrow">{{ 'home.hero.eyebrow' | translate }}</p>
+      <h1>{{ 'home.hero.titleLine1' | translate }}<br /><em>{{ 'home.hero.titleLine2' | translate }}</em></h1>
       <p class="hero-lede">
-        Ich entwickle digitale Produkte, in denen technische Tiefe und menschliche Orientierung zusammenfinden.
+        {{ 'home.hero.description' | translate }}
       </p>
       <div class="hero-actions">
-        <button appButton variant="primary" size="lg" routerLink="/projects">Arbeiten ansehen</button>
-        <a routerLink="/about" appLink variant="secondary">Mehr über mich <span aria-hidden="true">↗</span></a>
+        <button appButton variant="primary" size="lg" routerLink="/projects">{{ 'home.hero.viewProjects' | translate }}</button>
+        <a routerLink="/about" appLink variant="secondary">{{ 'home.hero.about' | translate }} <span aria-hidden="true">↗</span></a>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
 
   <section class="skills-editorial mx-auto max-w-7xl px-6 py-16 md:py-24" appRevealOnScroll>
     <div class="skills-heading">
-      <p class="eyebrow">01 / Skills</p>
-      <h2>Technologies I work with.</h2>
+      <p class="eyebrow">{{ 'home.skills.eyebrow' | translate }}</p>
+      <h2>{{ 'home.skills.title' | translate }}</h2>
     </div>
 
     <div
@@ -58,9 +58,9 @@
 
   <section id="selected-work" class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24">
     <div class="work-heading" appRevealOnScroll>
-      <p class="eyebrow">02 / Selected work</p>
-      <h2>Things I made tangible.</h2>
-      <a routerLink="/projects" appLink variant="secondary">Alle Projekte <span aria-hidden="true">↗</span></a>
+      <p class="eyebrow">{{ 'home.work.eyebrow' | translate }}</p>
+      <h2>{{ 'home.work.title' | translate }}</h2>
+      <a routerLink="/projects" appLink variant="secondary">{{ 'home.work.allProjects' | translate }} <span aria-hidden="true">↗</span></a>
     </div>
 
     <div class="project-gallery">
@@ -74,7 +74,7 @@
             <app-project-card [project]="project" />
           </article>
         } @empty {
-          <p class="empty-state">Keine Featured-Projekte geladen. API-Verbindung wird geprüft...</p>
+          <p class="empty-state">{{ 'home.work.empty' | translate }}</p>
         }
       }
     </div>
@@ -82,12 +82,12 @@
 
   <section class="note-editorial mx-auto max-w-7xl px-6 pb-28 md:pb-40" appRevealOnScroll>
     <div class="note-map">
-      <img src="/media/fixtures/japan-route-placeholder.svg" alt="Placeholder-Karte mit einer Verbindung von Deutschland nach Japan" />
+      <img src="/media/fixtures/japan-route-placeholder.svg" [alt]="'home.note.mapAlt' | translate" />
     </div>
     <div class="note-copy">
-      <p class="eyebrow">03 / A personal note</p>
-      <h2>Between structure<br /><em>and atmosphere.</em></h2>
-      <p>Mein Auslandssemester in Japan hat meinen Blick für Räume, Rhythmus und Orientierung geschärft. Diese Perspektive bringe ich in digitale Produkte ein: reduziert, aufmerksam und mit Platz für den Menschen dahinter.</p>
+      <p class="eyebrow">{{ 'home.note.eyebrow' | translate }}</p>
+      <h2>{{ 'home.note.titleLine1' | translate }}<br /><em>{{ 'home.note.titleLine2' | translate }}</em></h2>
+      <p>{{ 'home.note.description' | translate }}</p>
     </div>
   </section>
 </div>

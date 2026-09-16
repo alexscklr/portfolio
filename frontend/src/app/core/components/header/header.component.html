@@ -1,0 +1,50 @@
+<header class="fixed top-0 z-50 w-full backdrop-blur-md">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    
+    <a routerLink="/" class="group flex items-center gap-2 text-lg font-bold text-white">
+      <span class="font-heading">Alexander Sickler <span class="font-mono text-xs text-accent-primary whitespace-nowrap">// portfolio</span></span>
+      
+    </a>
+
+    <nav class="hidden sm:flex items-center gap-6">
+      <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav">Start</a>
+      <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav">Projekte</a>
+      <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav">Über mich</a>
+    </nav>
+
+    <div class="hidden sm:block">
+      <button appButton variant="secondary" size="sm" routerLink="/contact">
+        Kontakt
+      </button>
+    </div>
+
+    <details class="mobile-menu sm:hidden">
+      <summary class="hamburger-btn" aria-label="Menü öffnen oder schließen">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </summary>
+
+    <div class="mobile-menu-flyout px-6 py-6">
+      <nav class="flex flex-col gap-4 items-end">
+        <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav" class="text-base py-2 text-right">
+          Start
+        </a>
+        <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+          Projekte
+        </a>
+        <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+          Über mich
+        </a>
+        
+        <div class="pt-4">
+          <button appButton variant="secondary" size="md" routerLink="/contact" class="w-full justify-center">
+            Kontakt aufnehmen
+          </button>
+        </div>
+      </nav>
+    </div>
+    </details>
+
+  </div>
+</header>

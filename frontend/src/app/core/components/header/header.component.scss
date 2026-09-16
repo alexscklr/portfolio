@@ -1,0 +1,127 @@
+$btn-size: 45px;
+$line-height: 2px;
+$transition-speed: 300ms;
+$transition-easing: cubic-bezier(0.16, 1, 0.3, 1);
+$menu-offset: 0.5rem;
+
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: $btn-size;
+  min-height: $btn-size;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  .hamburger-line {
+    width: 100%;
+    height: $line-height;
+      background-color: var(--color-text-primary);
+      border-radius: 0.125rem;
+    transition: 
+      transform $transition-speed $transition-easing,
+      opacity $transition-speed $transition-easing,
+      background-color $transition-speed $transition-easing;
+    transform-origin: center;
+  }
+}
+
+.mobile-menu-flyout {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: color-mix(in srgb, var(--color-primary-950) 95%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-secondary-700) 60%, transparent);
+  display: grid;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(-$menu-offset);
+  pointer-events: none;
+  transition: opacity $transition-speed $transition-easing, transform $transition-speed $transition-easing, visibility 0s linear $transition-speed;
+  visibility: hidden;
+  z-index: 50;
+
+  nav > a {
+    opacity: 0;
+  }
+}
+
+.mobile-menu[open] {
+  .hamburger-btn {
+    .hamburger-line {
+      background-color: var(--color-accent-primary);
+
+      &:nth-child(1) {
+        width: 82%;
+        transform-origin: right;
+        transform: translateY(-0.35rem) rotate(-45deg);
+      }
+
+      &:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+
+      &:nth-child(3) {
+        width: 82%;
+        transform-origin: right;
+        transform: translateY(0.35rem) rotate(45deg);
+      }
+    }
+  }
+
+  .mobile-menu-flyout {
+    animation: menuSlideDown 250ms $transition-easing forwards;
+    pointer-events: auto;
+    visibility: visible;
+    transition-delay: 0s;
+
+    nav > a {
+      animation: menuLinkFadeIn $transition-speed ease-out both;
+
+      @for $i from 1 through 3 {
+        &:nth-of-type(#{$i}) {
+          animation-delay: #{40 + ($i * 35)}ms;
+        }
+      }
+    }
+  }
+}
+
+@keyframes menuSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-$menu-offset);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes menuLinkFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-$menu-offset);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 640px) {
+    .hamburger-btn {
+        display: none;
+    }
+}

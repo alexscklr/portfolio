@@ -10,7 +10,7 @@ public class Profile
     public string Location { get; set; } = string.Empty;
     public string PublicEmail { get; set; } = string.Empty;
 
-    public string StreetAdress { get; set; } = string.Empty;
+    public string StreetAddress { get; set; } = string.Empty;
     public string PostalCodeAndCity { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public string DirectEmail { get; set; } = string.Empty;

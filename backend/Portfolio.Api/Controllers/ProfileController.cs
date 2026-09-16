@@ -90,7 +90,7 @@ public class ProfileController : ControllerBase
         existingProfile.AvatarUrl = profileDto.AvatarUrl;
         existingProfile.Location = profileDto.Location;
         existingProfile.PublicEmail = profileDto.PublicEmail;
-        existingProfile.StreetAdress = profileDto.StreetAdress;
+        existingProfile.StreetAddress = profileDto.StreetAddress;
         existingProfile.PostalCodeAndCity = profileDto.PostalCodeAndCity;
         existingProfile.PhoneNumber = profileDto.PhoneNumber;
         existingProfile.DirectEmail = profileDto.DirectEmail;

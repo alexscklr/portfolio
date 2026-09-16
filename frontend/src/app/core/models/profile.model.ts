@@ -19,7 +19,7 @@ export interface Profile {
   // Legal / Impressum
   streetAddress: string;
   postalCodeAndCity: string;
-  phone: string;
+  phoneNumber: string;
   directEmail: string;
   disputeResolutionMarkdown?: string;
 
@@ -30,7 +30,7 @@ export interface LegalNotice {
   fullName: string;
   streetAddress: string;
   postalCodeAndCity: string;
-  phone: string;
+  phoneNumber: string;
   directEmail: string;
   disputeResolutionMarkdown?: string;
 }

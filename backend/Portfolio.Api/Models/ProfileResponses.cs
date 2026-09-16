@@ -19,7 +19,7 @@ public sealed record SocialLinkResponse(
 
 public sealed record LegalNoticeResponse(
     string FullName,
-    string StreetAdress,
+    string StreetAddress,
     string PostalCodeAndCity,
     string PhoneNumber,
     string DirectEmail,

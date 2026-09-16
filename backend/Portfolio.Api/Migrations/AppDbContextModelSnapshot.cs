@@ -22,6 +22,59 @@ namespace Portfolio.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Portfolio.Api.Entities.Profile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BioMarkdown")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DirectEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DisputeResolutionMarkdown")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PostalCodeAndCity")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PublicEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StreetAdress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("Portfolio.Api.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -31,11 +84,13 @@ namespace Portfolio.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DescriptionMarkdown")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("FeaturedImageUrl")
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PreviewMediaUrl")
                         .HasColumnType("text");
 
                     b.Property<string>("ShortDescription")
@@ -53,15 +108,67 @@ namespace Portfolio.Api.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("isPublished")
-                        .HasColumnType("boolean");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Slug")
                         .IsUnique();
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ContentOrConfig")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectBlocks");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectLinks");
                 });
 
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
@@ -95,14 +202,18 @@ namespace Portfolio.Api.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectMedia");
+                    b.ToTable("ProjectMedias");
                 });
 
-            modelBuilder.Entity("Portfolio.Api.Entities.Tag", b =>
+            modelBuilder.Entity("Portfolio.Api.Entities.SkillTag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -117,22 +228,75 @@ namespace Portfolio.Api.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Tags");
+                    b.ToTable("SkillTags");
                 });
 
-            modelBuilder.Entity("ProjectTag", b =>
+            modelBuilder.Entity("Portfolio.Api.Entities.SocialLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("IconKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PlatformName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("SocialLinks");
+                });
+
+            modelBuilder.Entity("ProjectSkillTag", b =>
                 {
                     b.Property<Guid>("ProjectsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("TagsId")
+                    b.Property<Guid>("SkillsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("ProjectsId", "TagsId");
+                    b.HasKey("ProjectsId", "SkillsId");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("SkillsId");
 
-                    b.ToTable("ProjectTag");
+                    b.ToTable("ProjectSkillTag");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.Project", "Project")
+                        .WithMany("Blocks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.Project", "Project")
+                        .WithMany("Links")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
@@ -146,7 +310,18 @@ namespace Portfolio.Api.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ProjectTag", b =>
+            modelBuilder.Entity("Portfolio.Api.Entities.SocialLink", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.Profile", "Profile")
+                        .WithMany("SocialLinks")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ProjectSkillTag", b =>
                 {
                     b.HasOne("Portfolio.Api.Entities.Project", null)
                         .WithMany()
@@ -154,15 +329,24 @@ namespace Portfolio.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Portfolio.Api.Entities.Tag", null)
+                    b.HasOne("Portfolio.Api.Entities.SkillTag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("SkillsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Portfolio.Api.Entities.Profile", b =>
+                {
+                    b.Navigation("SocialLinks");
+                });
+
             modelBuilder.Entity("Portfolio.Api.Entities.Project", b =>
                 {
+                    b.Navigation("Blocks");
+
+                    b.Navigation("Links");
+
                     b.Navigation("Media");
                 });
 #pragma warning restore 612, 618

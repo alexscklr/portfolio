@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="title desc">
+  <title id="title">Route from Germany to Japan</title>
+  <desc id="desc">Abstract map placeholder showing a route from Germany to Japan.</desc>
+  <rect width="900" height="560" fill="#19283a"/>
+  <path d="M0 110C140 55 220 150 335 108S570 35 900 120M0 285C155 235 255 330 390 270S680 205 900 300M0 470C160 400 290 510 455 430S710 390 900 465" fill="none" stroke="#234137" stroke-width="2" opacity=".9"/>
+  <path d="M0 185C120 150 205 215 335 180S610 130 900 205M0 390C135 345 280 425 420 365S720 325 900 390" fill="none" stroke="#48665a" stroke-width="1" opacity=".65"/>
+  <path d="M195 235l22-18 33 3 19 20-17 19-36-3zM525 264l18-13 25 8 8 23-20 15-25-9zM650 280l13-25 12 6 4 25-14 17z" fill="#c6d49c" opacity=".7"/>
+  <path d="M228 235C320 150 415 175 525 276" fill="none" stroke="#e7ad9d" stroke-width="4" stroke-linecap="round" stroke-dasharray="9 12"/>
+  <circle cx="228" cy="235" r="10" fill="#e7ad9d"/><circle cx="525" cy="276" r="10" fill="#e7ad9d"/>
+  <text x="190" y="275" fill="#f0eadf" font-family="monospace" font-size="18">DE</text>
+  <text x="515" y="316" fill="#f0eadf" font-family="monospace" font-size="18">JP</text>
+  <text x="48" y="70" fill="#c6d49c" font-family="monospace" font-size="15" letter-spacing="3">FIELD NOTE / 01</text>
+</svg>

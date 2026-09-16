@@ -9,8 +9,7 @@ export enum ProjectLinkType {
 
 export interface ProjectLink {
     id: string;
-    projectId: string;
     type: ProjectLinkType;
     url: string;
-    label: string;
+    title: string;
 }

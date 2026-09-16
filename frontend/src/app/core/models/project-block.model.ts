@@ -8,7 +8,6 @@ export enum BlockType {
 
 export interface ProjectBlock {
     id: string;
-    projectId: string;
     type: BlockType;
     displayOrder: number;
     contentOrConfig: string;

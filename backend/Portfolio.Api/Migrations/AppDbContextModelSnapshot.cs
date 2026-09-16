@@ -31,22 +31,11 @@ namespace Portfolio.Api.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("BioMarkdown")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("DirectEmail")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("DisputeResolutionMarkdown")
-                        .HasColumnType("text");
-
                     b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -75,6 +64,38 @@ namespace Portfolio.Api.Migrations
                     b.ToTable("Profiles");
                 });
 
+            modelBuilder.Entity("Portfolio.Api.Entities.ProfileTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BioMarkdown")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DisputeResolutionMarkdown")
+                        .HasColumnType("text");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProfileId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("ProfileTranslations");
+                });
+
             modelBuilder.Entity("Portfolio.Api.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -93,15 +114,7 @@ namespace Portfolio.Api.Migrations
                     b.Property<string>("PreviewMediaUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -122,10 +135,6 @@ namespace Portfolio.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ContentOrConfig")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
@@ -143,15 +152,36 @@ namespace Portfolio.Api.Migrations
                     b.ToTable("ProjectBlocks");
                 });
 
-            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlockTranslation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Label")
+                    b.Property<string>("ContentOrConfig")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectBlockId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectBlockId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("ProjectBlockTranslations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
@@ -171,14 +201,36 @@ namespace Portfolio.Api.Migrations
                     b.ToTable("ProjectLinks");
                 });
 
-            modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLinkTranslation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AltText")
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectLinkId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectLinkId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("ProjectLinkTranslations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -203,6 +255,59 @@ namespace Portfolio.Api.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectMedias");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectMediaTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AltText")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectMediaId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectMediaId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("ProjectMediaTranslations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("ProjectTranslations");
                 });
 
             modelBuilder.Entity("Portfolio.Api.Entities.SkillTag", b =>
@@ -277,6 +382,17 @@ namespace Portfolio.Api.Migrations
                     b.ToTable("ProjectSkillTag");
                 });
 
+            modelBuilder.Entity("Portfolio.Api.Entities.ProfileTranslation", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.Profile", "Profile")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
                 {
                     b.HasOne("Portfolio.Api.Entities.Project", "Project")
@@ -286,6 +402,17 @@ namespace Portfolio.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlockTranslation", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.ProjectBlock", "ProjectBlock")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProjectBlockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectBlock");
                 });
 
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
@@ -299,10 +426,43 @@ namespace Portfolio.Api.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLinkTranslation", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.ProjectLink", "ProjectLink")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProjectLinkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectLink");
+                });
+
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
                 {
                     b.HasOne("Portfolio.Api.Entities.Project", "Project")
                         .WithMany("Media")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectMediaTranslation", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.ProjectMedia", "ProjectMedia")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProjectMediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectMedia");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectTranslation", b =>
+                {
+                    b.HasOne("Portfolio.Api.Entities.Project", "Project")
+                        .WithMany("Translations")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -339,6 +499,8 @@ namespace Portfolio.Api.Migrations
             modelBuilder.Entity("Portfolio.Api.Entities.Profile", b =>
                 {
                     b.Navigation("SocialLinks");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Portfolio.Api.Entities.Project", b =>
@@ -348,6 +510,23 @@ namespace Portfolio.Api.Migrations
                     b.Navigation("Links");
 
                     b.Navigation("Media");
+
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectLink", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Portfolio.Api.Entities.ProjectMedia", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

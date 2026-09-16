@@ -34,7 +34,7 @@ public static class ProfileResponseMapper
 
         return new LegalNoticeResponse(
             profile.FullName,
-            profile.StreetAdress,
+            profile.StreetAddress,
             profile.PostalCodeAndCity,
             profile.PhoneNumber,
             profile.DirectEmail,

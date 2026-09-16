@@ -1,9 +1,8 @@
 export interface ProjectMedia {
     id: string;
-    projectId: string;
+    fileUrl: string;
     fileName: string;
     contentType: string;
-    fileUrl: string;
+    displayOrder: number;
     altText?: string;
-    createdAt: string;
 }

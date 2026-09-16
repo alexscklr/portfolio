@@ -15,13 +15,45 @@
     <app-avatar-orbit appRevealOnScroll />
   </section>
 
-  <section class="statement-editorial mx-auto max-w-7xl px-6 py-16 md:py-24" appRevealOnScroll>
-    <div class="statement-mark">01</div>
-    <div class="statement-copy">
-      <h2>Good interfaces give complexity a rhythm.</h2>
-      <p>Meine Arbeit bewegt sich zwischen Softwareentwicklung, UI/UX und interaktiven Medien. Ich suche nicht nach maximaler Oberfläche, sondern nach dem richtigen Maß an Klarheit.</p>
+  <section class="skills-editorial mx-auto max-w-7xl px-6 py-16 md:py-24" appRevealOnScroll>
+    <div class="skills-heading">
+      <p class="eyebrow">01 / Skills</p>
+      <h2>Technologies I work with.</h2>
     </div>
-    <div class="statement-note">Observe<br />Structure<br />Refine</div>
+
+    <div
+      class="skills-slider"
+      appInfiniteSlider
+      [slideWidth]="300"
+      [slideHeight]="200"
+      [speed]="40"
+      [autoPlay]="true"
+    >
+      <div class="skill-card">
+        <h3>Frontend Development</h3>
+        <p>Angular, React, Vue.js</p>
+      </div>
+      <div class="skill-card">
+        <h3>Backend Development</h3>
+        <p>.NET, Node.js, Python</p>
+      </div>
+      <div class="skill-card">
+        <h3>UI/UX Design</h3>
+        <p>Figma, Adobe XD, Prototyping</p>
+      </div>
+      <div class="skill-card">
+        <h3>Cloud & DevOps</h3>
+        <p>Azure, AWS, Docker, CI/CD</p>
+      </div>
+      <div class="skill-card">
+        <h3>Database Design</h3>
+        <p>SQL, NoSQL, PostgreSQL, MongoDB</p>
+      </div>
+      <div class="skill-card">
+        <h3>Mobile Development</h3>
+        <p>React Native, Flutter, iOS/Android</p>
+      </div>
+    </div>
   </section>
 
   <section id="selected-work" class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24">

@@ -6,11 +6,12 @@ import { ButtonDirective } from '@/app/shared/directives/button.directive';
 import { RevealOnScrollDirective } from '@/app/shared/directives/reveal-on-scroll.directive';
 import { LinkDirective } from '@/app/shared/directives/link.directive';
 import { AvatarOrbitComponent } from './components/avatar-orbit/avatar-orbit.component';
+import { InfiniteSliderDirective } from '@/app/shared/directives/infinite-slider.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective],
+  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective, InfiniteSliderDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

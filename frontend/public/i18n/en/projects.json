@@ -1,0 +1,6 @@
+{
+	"projects.card.titleLabel": "Project",
+	"projects.card.imageAlt": "Project preview for {title}",
+	"projects.card.view": "View project",
+	"projects.card.generativePreview": "// Generative preview"
+}

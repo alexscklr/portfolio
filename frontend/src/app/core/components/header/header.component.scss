@@ -4,6 +4,32 @@ $transition-speed: 300ms;
 $transition-easing: cubic-bezier(0.16, 1, 0.3, 1);
 $menu-offset: 0.5rem;
 
+.language-selector {
+  min-height: 2.25rem;
+  padding: 0.35rem 1.8rem 0.35rem 0.35rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font: 600 0.68rem/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.language-selector:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.language-selector option {
+  background: var(--color-primary-950);
+  color: var(--color-text-primary);
+}
+
+.language-selector--mobile {
+  align-self: flex-end;
+}
+
 .hamburger-btn {
   display: flex;
   flex-direction: column;

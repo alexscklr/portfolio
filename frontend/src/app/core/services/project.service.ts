@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Project } from '@/app/core/models';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
 import { LanguageService } from './language.service';
+import { environment } from '@/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
   private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}/projects`;
   private languageService = inject(LanguageService);
 
   projects = signal<Project[]>([]);
@@ -20,7 +22,7 @@ export class ProjectService {
   loadProjects(): void {
     const lang = this.languageService.currentLanguage();
     this.isLoading.set(true);
-    this.http.get<Project[]>('/api/projects', {
+    this.http.get<Project[]>(this.apiUrl, {
       params: { lang: lang }
     }).subscribe({
       next: (data) => {
@@ -38,7 +40,7 @@ export class ProjectService {
     const lang = this.languageService.currentLanguage();
     const requestId = ++this.requestSequence;
     this.isLoading.set(true);
-    this.http.get<Project[]>('/api/projects', {
+    this.http.get<Project[]>(this.apiUrl, {
       params: { lang: lang, isFeatured: 'true' }
     }).subscribe({
       next: (data) => {
@@ -58,7 +60,7 @@ export class ProjectService {
   loadProjectBySlug(slug: string): void {
     const lang = this.languageService.currentLanguage();
     this.isLoading.set(true);
-    this.http.get<Project>(`/api/projects/${slug}`, {
+    this.http.get<Project>(`${this.apiUrl}/${slug}`, {
       params: { lang: lang }
     }).subscribe({
       next: (data) => {

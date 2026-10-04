@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '@/environments/environment';
 import { Profile, LegalNotice } from '../models';
 import { getMockLegalNotice, getMockProfile } from '../mocks/profile.mock';
 import { LanguageService } from './language.service';

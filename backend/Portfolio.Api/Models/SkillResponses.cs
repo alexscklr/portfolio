@@ -7,4 +7,6 @@ public sealed record SkillResponse(
 	string Name,
 	string Slug,
 	SkillTagCategory Category,
-	int UsageCount);
+	int UsageCount,
+    string? IconKey
+);

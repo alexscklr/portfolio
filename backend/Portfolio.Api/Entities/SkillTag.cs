@@ -6,6 +6,7 @@ public class SkillTag
     public string Name {get; set;} = string.Empty;
     public string Slug {get; set;} = string.Empty;
     public SkillTagCategory Category {get; set;}
+    public string? IconKey {get; set;}
 
     public List<Project> Projects {get; set;} = new();
 }

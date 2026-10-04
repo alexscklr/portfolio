@@ -28,7 +28,8 @@ public class SkillsController : ControllerBase
                 skill.Id,
                 skill.Name,
                 skill.Slug,
-                skill.Category
+                skill.Category,
+                skill.IconKey
             })
             .Select(group => new
             {
@@ -36,6 +37,7 @@ public class SkillsController : ControllerBase
                 group.Key.Name,
                 group.Key.Slug,
                 group.Key.Category,
+                group.Key.IconKey,
                 UsageCount = group.Count()
             })
             .OrderByDescending(skill => skill.UsageCount)
@@ -47,7 +49,8 @@ public class SkillsController : ControllerBase
             skill.Name,
             skill.Slug,
             skill.Category,
-            skill.UsageCount));
+            skill.UsageCount,
+            skill.IconKey));
 
         return Ok(skills);
     }

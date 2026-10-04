@@ -55,7 +55,7 @@ namespace Portfolio.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("StreetAdress")
+                    b.Property<string>("StreetAddress")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -318,6 +318,9 @@ namespace Portfolio.Api.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("IconKey")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")

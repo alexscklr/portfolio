@@ -27,7 +27,8 @@
 .skills-heading { margin-bottom: 4rem; }
 .skills-slider { display: flex; overflow-x: auto; gap: 2rem; padding: 1rem 0; scrollbar-width: none; -ms-overflow-style: none; }
 .skills-slider::-webkit-scrollbar { display: none; }
-.skill-card { scroll-snap-align: start; min-width: 300px; max-width: 300px; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(10px); }
+.skill-card { scroll-snap-align: start; min-width: 300px; max-width: 300px; padding: 2rem; display: flex; flex-direction: column; text-align: center; gap: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(10px); }
+.skill-card > *:first-child { scale: 3; }
 .skill-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
 .note-copy > p { max-width: 38rem; margin: 1.5rem 0 0; color: rgba(240, 234, 223, 0.68); line-height: 1.8; }
 

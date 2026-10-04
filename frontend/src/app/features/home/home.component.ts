@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProjectService } from '@/app/core/services/project.service';
 import { ProjectCardComponent } from '@/app/shared/components/project-card/project-card.component';
@@ -9,22 +9,25 @@ import { AvatarOrbitComponent } from './components/avatar-orbit/avatar-orbit.com
 import { InfiniteSliderDirective } from '@/app/shared/directives/infinite-slider.directive';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 import { LanguageService } from '@/app/core/services/language.service';
-
+import { SkillService } from '@/app/core/services/skill.service';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective, InfiniteSliderDirective, TranslatePipe],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   private readonly languageService = inject(LanguageService);
   readonly projectService = inject(ProjectService);
+  readonly skillsService = inject(SkillService);
 
   constructor() {
     effect(() => {
       this.languageService.currentLanguage();
       this.projectService.loadFeaturedProjects();
+      this.skillsService.loadSkills();
     });
   }
 }

@@ -12,11 +12,11 @@ export const mockProjects: Project[] = [
     displayOrder: 1,
     createdAt: '2026-05-15T10:00:00Z',
     skills: [
-      { id: 'sk-1', name: 'C#', slug: 'csharp', category: SkillTagCategory.Language },
-      { id: 'sk-2', name: '.NET 8', slug: 'dotnet-8', category: SkillTagCategory.Framework },
-      { id: 'sk-3', name: 'Angular 18+', slug: 'angular', category: SkillTagCategory.Framework },
-      { id: 'sk-4', name: 'HLSL / WebGL', slug: 'hlsl-webgl', category: SkillTagCategory.ConceptOrApi },
-      { id: 'sk-5', name: 'Tailwind CSS v4', slug: 'tailwind-css', category: SkillTagCategory.Framework }
+      { id: 'sk-1', name: 'C#', slug: 'csharp', category: SkillTagCategory.Language, iconKey: 'simple-icons:csharp' },
+      { id: 'sk-2', name: '.NET 8', slug: 'dotnet-8', category: SkillTagCategory.Framework, iconKey: 'simple-icons:dotnet' },
+      { id: 'sk-3', name: 'Angular 18+', slug: 'angular', category: SkillTagCategory.Framework, iconKey: 'simple-icons:angular' },
+      { id: 'sk-4', name: 'HLSL / WebGL', slug: 'hlsl-webgl', category: SkillTagCategory.ConceptOrApi, iconKey: 'simple-icons:webgl' },
+      { id: 'sk-5', name: 'Tailwind CSS v4', slug: 'tailwind-css', category: SkillTagCategory.Framework, iconKey: 'simple-icons:tailwindcss' }
     ],
     blocks: [
       {
@@ -51,10 +51,10 @@ export const mockProjects: Project[] = [
     displayOrder: 2,
     createdAt: '2026-02-10T14:30:00Z',
     skills: [
-      { id: 'sk-2', name: '.NET 8', slug: 'dotnet-8', category: SkillTagCategory.Framework },
-      { id: 'sk-6', name: 'gRPC', slug: 'grpc', category: SkillTagCategory.ConceptOrApi },
-      { id: 'sk-7', name: 'Docker', slug: 'docker', category: SkillTagCategory.ToolOrSoftware },
-      { id: 'sk-8', name: 'Python / Maya API', slug: 'python-maya-api', category: SkillTagCategory.Language }
+      { id: 'sk-2', name: '.NET 8', slug: 'dotnet-8', category: SkillTagCategory.Framework, iconKey: 'simple-icons:dotnet' },
+      { id: 'sk-6', name: 'gRPC', slug: 'grpc', category: SkillTagCategory.ConceptOrApi, iconKey: 'simple-icons:grpc' },
+      { id: 'sk-7', name: 'Docker', slug: 'docker', category: SkillTagCategory.ToolOrSoftware, iconKey: 'simple-icons:docker' },
+      { id: 'sk-8', name: 'Python / Maya API', slug: 'python-maya-api', category: SkillTagCategory.Language, iconKey: 'simple-icons:python' }
     ],
     blocks: [
       {
@@ -79,9 +79,9 @@ export const mockProjects: Project[] = [
     displayOrder: 3,
     createdAt: '2026-08-01T09:00:00Z',
     skills: [
-      { id: 'sk-3', name: 'Angular 18+', slug: 'angular', category: SkillTagCategory.Framework },
-      { id: 'sk-5', name: 'Tailwind CSS v4', slug: 'tailwind-css', category: SkillTagCategory.Framework },
-      { id: 'sk-9', name: 'TypeScript', slug: 'typescript', category: SkillTagCategory.Language }
+      { id: 'sk-3', name: 'Angular 18+', slug: 'angular', category: SkillTagCategory.Framework, iconKey: 'simple-icons:angular' },
+      { id: 'sk-5', name: 'Tailwind CSS v4', slug: 'tailwind-css', category: SkillTagCategory.Framework, iconKey: 'simple-icons:tailwindcss' },
+      { id: 'sk-9', name: 'TypeScript', slug: 'typescript', category: SkillTagCategory.Language, iconKey: 'simple-icons:typescript' }
     ],
     blocks: [
       {

@@ -29,30 +29,14 @@
       [speed]="40"
       [autoPlay]="true"
     >
-      <div class="skill-card">
-        <h3>Frontend Development</h3>
-        <p>Angular, React, Vue.js</p>
-      </div>
-      <div class="skill-card">
-        <h3>Backend Development</h3>
-        <p>.NET, Node.js, Python</p>
-      </div>
-      <div class="skill-card">
-        <h3>UI/UX Design</h3>
-        <p>Figma, Adobe XD, Prototyping</p>
-      </div>
-      <div class="skill-card">
-        <h3>Cloud & DevOps</h3>
-        <p>Azure, AWS, Docker, CI/CD</p>
-      </div>
-      <div class="skill-card">
-        <h3>Database Design</h3>
-        <p>SQL, NoSQL, PostgreSQL, MongoDB</p>
-      </div>
-      <div class="skill-card">
-        <h3>Mobile Development</h3>
-        <p>React Native, Flutter, iOS/Android</p>
-      </div>
+      @for (skill of skillsService.skills(); track skill.id; let index = $index) {
+        <div class="skill-card">
+          <iconify-icon [icon]="skill.iconKey ?? 'lucide:code-2'" [attr.aria-label]="skill.name"></iconify-icon>
+          <h3>{{ skill.name }}</h3>
+        </div>
+      } @empty {
+        <p class="empty-state">{{ 'home.skills.empty' | translate }}</p>
+      }
     </div>
   </section>
 

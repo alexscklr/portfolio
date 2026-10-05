@@ -21,5 +21,6 @@
 	"home.avatar.interfacesLabel": "Interfaces, jump to selected projects",
 	"home.avatar.mediaLabel": "Interactive media, jump to selected projects",
 	"home.avatar.systemsLabel": "Systems, jump to selected projects",
-	"home.avatar.caption": "A small map of what I keep returning to."
+	"home.avatar.caption": "A small map of what I keep returning to.",
+	"home.skills.usage": "projects"
 }

@@ -6,14 +6,15 @@ import { ButtonDirective } from '@/app/shared/directives/button.directive';
 import { RevealOnScrollDirective } from '@/app/shared/directives/reveal-on-scroll.directive';
 import { LinkDirective } from '@/app/shared/directives/link.directive';
 import { AvatarOrbitComponent } from './components/avatar-orbit/avatar-orbit.component';
-import { InfiniteSliderDirective } from '@/app/shared/directives/infinite-slider.directive';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 import { LanguageService } from '@/app/core/services/language.service';
 import { SkillService } from '@/app/core/services/skill.service';
+import { SkillMarqueeComponent } from './components/skill-marquee/skill-marquee.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective, InfiniteSliderDirective, TranslatePipe],
+  imports: [RouterLink, ProjectCardComponent, ButtonDirective, RevealOnScrollDirective, AvatarOrbitComponent, LinkDirective, TranslatePipe, SkillMarqueeComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

@@ -25,11 +25,7 @@
 
 .skills-editorial { padding: 8rem 1.5rem; margin: 8rem auto; }
 .skills-heading { margin-bottom: 4rem; }
-.skills-slider { display: flex; overflow-x: auto; gap: 2rem; padding: 1rem 0; scrollbar-width: none; -ms-overflow-style: none; }
-.skills-slider::-webkit-scrollbar { display: none; }
-.skill-card { scroll-snap-align: start; min-width: 300px; max-width: 300px; padding: 2rem; display: flex; flex-direction: column; text-align: center; gap: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(10px); }
-.skill-card > *:first-child { scale: 3; }
-.skill-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+.skills-editorial > .empty-state { margin: 0; }
 .note-copy > p { max-width: 38rem; margin: 1.5rem 0 0; color: rgba(240, 234, 223, 0.68); line-height: 1.8; }
 
 .work-heading { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; margin-bottom: 4rem; }
@@ -56,9 +52,10 @@
 
 @media (max-width: 520px) {
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 1.25rem; }
-  .skills-slider { flex-wrap: nowrap; overflow-x: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .text-link span { transition: none; }
+  .skills-track { animation: none; }
+  .skill-card h3, .skill-card::after { transition: none; }
 }

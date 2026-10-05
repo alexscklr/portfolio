@@ -21,23 +21,11 @@
       <h2>{{ 'home.skills.title' | translate }}</h2>
     </div>
 
-    <div
-      class="skills-slider"
-      appInfiniteSlider
-      [slideWidth]="300"
-      [slideHeight]="200"
-      [speed]="40"
-      [autoPlay]="true"
-    >
-      @for (skill of skillsService.skills(); track skill.id; let index = $index) {
-        <div class="skill-card">
-          <iconify-icon [icon]="skill.iconKey ?? 'lucide:code-2'" [attr.aria-label]="skill.name"></iconify-icon>
-          <h3>{{ skill.name }}</h3>
-        </div>
-      } @empty {
-        <p class="empty-state">{{ 'home.skills.empty' | translate }}</p>
-      }
-    </div>
+    @if (skillsService.skills().length > 0) {
+      <app-skill-marquee [skills]="skillsService.skills()"></app-skill-marquee>
+    } @else {
+      <p class="empty-state">{{ 'home.skills.empty' | translate }}</p>
+    }
   </section>
 
   <section id="selected-work" class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24">

@@ -18,9 +18,16 @@ export class ProfileService {
   isLoading = signal<boolean>(false);
 
   loadProfile(): void {
+    const language = this.languageService.currentLanguage();
+    if (environment.dataSource === 'frontend-mock') {
+      this.profile.set(getMockProfile(language));
+      this.isLoading.set(false);
+      return;
+    }
+
     this.isLoading.set(true);
     this.http.get<Profile>(this.apiUrl, {
-      params: { lang: this.languageService.currentLanguage() }
+      params: { lang: language }
     }).subscribe({
       next: data => {
         this.profile.set(data);
@@ -28,26 +35,28 @@ export class ProfileService {
       },
       error: err => {
         console.error('Fehler beim Laden des Profils:', err);
-        if (!environment.production) {
-          this.profile.set(getMockProfile(this.languageService.currentLanguage()));
-        }
+        this.profile.set(null);
         this.isLoading.set(false);
       },
     });
   }
 
   loadLegalNotice(): void {
+    const language = this.languageService.currentLanguage();
+    if (environment.dataSource === 'frontend-mock') {
+      this.legalNotice.set(getMockLegalNotice(language));
+      return;
+    }
+
     this.http.get<LegalNotice>(`${this.apiUrl}/legal`, {
-      params: { lang: this.languageService.currentLanguage() }
+      params: { lang: language }
     }).subscribe({
       next: data => {
         this.legalNotice.set(data);
       },
       error: err => {
         console.error('Fehler beim Laden des Impressums:', err);
-        if (!environment.production) {
-          this.legalNotice.set(getMockLegalNotice(this.languageService.currentLanguage()));
-        }
+        this.legalNotice.set(null);
       },
     });
   }

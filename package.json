@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start": "npm run start:services && npm run start:api",
+    "start:api": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:mock": "npm run start:services && npm run start:mock:app",
+    "start:mock:app": "concurrently \"npm run start:backend\" \"npm run start:frontend:mock\"",
     "start:services": "docker compose up -d",
     "stop:services": "docker compose down",
     "start:backend": "cd backend/Portfolio.Api && dotnet watch run",
-    "start:frontend": "cd frontend && ng serve",
+    "start:frontend": "npm --prefix frontend start",
+    "start:frontend:mock": "npm --prefix frontend run start:mock",
     "db:migrate": "cd backend/Portfolio.Api && dotnet ef database update",
     "db:migration:add": "cd backend/Portfolio.Api && dotnet ef migrations add"
   },

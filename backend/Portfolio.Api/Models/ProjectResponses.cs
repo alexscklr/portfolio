@@ -12,7 +12,7 @@ public sealed record ProjectListResponse(
     int DisplayOrder,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    IEnumerable<SkillTag> Skills,
+    IEnumerable<SkillTagResponse> Skills,
     IEnumerable<ProjectLinkResponse> Links,
     IEnumerable<ProjectMediaResponse> Media);
 
@@ -26,7 +26,7 @@ public sealed record ProjectResponse(
     int DisplayOrder,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
-    IEnumerable<SkillTag> Skills,
+    IEnumerable<SkillTagResponse> Skills,
     IEnumerable<ProjectLinkResponse> Links,
     IEnumerable<ProjectMediaResponse> Media,
     IEnumerable<ProjectBlockResponse> Blocks);

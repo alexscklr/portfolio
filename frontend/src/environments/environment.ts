@@ -1,4 +1,6 @@
-export const environment = {
-    production: false,
-    apiUrl: 'http://localhost:5124/api'
+import { environmentValues } from './environment.generated';
+import { Environment } from './environment.model';
+
+export const environment: Environment = {
+    ...environmentValues
 };

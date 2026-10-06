@@ -21,6 +21,12 @@ export class ProjectService {
 
   loadProjects(): void {
     const lang = this.languageService.currentLanguage();
+    if (environment.dataSource === 'frontend-mock') {
+      this.projects.set(getMockProjects(lang));
+      this.isLoading.set(false);
+      return;
+    }
+
     this.isLoading.set(true);
     this.http.get<Project[]>(this.apiUrl, {
       params: { lang: lang }
@@ -29,8 +35,9 @@ export class ProjectService {
         this.projects.set(data);
         this.isLoading.set(false);
       },
-      error: () => {
-        this.projects.set(getMockProjects(lang));
+      error: (error) => {
+        console.error('Fehler beim Laden der Projekte:', error);
+        this.projects.set([]);
         this.isLoading.set(false);
       }
     });
@@ -39,6 +46,13 @@ export class ProjectService {
   loadFeaturedProjects(maxItems: number = 3): void {
     const lang = this.languageService.currentLanguage();
     const requestId = ++this.requestSequence;
+    if (environment.dataSource === 'frontend-mock') {
+      const featured = getMockProjects(lang).filter(project => project.isFeatured);
+      this.featuredProjects.set(featured.slice(0, maxItems));
+      this.isLoading.set(false);
+      return;
+    }
+
     this.isLoading.set(true);
     this.http.get<Project[]>(this.apiUrl, {
       params: { lang: lang, isFeatured: 'true' }
@@ -48,10 +62,10 @@ export class ProjectService {
         this.featuredProjects.set(data.length > maxItems ? data.slice(0, maxItems) : data);
         this.isLoading.set(false);
       },
-      error: () => {
+      error: (error) => {
         if (requestId !== this.requestSequence) return;
-        const featured = getMockProjects(lang).filter(p => p.isFeatured);
-        this.featuredProjects.set(featured);
+        console.error('Fehler beim Laden der Featured-Projekte:', error);
+        this.featuredProjects.set([]);
         this.isLoading.set(false);
       }
     });
@@ -59,6 +73,13 @@ export class ProjectService {
 
   loadProjectBySlug(slug: string): void {
     const lang = this.languageService.currentLanguage();
+    if (environment.dataSource === 'frontend-mock') {
+      const project = getMockProjects(lang).find(item => item.slug === slug) ?? null;
+      this.selectedProject.set(project);
+      this.isLoading.set(false);
+      return;
+    }
+
     this.isLoading.set(true);
     this.http.get<Project>(`${this.apiUrl}/${slug}`, {
       params: { lang: lang }
@@ -67,9 +88,9 @@ export class ProjectService {
         this.selectedProject.set(data);
         this.isLoading.set(false);
       },
-      error: () => {
-        const project = getMockProjects(lang).find(p => p.slug === slug) ?? null;
-        this.selectedProject.set(project);
+      error: (error) => {
+        console.error('Fehler beim Laden des Projekts:', error);
+        this.selectedProject.set(null);
         this.isLoading.set(false);
       }
     });

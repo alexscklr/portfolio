@@ -15,14 +15,21 @@ export class SkillService {
     isLoading = signal<boolean>(false);
 
     loadSkills(): void {
+        if (environment.dataSource === "frontend-mock") {
+            this.skills.set(this.getMockSkills());
+            this.isLoading.set(false);
+            return;
+        }
+
         this.isLoading.set(true);
         this.http.get<Skill[]>(`${environment.apiUrl}/skills`).subscribe({
             next: (skills) => {
-                this.skills.set(skills.length > 0 ? skills : this.getMockSkills());
+                this.skills.set(skills);
                 this.isLoading.set(false);
             },
-            error: () => {
-                this.skills.set(this.getMockSkills());
+            error: (error) => {
+                console.error("Fehler beim Laden der Skills:", error);
+                this.skills.set([]);
                 this.isLoading.set(false);
             }
         });

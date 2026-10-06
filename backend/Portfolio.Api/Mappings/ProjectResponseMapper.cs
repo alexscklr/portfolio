@@ -20,7 +20,7 @@ public static class ProjectResponseMapper
             project.DisplayOrder,
             project.CreatedAt,
             project.UpdatedAt,
-            project.Skills,
+            project.Skills.Select(ToResponse),
             project.Links.Select(link => ToResponse(link, languageCode)),
             project.Media.Select(media => ToResponse(media, languageCode)));
     }
@@ -39,7 +39,7 @@ public static class ProjectResponseMapper
             project.DisplayOrder,
             project.CreatedAt,
             project.UpdatedAt,
-            project.Skills,
+            project.Skills.Select(ToResponse),
             project.Links.Select(link => ToResponse(link, languageCode)),
             project.Media.Select(media => ToResponse(media, languageCode)),
             project.Blocks
@@ -51,6 +51,11 @@ public static class ProjectResponseMapper
     {
         var translation = TranslationResolver.Resolve(link.Translations, languageCode, item => item.LanguageCode);
         return new ProjectLinkResponse(link.Id, link.Type, link.Url, translation?.Title);
+    }
+
+    private static SkillTagResponse ToResponse(SkillTag skill)
+    {
+        return new SkillTagResponse(skill.Id, skill.Name, skill.Slug, skill.Category, skill.IconKey);
     }
 
     private static ProjectMediaResponse ToResponse(ProjectMedia media, string languageCode)

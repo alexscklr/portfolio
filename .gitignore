@@ -1,15 +1,11 @@
-# ==========================================
-# 1. Environment & Local Secrets
-# ==========================================
+# Environment & Local Secrets
 .env
 .env.local
 *.user
 *.userosscache
 *.sln.docstates
 
-# ==========================================
-# 2. .NET / C# (Backend)
-# ==========================================
+.NET / C# (Backend)
 [Bb]in/
 [Oo]bj/
 [Ll]og/
@@ -22,14 +18,12 @@
 *.sln.docstates
 appsettings.Development.json
 appsettings.Production.json
-# Lokale EF Core Migrations-Caches oder SQLite DBs
+
 *.db
 *.db-shm
 *.db-wal
 
-# ==========================================
-# 3. Angular & Node.js (Frontend)
-# ==========================================
+# Angular & Node.js (Frontend)
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -38,24 +32,20 @@ yarn-error.log*
 
 # Angular Build Outputs & Cache
 /frontend/.angular/
+/frontend/src/environments/environment.generated.ts
 /frontend/dist/
 /frontend/tmp/
 /frontend/out-tsc/
 /frontend/bazel-out/
 
-# ==========================================
-# 4. Docker & Local Storage Data
-# ==========================================
-# Verhindert, dass lokale Postgres- oder Azurite-Datenbank-Dateien im Git landen
+# Docker & Local Storage Data
 .azurite/
 __blobstorage__/
 __queuestorage__/
 __tablestorage__/
 postgres_data/
 
-# ==========================================
-# 5. OS & IDE Specifics
-# ==========================================
+# OS & IDE Specifics
 .DS_Store
 Thumbs.db
 desktop.ini

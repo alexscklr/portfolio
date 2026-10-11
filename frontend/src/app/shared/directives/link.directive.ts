@@ -11,6 +11,9 @@ export class LinkDirective {
 
   isExternal = input(false, { transform: booleanAttribute });
 
+  // Shows the ↗ arrow; always on for external links
+  arrow = input(false, { transform: booleanAttribute });
+
   @HostBinding('class')
   get classes(): string {
     const baseClasses =
@@ -33,8 +36,9 @@ export class LinkDirective {
     const selectedVariant = this.variant() in variantClasses ? this.variant() : 'primary';
 
     const externalClass = this.isExternal() ? ' app-link--external' : '';
+    const arrowClass = this.isExternal() || this.arrow() ? ' app-link--arrow' : '';
 
-    return `${baseClasses} app-link--${selectedVariant}${externalClass} ${variantClasses[selectedVariant]}`;
+    return `${baseClasses} app-link--${selectedVariant}${externalClass}${arrowClass} ${variantClasses[selectedVariant]}`;
   }
 
   @HostBinding('attr.target')

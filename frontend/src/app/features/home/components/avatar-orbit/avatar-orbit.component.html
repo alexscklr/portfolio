@@ -5,17 +5,22 @@
   <span class="field-cross field-cross--two" aria-hidden="true"></span>
 
   <a class="avatar-core" routerLink="/about" [attr.aria-label]="'home.avatar.aboutLabel' | translate">
-    <img src="/media/fixtures/avatar-alexander.svg" alt="Alexander Sickler" />
+    <img [src]="avatarurl()" alt="Alexander Sickler" />
     <span>Alexander</span>
   </a>
-  <a class="field-node field-node--interfaces" href="#selected-work" [attr.aria-label]="'home.avatar.interfacesLabel' | translate">
-    <span>interfaces</span>
-  </a>
-  <a class="field-node field-node--media" href="#selected-work" [attr.aria-label]="'home.avatar.mediaLabel' | translate">
-    <span>media</span>
-  </a>
-  <a class="field-node field-node--systems" href="#selected-work" [attr.aria-label]="'home.avatar.systemsLabel' | translate">
-    <span>systems</span>
-  </a>
+
+  @for(sociallink of sociallinks(); track sociallink.id; let index = $index) {
+    <a class="field-node" [class.field-node--alt]="index % 2 === 1"
+       [style.--i]="index" [style.--n]="sociallinks().length"
+       [href]="sociallink.url" [attr.aria-label]="sociallink.platformName">
+      <iconify-icon
+              [icon]="iconFor(sociallink)"
+              [attr.aria-label]="sociallink.platformName"
+              aria-hidden="true"
+            >
+            </iconify-icon>
+      <span>{{sociallink.platformName}}</span>
+    </a>
+  }
   <p class="field-caption">{{ 'home.avatar.caption' | translate }}</p>
 </div>

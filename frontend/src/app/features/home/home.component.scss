@@ -14,23 +14,27 @@
 
 .hero-copy { position: relative; z-index: 1; max-width: 42rem; }
 .eyebrow { margin: 0 0 1.25rem; color: var(--color-accent-secondary); font: 600 0.68rem/1.4 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
-.hero-copy h1, .work-heading h2, .note-copy h2 { margin: 0; color: var(--color-text-primary); font-family: var(--font-heading); font-weight: 600; letter-spacing: -0.03em; }
-.hero-copy h1 { max-width: 38rem; font-size: clamp(3.6rem, 7vw, 7.2rem); line-height: 0.95; }
-.hero-copy em, .note-copy em { color: var(--color-accent-primary); font-style: italic; }
-.hero-lede { max-width: 34rem; margin: 2rem 0 0; color: rgba(240, 234, 223, 0.74); font-size: 1.05rem; line-height: 1.8; }
+.hero-copy h1, .skills-heading h2, .work-heading h2, .note-copy h2 { margin: 0; color: var(--color-text-primary); font-family: var(--font-heading); font-weight: 600; letter-spacing: -0.03em; }
+.hero-copy h1 { max-width: 38rem; font-size: clamp(3.3rem, 6vw, 7rem); line-height: 0.95; }
+.hero-copy h1 { cursor: grab;}
+.hero-copy h1 span { color: var(--color-accent-primary); position: relative; }
+.hero-copy h1 span::after { content: '👋🏼'; scale: 61%; position: absolute; right: -75%; top: 20%;  opacity: 50; transition: all 180ms ease; }
+.hero-copy h1:hover span::after, .hero-copy h1:focus span::after { right: -100%; top: -20%; opacity: 1; animation: wave 1s ease infinite; }
+.hero-copy h1 em { font-style: italic; color: var(--color-text-secondary); }
+.skills-heading h2, .work-heading h2, .note-copy h2 { font-size: clamp(2.4rem, 5vw, 5rem); line-height: 0.98; }
+.note-copy h2 em { font-style: italic; color: var(--color-text-secondary); }
+.hero-lede { max-width: 34rem; margin: 2rem 0 0; color: rgba(240, 234, 223, 0.74); font-size: clamp(1rem, 2.25vw, 1.2rem); line-height: 1.8; }
 .hero-actions { display: flex; align-items: center; gap: 1.75rem; margin-top: 2.5rem; }
 .text-link { color: var(--color-text-primary); font-size: 0.9rem; text-decoration: none; }
 .text-link span { color: var(--color-accent-primary); margin-left: 0.35rem; transition: margin 180ms ease; }
 .text-link:hover span, .text-link:focus-visible span { margin-left: 0.65rem; }
 
-.skills-editorial { padding: 8rem 1.5rem; margin: 8rem auto; }
 .skills-heading { margin-bottom: 4rem; }
 .skills-editorial > .empty-state { margin: 0; }
 .note-copy > p { max-width: 38rem; margin: 1.5rem 0 0; color: rgba(240, 234, 223, 0.68); line-height: 1.8; }
 
 .work-heading { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 1rem; margin-bottom: 4rem; }
 .work-heading .eyebrow { grid-column: 1 / -1; margin-bottom: 0; }
-.work-heading h2 { font-size: clamp(2.4rem, 5vw, 5rem); line-height: 0.98; }
 .project-gallery { display: grid; grid-template-columns: repeat(12, 1fr); align-items: start; column-gap: clamp(1.25rem, 4vw, 4rem); row-gap: 8rem; }
 .project-piece { position: relative; }
 .project-piece--1 { grid-column: 1 / span 7; }
@@ -42,7 +46,6 @@
 .note-editorial { display: grid; grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1fr); gap: clamp(3rem, 10vw, 10rem); align-items: center; }
 .note-map { overflow: hidden; background: var(--color-secondary-800); }
 .note-map img { display: block; width: 100%; height: auto; mix-blend-mode: screen; opacity: 0.92; }
-.note-copy h2 { font-size: clamp(2.8rem, 5vw, 5rem); line-height: 0.98; }
 
 @media (max-width: 800px) {
   .hero-editorial, .note-editorial { grid-template-columns: 1fr; }
@@ -58,4 +61,14 @@
   .text-link span { transition: none; }
   .skills-track { animation: none; }
   .skill-card h3, .skill-card::after { transition: none; }
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  45% { transform: rotate(14deg); }
+  60% { transform: rotate(-4deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
 }

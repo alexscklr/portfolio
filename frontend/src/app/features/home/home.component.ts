@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, effect, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProjectService } from '@/app/core/services/project.service';
 import { ProjectCardComponent } from '@/app/shared/components/project-card/project-card.component';
@@ -8,6 +8,7 @@ import { LinkDirective } from '@/app/shared/directives/link.directive';
 import { AvatarOrbitComponent } from './components/avatar-orbit/avatar-orbit.component';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 import { LanguageService } from '@/app/core/services/language.service';
+import { ProfileService } from '@/app/core/services/profile.service';
 import { SkillService } from '@/app/core/services/skill.service';
 import { SkillMarqueeComponent } from './components/skill-marquee/skill-marquee.component';
 
@@ -21,8 +22,12 @@ import { SkillMarqueeComponent } from './components/skill-marquee/skill-marquee.
 })
 export class HomeComponent {
   private readonly languageService = inject(LanguageService);
+  readonly profileService = inject(ProfileService);
   readonly projectService = inject(ProjectService);
   readonly skillsService = inject(SkillService);
+
+  readonly socialLinks = computed(() => this.profileService.profile()?.socialLinks ?? []);
+  readonly avatarUrl = computed(() => this.profileService.profile()?.avatarUrl ?? '/media/fixtures/avatar-alexander.svg');
 
   constructor() {
     effect(() => {

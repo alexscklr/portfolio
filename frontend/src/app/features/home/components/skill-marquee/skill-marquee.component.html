@@ -1,28 +1,35 @@
-<div class="skills-slider">
-  <div class="skills-track" [style.--scroll-duration]="skills().length * 8.3 + 's'">
-    @for (isDuplicate of [false, true]; track isDuplicate) {
-      <div class="skills-group" [attr.aria-hidden]="isDuplicate ? 'true' : null">
-        @for (skill of skills(); track skill.id; let index = $index) {
-          <div class="skill-card">
-            @if (index < 3) {
-              <span class="most-counts">★</span>
-            }
-            <iconify-icon
-              [icon]="skill.iconKey ?? 'lucide:code-2'"
-              [attr.aria-label]="skill.name"
-              aria-hidden="true"
-            >
-            </iconify-icon>
-            <h3>
-              {{ skill.name }}
-            </h3>
-            <span class="usage-count">
-              {{ 'home.skills.usage' | translate }} : {{ skill.usageCount }}</span
-            >
-          </div>
-        }
-        <div class="vertical-divider"></div>
-      </div>
-    }
+<div class="skills-marquee-container">
+  <div class="controls">
+    <button class="backwards-button" (click)="scrollToPosition('left')" aria-label="Scroll skills left">↤</button>
+    <button class="forward-button" (click)="scrollToPosition('right')" aria-label="Scroll skills right">↦</button>
+  </div>
+  <div class="skills-slider" #skillsSlider>
+    <div class="skills-track" [style.--scroll-duration]="scrollDuration()"
+      [style.--copy-count]="copies.length">
+      @for (copy of copies; track copy) {
+        <div class="skills-group" [attr.aria-hidden]="copy > 0 ? 'true' : null">
+          @for (skill of skills(); track skill.id; let index = $index) {
+            <div class="skill-card">
+              @if (index < 3) {
+                <span class="most-counts">★</span>
+              }
+              <iconify-icon
+                [icon]="skill.iconKey ?? 'lucide:code-2'"
+                [attr.aria-label]="skill.name"
+                aria-hidden="true"
+              >
+              </iconify-icon>
+              <h3>
+                {{ skill.name }}
+              </h3>
+              <span class="usage-count">
+                {{ 'home.skills.usage' | translate }} : {{ skill.usageCount }}</span
+              >
+            </div>
+          }
+          <div class="vertical-divider"></div>
+        </div>
+      }
+    </div>
   </div>
 </div>

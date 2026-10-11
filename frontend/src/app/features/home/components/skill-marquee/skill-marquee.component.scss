@@ -7,7 +7,8 @@
   width: max-content;
   animation: skills-marquee var(--scroll-duration) linear infinite;
 }
-.skills-slider:hover .skills-track {
+
+.skills-marquee-container:hover .skills-slider .skills-track {
   animation-play-state: paused;
 }
 .skills-group {
@@ -71,6 +72,69 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(calc(-100% / var(--copy-count))); /* one group */
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.backwards-button,
+.forward-button {
+  background-color: var(--color-secondary-700);
+  color: white;
+  width: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.backwards-button:hover,
+.forward-button:hover {
+  background-color: var(--color-secondary-800);
+}
+
+@media (max-width: 600px) {
+  .skills-group {
+    gap: 0.5rem;
+  }
+
+  .skill-card {
+    display: grid;
+    flex: 0 0 6rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 3.6em;
+    align-items: center;
+    justify-items: center;
+    gap: 0.5rem;
+    height: 10rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .skill-card iconify-icon {
+    scale: 2;
+    align-self: end;
+  }
+
+  .skill-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6em;
+    margin: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .skill-card .usage-count {
+    display: none;
   }
 }

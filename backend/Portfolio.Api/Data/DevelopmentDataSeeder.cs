@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Api.Entities;
+using Portfolio.Api.Services;
 
 namespace Portfolio.Api.Data;
 
 public static class DevelopmentDataSeeder
 {
-    public static async Task SeedAsync(AppDbContext context, CancellationToken cancellationToken = default)
+    public static async Task SeedAsync(AppDbContext context, IStorageService storage, CancellationToken cancellationToken = default)
     {
         await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
         var skillsBySlug = await context.SkillTags
@@ -32,12 +33,29 @@ public static class DevelopmentDataSeeder
             .Where(project => seedProjectSlugs.Contains(project.Slug))
             .ExecuteDeleteAsync(cancellationToken);
 
+        var previousAvatarUrl = await context.Profiles
+            .Select(profile => profile.AvatarUrl)
+            .FirstOrDefaultAsync(cancellationToken);
         await context.Profiles.ExecuteDeleteAsync(cancellationToken);
 
-        context.Profiles.Add(CreateProfile());
+        var profile = CreateProfile();
+        profile.AvatarUrl = await ReplaceSeedAvatarAsync(storage, previousAvatarUrl);
+        context.Profiles.Add(profile);
         context.Projects.AddRange(seedProjects);
         await context.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
+    }
+
+    private static async Task<string> ReplaceSeedAvatarAsync(IStorageService storage, string? previousUrl)
+    {
+        if (Uri.TryCreate(previousUrl, UriKind.Absolute, out _))
+        {
+            await storage.DeleteFileAsync(previousUrl!);
+        }
+
+        var path = Path.Combine(AppContext.BaseDirectory, "SeedAssets", "avatar-alexander.svg");
+        await using var stream = File.OpenRead(path);
+        return await storage.UploadFileAsync(stream, "avatar-alexander.svg", "image/svg+xml");
     }
 
     private static Profile CreateProfile()
@@ -45,7 +63,6 @@ public static class DevelopmentDataSeeder
         return new Profile
         {
             FullName = "Alexander Mustermann",
-            AvatarUrl = "/media/fixtures/avatar-alexander.svg",
             Location = "Deutschland",
             PublicEmail = "hello@example.com",
             StreetAddress = "Musterstraße 1",
@@ -67,6 +84,12 @@ public static class DevelopmentDataSeeder
                     Url = "https://www.linkedin.com/",
                     IconKey = "linkedin",
                     DisplayOrder = 2
+                },
+                new(){
+                    PlatformName = "E-Mail",
+                    Url = "mailto:hello@example.com",
+                    IconKey = "mdi:email",
+                    DisplayOrder = 3
                 }
             ],
             Translations =

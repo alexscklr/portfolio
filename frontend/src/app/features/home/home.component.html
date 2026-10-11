@@ -1,18 +1,22 @@
 <div class="editorial-home">
-  <section class="hero-editorial mx-auto max-w-7xl px-6 pb-24 pt-16 md:pb-36 md:pt-24">
+  <section class="hero-editorial mx-auto max-w-7xl px-6 pb-24 pt-24 md:pb-36 md:pt-24" appRevealOnScroll>
     <div class="hero-copy" appRevealOnScroll>
-      <p class="eyebrow">{{ 'home.hero.eyebrow' | translate }}</p>
-      <h1>{{ 'home.hero.titleLine1' | translate }}<br /><em>{{ 'home.hero.titleLine2' | translate }}</em></h1>
+      <h1>
+        <span>{{ 'home.hero.greeting1' | translate }}</span><br />
+        <em>{{ 'home.hero.greeting2' | translate }}</em>
+      </h1>
       <p class="hero-lede">
         {{ 'home.hero.description' | translate }}
       </p>
       <div class="hero-actions">
-        <button appButton variant="primary" size="lg" routerLink="/projects">{{ 'home.hero.viewProjects' | translate }}</button>
-        <a routerLink="/about" appLink variant="secondary">{{ 'home.hero.about' | translate }} <span aria-hidden="true">↗</span></a>
+        <button appButton variant="primary" size="lg" routerLink="/projects">
+          {{ 'home.hero.viewProjects' | translate }}
+        </button>
+        <a routerLink="/about" appLink variant="secondary" arrow>{{ 'home.hero.about' | translate }}</a>
       </div>
     </div>
 
-    <app-avatar-orbit appRevealOnScroll />
+    <app-avatar-orbit [sociallinks]="socialLinks()" [avatarurl]="avatarUrl()" appRevealOnScroll />
   </section>
 
   <section class="skills-editorial mx-auto max-w-7xl px-6 py-16 md:py-24" appRevealOnScroll>
@@ -28,18 +32,23 @@
     }
   </section>
 
-  <section id="selected-work" class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24">
+  <section
+    id="selected-work"
+    class="work-editorial mx-auto max-w-7xl px-6 pb-28 pt-16 md:pb-40 md:pt-24"
+  >
     <div class="work-heading" appRevealOnScroll>
       <p class="eyebrow">{{ 'home.work.eyebrow' | translate }}</p>
       <h2>{{ 'home.work.title' | translate }}</h2>
-      <a routerLink="/projects" appLink variant="secondary">{{ 'home.work.allProjects' | translate }} <span aria-hidden="true">↗</span></a>
+      <a routerLink="/projects" appLink variant="secondary" arrow>{{ 'home.work.allProjects' | translate }}</a>
     </div>
 
     <div class="project-gallery">
       @if (projectService.featuredProjects(); as projects) {
         @for (project of projects; track project.id; let index = $index) {
           <article
-            [appRevealOnScroll]="index === 0 ? 'fade slide-right' : index === 1 ? 'fade slide-left' : 'fade slide-up'"
+            [appRevealOnScroll]="
+              index === 0 ? 'fade slide-right' : index === 1 ? 'fade slide-left' : 'fade slide-up'
+            "
             class="project-piece project-piece--{{ index + 1 }}"
           >
             <span class="project-index">0{{ index + 1 }}</span>
@@ -54,11 +63,16 @@
 
   <section class="note-editorial mx-auto max-w-7xl px-6 pb-28 md:pb-40" appRevealOnScroll>
     <div class="note-map">
-      <img src="/media/fixtures/japan-route-placeholder.svg" [alt]="'home.note.mapAlt' | translate" />
+      <img
+        src="/media/fixtures/japan-route-placeholder.svg"
+        [alt]="'home.note.mapAlt' | translate"
+      />
     </div>
     <div class="note-copy">
       <p class="eyebrow">{{ 'home.note.eyebrow' | translate }}</p>
-      <h2>{{ 'home.note.titleLine1' | translate }}<br /><em>{{ 'home.note.titleLine2' | translate }}</em></h2>
+      <h2>
+        {{ 'home.note.title' | translate }}
+      </h2>
       <p>{{ 'home.note.description' | translate }}</p>
     </div>
   </section>

@@ -44,10 +44,9 @@
 }
 
 @media (max-width: 520px) {
-  .system-field { min-height: 20rem; }
-  .field-node { width: 5.25rem; height: 5.25rem; font-size: 0.62rem; }
-  .avatar-core { width: 10.5rem; height: 10.5rem; }
-  .avatar-core img { width: 6.8rem; height: 6.8rem; }
+  .field-node { width: 4.5rem; height: 4.5rem; font-size: 0.62rem; }
+  .avatar-core { width: 9rem; height: 9rem; }
+  .avatar-core img { width: 6rem; height: 6rem; }
 }
 
 @keyframes field-pulse {

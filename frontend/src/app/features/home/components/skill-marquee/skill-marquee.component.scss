@@ -101,3 +101,40 @@
 .forward-button:hover {
   background-color: var(--color-secondary-800);
 }
+
+@media (max-width: 600px) {
+  .skills-group {
+    gap: 0.5rem;
+  }
+
+  .skill-card {
+    display: grid;
+    flex: 0 0 6rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 3.6em;
+    align-items: center;
+    justify-items: center;
+    gap: 0.5rem;
+    height: 10rem;
+    padding: 1rem 0.5rem;
+  }
+
+  .skill-card iconify-icon {
+    scale: 2;
+    align-self: end;
+  }
+
+  .skill-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.6em;
+    margin: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .skill-card .usage-count {
+    display: none;
+  }
+}

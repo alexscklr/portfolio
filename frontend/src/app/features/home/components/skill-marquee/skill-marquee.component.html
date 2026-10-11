@@ -1,7 +1,7 @@
 <div class="skills-marquee-container">
   <div class="controls">
-    <div class="backwards-button" (click)="scrollToPosition('left')">↤</div>
-    <div class="forward-button" (click)="scrollToPosition('right')">↦</div>
+    <button class="backwards-button" (click)="scrollToPosition('left')">↤</button>
+    <button class="forward-button" (click)="scrollToPosition('right')">↦</button>
   </div>
   <div class="skills-slider" #skillsSlider>
     <div class="skills-track" [style.--scroll-duration]="scrollDuration()"

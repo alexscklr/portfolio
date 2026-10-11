@@ -48,3 +48,13 @@ body {
 .text-accent-secondary { color: var(--color-accent-secondary); }
 .bg-accent-secondary-strong { background-color: var(--color-accent-secondary-strong); }
 .text-accent-tertiary { color: var(--color-accent-tertiary); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

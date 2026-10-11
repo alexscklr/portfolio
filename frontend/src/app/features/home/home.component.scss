@@ -18,7 +18,7 @@
 .hero-copy h1 { max-width: 38rem; font-size: clamp(3.3rem, 6vw, 7rem); line-height: 0.95; }
 .hero-copy h1 { cursor: grab;}
 .hero-copy h1 span { color: var(--color-accent-primary); position: relative; }
-.hero-copy h1 span::after { content: '👋🏼'; scale: 61%; position: absolute; right: -75%; top: 20%;  opacity: 50; transition: all 180ms ease; }
+.hero-copy h1 span::after { content: '👋🏼'; scale: 61%; position: absolute; right: -75%; top: 20%; transition: all 180ms ease; }
 .hero-copy h1:hover span::after, .hero-copy h1:focus span::after { right: -100%; top: -20%; opacity: 1; animation: wave 1s ease infinite; }
 .hero-copy h1 em { font-style: italic; color: var(--color-text-secondary); }
 .skills-heading h2, .work-heading h2, .note-copy h2 { font-size: clamp(2.4rem, 5vw, 5rem); line-height: 0.98; }

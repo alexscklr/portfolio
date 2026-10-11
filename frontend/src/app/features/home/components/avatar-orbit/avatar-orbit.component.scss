@@ -66,3 +66,13 @@
 @keyframes orbit-drift-reverse {
   to { transform: rotate(-305deg); }
 }
+
+
+@media(prefers-reduced-motion: reduce) {
+  .field-node,
+  .avatar-core,
+  .field-orbit {
+    animation: none !important;
+    transition: none !important;
+  }
+}

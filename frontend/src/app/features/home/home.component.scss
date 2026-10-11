@@ -72,3 +72,11 @@
   75% { transform: rotate(10deg); }
   100% { transform: rotate(0deg); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy h1 span::after,
+  .hero-copy h1:hover span::after, .hero-copy h1:focus span::after {
+    transition: none; 
+    animation: none;
+  }
+}

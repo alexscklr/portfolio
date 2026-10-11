@@ -39,7 +39,8 @@ if (app.Environment.IsDevelopment())
     await using var scope = app.Services.CreateAsyncScope();
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await context.Database.MigrateAsync(app.Lifetime.ApplicationStopping);
-    await DevelopmentDataSeeder.SeedAsync(context, app.Lifetime.ApplicationStopping);
+    var storage = scope.ServiceProvider.GetRequiredService<IStorageService>();
+    await DevelopmentDataSeeder.SeedAsync(context, storage, app.Lifetime.ApplicationStopping);
 
     app.UseSwagger();
     app.UseSwaggerUI();

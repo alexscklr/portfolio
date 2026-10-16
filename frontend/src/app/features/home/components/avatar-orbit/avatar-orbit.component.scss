@@ -6,7 +6,7 @@
 
 .field-orbit { position: absolute; border: 1px solid rgba(240, 234, 223, 0.22); border-radius: 50%; transform: rotate(-22deg); }
 .field-orbit--outer { inset: 12% 5%; border-color: rgba(198, 212, 156, 0.36); animation: orbit-drift 30s linear infinite; }
-.field-orbit--inner { inset: 27% 20%; border-color: rgba(231, 173, 157, 0.44); transform: rotate(55deg); animation: orbit-drift 20s linear infinite reverse; }
+.field-orbit--inner { inset: 27% 20%; border-color: rgba(231, 173, 157, 0.44); transform: rotate(55deg); animation: orbit-drift-reverse 20s linear infinite; }
 .field-cross { position: absolute; background: var(--color-accent-secondary); opacity: 0.7; }
 .field-cross--one { top: 8%; bottom: 8%; left: 49.9%; width: 1px; }
 .field-cross--two { top: 49.9%; right: 4%; left: 4%; height: 1px; }

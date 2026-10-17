@@ -16,6 +16,7 @@ const SKILLS_QUERY_PARAM = 'skills';
   imports: [ProjectCardComponent, SkillFilterComponent, ButtonDirective, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects.component.html',
+  styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent {
   protected readonly projectService = inject(ProjectService);

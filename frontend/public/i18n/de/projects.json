@@ -2,5 +2,12 @@
 	"projects.card.titleLabel": "Projekt",
 	"projects.card.imageAlt": "Projektvorschau für {title}",
 	"projects.card.view": "Zum Projekt",
-	"projects.card.generativePreview": "// Generative Vorschau"
+	"projects.card.generativePreview": "// Generative Vorschau",
+	"projects.page.eyebrow": "Projekte",
+	"projects.page.title": "Meine Arbeiten",
+	"projects.page.description": "Eine Auswahl meiner Projekte mit den eingesetzten Technologien.",
+	"projects.page.loading": "Projekte werden geladen …",
+	"projects.page.error": "Die Projekte konnten nicht geladen werden.",
+	"projects.page.retry": "Erneut versuchen",
+	"projects.page.empty": "Keine Projekte gefunden."
 }

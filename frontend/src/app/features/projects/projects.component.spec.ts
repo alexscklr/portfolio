@@ -42,13 +42,14 @@ describe('ProjectsComponent', () => {
         provideHttpClientTesting(),
       ],
     });
-    TestBed.inject(LanguageService).currentLanguage.set('de');
+    TestBed.inject(LanguageService).setLanguage('de');
     http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
     flushTranslations();
     http.verify();
+    localStorage.removeItem('portfolio-language');
   });
 
   it('shows all projects without a filter', async () => {

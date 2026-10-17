@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  PLATFORM_ID,
   afterNextRender,
   computed,
   effect,
@@ -11,6 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ProjectMedia } from '@/app/core/models';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 
@@ -35,6 +37,7 @@ export class MediaSliderComponent {
   readonly label = input.required<string>();
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly track = viewChild<ElementRef<HTMLElement>>('track');
 
   protected readonly activeIndex = signal(0);
@@ -85,6 +88,8 @@ export class MediaSliderComponent {
 
     // Only the visible slide plays; with reduced motion the user starts videos via controls.
     effect(() => {
+      if (!this.isBrowser) return;
+
       const active = this.activeIndex();
       const shouldPlay = this.isVisible() && !this.prefersReducedMotion();
       const videos =

@@ -1,11 +1,19 @@
 import { DOCUMENT } from '@angular/common';
-import { Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  afterNextRender,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
 @Directive({
   selector: '[appInfiniteSlider]',
-  standalone: true
+  standalone: true,
 })
-export class InfiniteSliderDirective implements OnInit, OnDestroy {
+export class InfiniteSliderDirective implements OnDestroy {
   @Input() slideWidth = 300;
   @Input() slideHeight = 200;
   @Input() speed = 40;
@@ -27,9 +35,11 @@ export class InfiniteSliderDirective implements OnInit, OnDestroy {
   private isVisible = true;
   private positionAtDragStart = 0;
 
-  ngOnInit() {
-    this.initSlider();
-    this.startAutoPlay();
+  constructor() {
+    afterNextRender(() => {
+      this.initSlider();
+      this.startAutoPlay();
+    });
   }
 
   ngOnDestroy() {
@@ -44,9 +54,9 @@ export class InfiniteSliderDirective implements OnInit, OnDestroy {
 
     if (this.originalSlides.length === 0) return;
 
-    const computedStyle = getComputedStyle(slider);
+    const computedStyle = this.document.defaultView?.getComputedStyle(slider);
     const track = this.document.createElement('div');
-    const gap = computedStyle.columnGap || computedStyle.gap;
+    const gap = computedStyle?.columnGap || computedStyle?.gap || 'normal';
 
     track.className = 'infinite-slider-track';
     track.style.display = 'flex';
@@ -68,8 +78,10 @@ export class InfiniteSliderDirective implements OnInit, OnDestroy {
     this.track = track;
     this.measureTrack();
 
-    this.resizeObserver = new ResizeObserver(() => this.measureTrack());
-    this.resizeObserver.observe(slider);
+    if (typeof ResizeObserver === 'function') {
+      this.resizeObserver = new ResizeObserver(() => this.measureTrack());
+      this.resizeObserver.observe(slider);
+    }
 
     if (typeof IntersectionObserver !== 'undefined') {
       this.intersectionObserver = new IntersectionObserver(([entry]) => {
@@ -105,9 +117,10 @@ export class InfiniteSliderDirective implements OnInit, OnDestroy {
 
     if (this.slideGroupWidth === 0) return;
 
-    this.position = previousGroupWidth === 0
-      ? this.slideGroupWidth
-      : (this.position / previousGroupWidth) * this.slideGroupWidth;
+    this.position =
+      previousGroupWidth === 0
+        ? this.slideGroupWidth
+        : (this.position / previousGroupWidth) * this.slideGroupWidth;
     this.normalizePosition();
     this.render();
   }
@@ -161,7 +174,13 @@ export class InfiniteSliderDirective implements OnInit, OnDestroy {
   }
 
   private startAutoPlay() {
-    if (!this.autoPlay || !this.isVisible || this.slideGroupWidth === 0 || this.animationFrameId !== null) return;
+    if (
+      !this.autoPlay ||
+      !this.isVisible ||
+      this.slideGroupWidth === 0 ||
+      this.animationFrameId !== null
+    )
+      return;
 
     this.lastTimestamp = 0;
     const animate = (timestamp: number) => {

@@ -1,8 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import {
-  Language,
-  resolveLanguage,
-} from '../config/languages';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { DEFAULT_LANGUAGE, Language, resolveLanguage } from '../config/languages';
 
 const STORAGE_KEY = 'portfolio-language';
 
@@ -10,14 +8,23 @@ const STORAGE_KEY = 'portfolio-language';
   providedIn: 'root',
 })
 export class LanguageService {
-  currentLanguage = signal<Language>(this.getInitialLanguage());
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly writableCurrentLanguage = signal<Language>(this.getInitialLanguage());
+  readonly currentLanguage = this.writableCurrentLanguage.asReadonly();
 
   setLanguage(lang: Language): void {
-    this.currentLanguage.set(lang);
-    localStorage.setItem(STORAGE_KEY, lang);
+    this.writableCurrentLanguage.set(lang);
+
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(STORAGE_KEY, lang);
+    }
   }
 
   private getInitialLanguage(): Language {
+    if (!isPlatformBrowser(this.platformId)) {
+      return DEFAULT_LANGUAGE;
+    }
+
     const storedLanguage = localStorage.getItem(STORAGE_KEY);
 
     if (storedLanguage) {

@@ -32,7 +32,6 @@ export class HomeComponent {
   constructor() {
     effect(() => {
       this.languageService.currentLanguage();
-      this.projectService.loadFeaturedProjects();
       this.skillsService.loadSkills();
     });
   }

@@ -14,15 +14,20 @@ public static class ProjectResponseMapper
             project.Id,
             project.Slug,
             translation?.Title,
+            translation?.Subtitle,
             translation?.ShortDescription,
             project.PreviewMediaUrl,
+            project.StartDate,
+            project.EndDate,
             project.IsFeatured,
             project.DisplayOrder,
             project.CreatedAt,
             project.UpdatedAt,
             project.Skills.Select(ToResponse),
             project.Links.Select(link => ToResponse(link, languageCode)),
-            project.Media.Select(media => ToResponse(media, languageCode)));
+            project.Media
+                .OrderBy(media => media.DisplayOrder)
+                .Select(media => ToResponse(media, languageCode)));
     }
 
     public static ProjectResponse ToResponse(Project project, string languageCode)
@@ -33,15 +38,20 @@ public static class ProjectResponseMapper
             project.Id,
             project.Slug,
             translation?.Title,
+            translation?.Subtitle,
             translation?.ShortDescription,
             project.PreviewMediaUrl,
+            project.StartDate,
+            project.EndDate,
             project.IsFeatured,
             project.DisplayOrder,
             project.CreatedAt,
             project.UpdatedAt,
             project.Skills.Select(ToResponse),
             project.Links.Select(link => ToResponse(link, languageCode)),
-            project.Media.Select(media => ToResponse(media, languageCode)),
+            project.Media
+                .OrderBy(media => media.DisplayOrder)
+                .Select(media => ToResponse(media, languageCode)),
             project.Blocks
                 .OrderBy(block => block.DisplayOrder)
                 .Select(block => ToResponse(block, languageCode)));
@@ -67,6 +77,7 @@ public static class ProjectResponseMapper
             media.FileUrl,
             media.FileName,
             media.ContentType,
+            media.PosterUrl,
             media.DisplayOrder,
             translation?.AltText);
     }

@@ -23,9 +23,10 @@
       id="desktop-language"
       class="language-selector hidden sm:block"
       (change)="onLanguageChange($event)"
+      [value]="languageService.currentLanguage()"
     >
-      @for (language of supportedLanguages; track language) {
-        <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+      @for (lang of supportedLanguages; track lang) {
+        <option [value]="lang" [selected]="lang === languageService.currentLanguage()">{{ lang === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
       }
     </select>
 
@@ -59,9 +60,10 @@
           id="mobile-language"
           class="language-selector language-selector--mobile"
           (change)="onLanguageChange($event)"
+          [value]="languageService.currentLanguage()"
         >
-          @for (language of supportedLanguages; track language) {
-            <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+          @for (lang of supportedLanguages; track lang) {
+            <option [value]="lang" [selected]="lang === languageService.currentLanguage()">{{ lang === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
           }
         </select>
       </nav>

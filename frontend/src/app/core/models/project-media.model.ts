@@ -3,6 +3,7 @@ export interface ProjectMedia {
     fileUrl: string;
     fileName: string;
     contentType: string;
+    posterUrl?: string;
     displayOrder: number;
     altText?: string;
 }

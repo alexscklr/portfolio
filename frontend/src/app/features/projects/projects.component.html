@@ -1,0 +1,52 @@
+<section class="mx-auto max-w-7xl px-6 pb-24 pt-32">
+  <header class="mb-12">
+    <h1 class="font-heading text-4xl font-bold tracking-tight text-white md:text-5xl">
+      {{ 'projects.page.title' | translate }}
+    </h1>
+    <p class="mt-4 text-lg text-slate-400">
+      {{ 'projects.page.message' | translate }}
+    </p>
+  </header>
+
+  @if (projectService.isLoading()) {
+    <p role="status" class="text-slate-400">{{ 'projects.page.loading' | translate }}</p>
+  } @else if (projectService.hasError()) {
+    <div role="alert" class="flex flex-col items-start gap-4">
+      <p class="text-slate-300">{{ 'projects.page.error' | translate }}</p>
+      <button
+        appButton
+        variant="secondary"
+        size="md"
+        type="button"
+        (click)="projectService.reload()"
+      >
+        {{ 'projects.page.retry' | translate }}
+      </button>
+    </div>
+  } @else {
+    <app-skill-filter
+      class="mb-10 block"
+      [groups]="facetGroups()"
+      [query]="skillQuery()"
+      [resultCount]="filteredProjects().length"
+      [totalCount]="projectService.projects().length"
+      [isFiltering]="isFiltering()"
+      (skillToggled)="toggleSkill($event)"
+      (queryChanged)="skillQuery.set($event)"
+      (resetRequested)="resetFilters()"
+    />
+
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      @for (project of filteredProjects(); track project.id; let i = $index) {
+        <app-project-card
+          animate.enter="project-enter"
+          animate.leave="project-leave"
+          [style.animation-delay.ms]="(i % 3) * 60"
+          [project]="project"
+        />
+      } @empty {
+        <p class="text-slate-400">{{ 'projects.page.empty' | translate }}</p>
+      }
+    </div>
+  }
+</section>

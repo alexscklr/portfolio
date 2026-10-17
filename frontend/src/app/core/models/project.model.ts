@@ -9,8 +9,11 @@ export interface Project {
     id: string;
     title: string;
     slug: string;
+    subtitle?: string;
     shortDescription: string;
     previewMediaUrl?: string;
+    startDate?: string;
+    endDate?: string;
     isFeatured: boolean;
     displayOrder: number;
     createdAt: string;

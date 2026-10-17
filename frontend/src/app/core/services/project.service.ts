@@ -1,98 +1,66 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { Observable, of } from 'rxjs';
 import { Project } from '@/app/core/models';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
 import { LanguageService } from './language.service';
 import { environment } from '@/environments/environment';
 
+const FEATURED_PROJECT_LIMIT = 3;
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProjectService {
-  private http = inject(HttpClient);
-  private apiUrl = `${environment.apiUrl}/projects`;
-  private languageService = inject(LanguageService);
+  private readonly http = inject(HttpClient);
+  private readonly languageService = inject(LanguageService);
+  private readonly apiUrl = `${environment.apiUrl}/projects`;
 
-  projects = signal<Project[]>([]);
-  featuredProjects = signal<Project[]>([]);
-  selectedProject = signal<Project | null>(null);
-  isLoading = signal<boolean>(false);
-  private requestSequence = 0;
+  private readonly selectedSlug = signal<string | null>(null);
 
-  loadProjects(): void {
-    const lang = this.languageService.currentLanguage();
-    if (environment.dataSource === 'frontend-mock') {
-      this.projects.set(getMockProjects(lang));
-      this.isLoading.set(false);
-      return;
-    }
+  private readonly projectsResource = rxResource({
+    params: () => ({ lang: this.languageService.currentLanguage() }),
+    stream: ({ params }): Observable<Project[]> =>
+      environment.dataSource === 'frontend-mock'
+        ? of(getMockProjects(params.lang))
+        : this.http.get<Project[]>(this.apiUrl, { params: { lang: params.lang } }),
+  });
 
-    this.isLoading.set(true);
-    this.http.get<Project[]>(this.apiUrl, {
-      params: { lang: lang }
-    }).subscribe({
-      next: (data) => {
-        this.projects.set(data);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        console.error('Fehler beim Laden der Projekte:', error);
-        this.projects.set([]);
-        this.isLoading.set(false);
-      }
-    });
+  private readonly selectedProjectResource = rxResource({
+    params: () => {
+      const slug = this.selectedSlug();
+      return slug ? { slug, lang: this.languageService.currentLanguage() } : undefined;
+    },
+    stream: ({ params }): Observable<Project | null> =>
+      environment.dataSource === 'frontend-mock'
+        ? of(getMockProjects(params.lang).find(project => project.slug === params.slug) ?? null)
+        : this.http.get<Project>(`${this.apiUrl}/${params.slug}`, {
+            params: { lang: params.lang },
+          }),
+  });
+
+  readonly projects = computed(() =>
+    this.projectsResource.hasValue() ? this.projectsResource.value() : [],
+  );
+  readonly featuredProjects = computed(() =>
+    this.projects()
+      .filter(project => project.isFeatured)
+      .slice(0, FEATURED_PROJECT_LIMIT),
+  );
+  readonly isLoading = this.projectsResource.isLoading;
+  readonly hasError = computed(() => this.projectsResource.error() !== undefined);
+
+  readonly selectedProject = computed(() =>
+    this.selectedProjectResource.hasValue() ? this.selectedProjectResource.value() : null,
+  );
+  readonly isSelectedProjectLoading = this.selectedProjectResource.isLoading;
+
+  reload(): void {
+    this.projectsResource.reload();
   }
 
-  loadFeaturedProjects(maxItems: number = 3): void {
-    const lang = this.languageService.currentLanguage();
-    const requestId = ++this.requestSequence;
-    if (environment.dataSource === 'frontend-mock') {
-      const featured = getMockProjects(lang).filter(project => project.isFeatured);
-      this.featuredProjects.set(featured.slice(0, maxItems));
-      this.isLoading.set(false);
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.http.get<Project[]>(this.apiUrl, {
-      params: { lang: lang, isFeatured: 'true' }
-    }).subscribe({
-      next: (data) => {
-        if (requestId !== this.requestSequence) return;
-        this.featuredProjects.set(data.length > maxItems ? data.slice(0, maxItems) : data);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        if (requestId !== this.requestSequence) return;
-        console.error('Fehler beim Laden der Featured-Projekte:', error);
-        this.featuredProjects.set([]);
-        this.isLoading.set(false);
-      }
-    });
-  }
-
-  loadProjectBySlug(slug: string): void {
-    const lang = this.languageService.currentLanguage();
-    if (environment.dataSource === 'frontend-mock') {
-      const project = getMockProjects(lang).find(item => item.slug === slug) ?? null;
-      this.selectedProject.set(project);
-      this.isLoading.set(false);
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.http.get<Project>(`${this.apiUrl}/${slug}`, {
-      params: { lang: lang }
-    }).subscribe({
-      next: (data) => {
-        this.selectedProject.set(data);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        console.error('Fehler beim Laden des Projekts:', error);
-        this.selectedProject.set(null);
-        this.isLoading.set(false);
-      }
-    });
+  selectProject(slug: string): void {
+    this.selectedSlug.set(slug);
   }
 }

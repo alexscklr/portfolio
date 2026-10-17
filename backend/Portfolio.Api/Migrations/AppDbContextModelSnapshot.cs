@@ -108,6 +108,9 @@ namespace Portfolio.Api.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
+                    b.Property<DateOnly?>("EndDate")
+                        .HasColumnType("date");
+
                     b.Property<bool>("IsFeatured")
                         .HasColumnType("boolean");
 
@@ -117,6 +120,9 @@ namespace Portfolio.Api.Migrations
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateOnly?>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -247,6 +253,9 @@ namespace Portfolio.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PosterUrl")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
 
@@ -296,6 +305,9 @@ namespace Portfolio.Api.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Subtitle")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")

@@ -147,7 +147,10 @@ public static class DevelopmentDataSeeder
             ],
             "/media/fixtures/demo-video.mp4",
             "Kurze Demo-Animation für die Generative Cinema Engine",
-            "Short demo animation for the Generative Cinema Engine");
+            "Short demo animation for the Generative Cinema Engine",
+            "Echtzeit-Visuals im Browser",
+            "Real-time visuals in the browser",
+            new DateOnly(2026, 3, 1));
 
         yield return CreateProject(
             2,
@@ -160,7 +163,11 @@ public static class DevelopmentDataSeeder
             "Connects 3D software such as Maya and Blender directly to web interfaces. Uses gRPC for high-speed data transfer and WebSockets for real-time status updates.",
             new DateTime(2026, 2, 10, 14, 30, 0, DateTimeKind.Utc),
             [skills["dotnet-8"], skills["grpc"], skills["docker"], skills["python-maya-api"]],
-            [(ProjectLinkType.GitHub, "https://github.com/alex/pipeline-auto", "GitHub", "GitHub")]);
+            [(ProjectLinkType.GitHub, "https://github.com/alex/pipeline-auto", "GitHub", "GitHub")],
+            germanSubtitle: "Maya trifft Web",
+            englishSubtitle: "Maya meets the web",
+            startDate: new DateOnly(2025, 11, 1),
+            endDate: new DateOnly(2026, 2, 28));
 
         yield return CreateProject(
             3,
@@ -176,7 +183,11 @@ public static class DevelopmentDataSeeder
             [
                 (ProjectLinkType.GitHub, "https://github.com/alex/anamorphic-ui", "GitHub", "GitHub"),
                 (ProjectLinkType.LiveDemo, "https://ui.cinema.dev", "Live Demo", "Live demo")
-            ]);
+            ],
+            germanSubtitle: "Cinematisches Design-System",
+            englishSubtitle: "Cinematic design system",
+            startDate: new DateOnly(2026, 6, 1),
+            endDate: new DateOnly(2026, 8, 31));
     }
 
     private static Project CreateProject(
@@ -193,7 +204,11 @@ public static class DevelopmentDataSeeder
         (ProjectLinkType Type, string Url, string GermanTitle, string EnglishTitle)[] links,
         string? mediaUrl = null,
         string? germanAltText = null,
-        string? englishAltText = null)
+        string? englishAltText = null,
+        string? germanSubtitle = null,
+        string? englishSubtitle = null,
+        DateOnly? startDate = null,
+        DateOnly? endDate = null)
     {
         var project = new Project
         {
@@ -201,12 +216,14 @@ public static class DevelopmentDataSeeder
             PreviewMediaUrl = "/media/fixtures/placeholder.svg",
             IsFeatured = true,
             DisplayOrder = displayOrder,
+            StartDate = startDate,
+            EndDate = endDate,
             CreatedAt = createdAt,
             Skills = skills.ToList(),
             Translations =
             [
-                new() { LanguageCode = "de", Title = germanTitle, ShortDescription = germanDescription },
-                new() { LanguageCode = "en", Title = englishTitle, ShortDescription = englishDescription }
+                new() { LanguageCode = "de", Title = germanTitle, Subtitle = germanSubtitle, ShortDescription = germanDescription },
+                new() { LanguageCode = "en", Title = englishTitle, Subtitle = englishSubtitle, ShortDescription = englishDescription }
             ],
             Blocks =
             [
@@ -233,6 +250,24 @@ public static class DevelopmentDataSeeder
             }).ToList()
         };
 
+        string[] galleryImages = ["/media/fixtures/placeholder.svg", "/media/fixtures/japan-route-placeholder.svg"];
+        var order = mediaUrl is null ? 1 : 2;
+        foreach (var imageUrl in galleryImages)
+        {
+            project.Media.Add(new ProjectMedia
+            {
+                FileUrl = imageUrl,
+                FileName = Path.GetFileName(imageUrl),
+                ContentType = "image/svg+xml",
+                DisplayOrder = order++,
+                Translations =
+                [
+                    new() { LanguageCode = "de", AltText = $"Vorschaubild zu {germanTitle}" },
+                    new() { LanguageCode = "en", AltText = $"Preview image for {englishTitle}" }
+                ]
+            });
+        }
+
         if (mediaUrl is not null)
         {
             project.Media.Add(new ProjectMedia
@@ -240,6 +275,7 @@ public static class DevelopmentDataSeeder
                 FileUrl = mediaUrl,
                 FileName = Path.GetFileName(mediaUrl),
                 ContentType = "video/mp4",
+                PosterUrl = "/media/fixtures/placeholder.svg",
                 DisplayOrder = 1,
                 Translations =
                 [

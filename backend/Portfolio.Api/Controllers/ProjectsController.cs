@@ -36,6 +36,7 @@ public class ProjectsController : ControllerBase
         var languageCode = SupportedLanguages.Resolve(lang);
 
         var query = _context.Projects
+            .AsNoTracking()
             .Include(p => p.Skills)
             .Include(p => p.Links)
                 .ThenInclude(l => l.Translations)

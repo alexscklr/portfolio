@@ -34,6 +34,8 @@ docs/
 # Angular Build Outputs & Cache
 /frontend/.angular/
 /frontend/src/environments/environment.generated.ts
+/frontend/public/sitemap.xml
+/frontend/public/robots.txt
 /frontend/dist/
 /frontend/tmp/
 /frontend/out-tsc/

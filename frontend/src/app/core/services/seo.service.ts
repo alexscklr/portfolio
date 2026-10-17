@@ -1,16 +1,22 @@
 import { DOCUMENT } from '@angular/common';
-import { DestroyRef, inject, Injectable } from '@angular/core';
+import { DestroyRef, effect, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { DEFAULT_LANGUAGE } from '@/app/core/config/languages';
+import { environment } from '@/environments/environment';
 import { LanguageService } from './language.service';
+import { ProfileService } from './profile.service';
+
+const SITE_NAME = 'Alexander Sickler';
+const OG_LOCALES = { de: 'de_DE', en: 'en_US' } as const;
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly languageService = inject(LanguageService);
+  private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
 
   constructor() {
@@ -21,6 +27,7 @@ export class SeoService {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(event => this.update(event.urlAfterRedirects));
+    effect(() => this.updateStructuredData(this.languageService.currentLanguage()));
   }
 
   private update(url: string): void {
@@ -48,11 +55,60 @@ export class SeoService {
 
     this.document.documentElement.lang = language;
     this.document.title = title;
-    this.ensureLink('canonical', undefined, `/${language}${localizedPath}`);
-    this.ensureLink('alternate', 'de', `/de${localizedPath}`);
-    this.ensureLink('alternate', 'en', `/en${localizedPath}`);
-    this.ensureLink('alternate', 'x-default', `/${DEFAULT_LANGUAGE}${localizedPath}`);
-    this.document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    const absoluteUrl = (lang: string): string => `${environment.siteUrl}/${lang}${localizedPath}`;
+    const alternateLanguage = language === 'de' ? 'en' : 'de';
+
+    this.ensureLink('canonical', undefined, absoluteUrl(language));
+    this.ensureLink('alternate', 'de', absoluteUrl('de'));
+    this.ensureLink('alternate', 'en', absoluteUrl('en'));
+    this.ensureLink('alternate', 'x-default', absoluteUrl(DEFAULT_LANGUAGE));
+    this.ensureMeta('name', 'description', description);
+    this.ensureMeta('property', 'og:type', 'website');
+    this.ensureMeta('property', 'og:site_name', SITE_NAME);
+    this.ensureMeta('property', 'og:title', title);
+    this.ensureMeta('property', 'og:description', description);
+    this.ensureMeta('property', 'og:url', absoluteUrl(language));
+    this.ensureMeta('property', 'og:locale', OG_LOCALES[language]);
+    this.ensureMeta('property', 'og:locale:alternate', OG_LOCALES[alternateLanguage]);
+    this.ensureMeta('name', 'twitter:card', 'summary');
+  }
+
+  private updateStructuredData(language: string): void {
+    const profile = this.profileService.profile();
+    const socialUrls = (profile?.socialLinks ?? [])
+      .map(link => link.url)
+      .filter(url => url.startsWith('https://') || url.startsWith('http://'));
+    const person = {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: profile?.fullName ?? SITE_NAME,
+      url: `${environment.siteUrl}/${language}`,
+      ...(profile?.jobTitle ? { jobTitle: profile.jobTitle } : {}),
+      ...(socialUrls.length ? { sameAs: socialUrls } : {}),
+    };
+
+    let script = this.document.querySelector<HTMLScriptElement>(
+      'script[type="application/ld+json"]',
+    );
+    if (!script) {
+      script = this.document.createElement('script');
+      script.type = 'application/ld+json';
+      this.document.head.appendChild(script);
+    }
+
+    script.textContent = JSON.stringify(person).replace(/</g, '\\u003c');
+  }
+
+  private ensureMeta(attribute: 'name' | 'property', key: string, content: string): void {
+    let meta = this.document.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`);
+
+    if (!meta) {
+      meta = this.document.createElement('meta');
+      meta.setAttribute(attribute, key);
+      this.document.head.appendChild(meta);
+    }
+
+    meta.setAttribute('content', content);
   }
 
   private ensureLink(rel: string, hrefLang: string | undefined, href: string): void {

@@ -22,12 +22,12 @@ TODO: Produktvision / Geschäftsziele in 1–2 Sätzen (z. B. Bewerbung, Freelan
   - Frontend-Mock-Modus ohne Backend (`PORTFOLIO_DATA_SOURCE=frontend-mock`).
   - Development-Seeding von Profil, Skills und Demo-Projekten inkl. Avatar-Upload in den Storage.
   - Projektübersicht unter `/projects`: Skill-Facetten mit UND-Filter, Suche und URL-Parameter `?skills=...`; Projektkarten mit Medien-Slider, Zeitraum und optionalen externen Links.
-  - Die API liefert Projektdetails über `GET /api/projects/{slug}`. Eine Frontend-Detailseite unter `/projects/:slug` ist noch nicht implementiert; unbekannte Frontend-Routen leiten derzeit auf `/` um.
+  - Die API liefert Projektdetails über `GET /api/projects/{slug}`. Eine Frontend-Detailseite unter `/projects/:slug` ist noch nicht implementiert; unbekannte Frontend-Routen leiten auf die Startseite der jeweiligen Sprache um.
 
 ### Wichtige Qualitätsmerkmale
 - **Mehrsprachigkeit:** Fallback auf Standardsprache `de`, wenn Übersetzung fehlt (`TranslationResolver`).
-- **Performance:** Lazy-loaded Routen, Zoneless Change Detection, `AsNoTracking()` bei Lesezugriffen im Backend.
-- **Sicherheit/Konfiguration:** CORS-Whitelist (`Cors:AllowedOrigins`), Secrets nicht im Repo (`.env`, `.env.local`, `appsettings.Development.json` sind gitignored), Produktions-Build erzwingt `PORTFOLIO_API_URL`.
+- **Performance/SEO:** Statisches Prerendering (SSG, kein SSR zur Laufzeit), Sprache in der URL (`/de`, `/en`), Lazy-loaded Routen, Zoneless Change Detection, `AsNoTracking()` bei Lesezugriffen im Backend.
+- **Sicherheit/Konfiguration:** CORS-Whitelist (`Cors:AllowedOrigins`), Secrets nicht im Repo (`.env`, `.env.local`, `appsettings.Development.json` sind gitignored), Produktions-Build erzwingt `PORTFOLIO_API_URL` und `PORTFOLIO_SITE_URL`.
 - Kein Offline-First / keine Authentifizierung implementiert (`UseAuthorization` ist registriert, aber ohne Policies). TODO: Anforderungen an Auth/Admin-Bereich.
 
 ---
@@ -115,12 +115,12 @@ portfolio/
 | `npm run db:migrate` | `dotnet ef database update` |
 | `npm run db:migration:add -- <Name>` | neue EF-Migration |
 | `npm --prefix frontend test` | Frontend-Tests |
-| `npm --prefix frontend run build` | Produktions-Build (benötigt `PORTFOLIO_API_URL`) |
+| `npm --prefix frontend run build` | Produktions-Build mit Prerendering (benötigt `PORTFOLIO_API_URL` und `PORTFOLIO_SITE_URL`; API muss zur Build-Zeit erreichbar sein) |
 
 Ports: Frontend `http://localhost:4200`, API `http://localhost:5124/api`, Postgres `5432`, Azurite `10000`.
 
 ### Konfiguration
-- Frontend-Env wird durch `scripts/generate-environment.mjs` aus `PORTFOLIO_DATA_SOURCE` (`api` | `frontend-mock`) und `PORTFOLIO_API_URL` generiert (Hooks `prestart`/`prebuild`/`pretest`). `environment.generated.ts` nicht manuell bearbeiten.
+- Frontend-Env wird durch `scripts/generate-environment.mjs` aus `PORTFOLIO_DATA_SOURCE` (`api` | `frontend-mock`) `PORTFOLIO_API_URL` und `PORTFOLIO_SITE_URL` generiert (erzeugt außerdem `public/sitemap.xml` und `public/robots.txt`, beide gitignored) (Hooks `prestart`/`prebuild`/`pretest`). `environment.generated.ts` nicht manuell bearbeiten.
 - Backend: Connection String `DefaultConnection`, `Cors:AllowedOrigins` (Development-Fallback `http://localhost:4200`). In Development laufen Migrationen und Seeding automatisch beim Start.
 - Projekt-API: `GET /api/projects` liefert Listendaten; `GET /api/projects/{slug}` liefert Details. `POST /api/projects` nimmt derzeit noch eine `Project`-Entität entgegen; ein Create-DTO ist offener Verbesserungsbedarf.
 
@@ -135,6 +135,10 @@ Ports: Frontend `http://localhost:4200`, API `http://localhost:5124/api`, Postgr
 
 ### Frontend (Angular/TypeScript)
 - Nur **Standalone-Komponenten**, kein NgModule; Routen **lazy** via `loadComponent`.
+- App wird **statisch prerendert** (SSG via `@angular/ssr`, `outputMode: static`, Hydration). Neue Seiten brauchen einen Eintrag in `app.routes.server.ts` (Prerender-Parameter für `de`/`en`) und in der Sitemap (`generate-environment.mjs`).
+- **Sprache steckt in der URL** (`:lang`-Segment, Quelle der Wahrheit); `LanguageService` leitet sie aus der Route ab. Links immer mit `languageService.localizedUrl('/pfad')` bilden. Übersetzungen lädt ein Route-Resolver (`loadTranslations`) vor dem Rendern.
+- **Browser-only-Code** (`window`, `document`-Observer, `localStorage`, `navigator`, `ResizeObserver`, `requestAnimationFrame`) nur in `afterNextRender` oder hinter `isPlatformBrowser`; kein Inhalt darf im Prerender versteckt sein. Beim Server-DOM `appendChild` statt `append` nutzen.
+- SEO-Metadaten (Title, Description, Canonical, hreflang, Open Graph, JSON-LD) setzt `SeoService`.
 - App ist **zoneless** (`provideZonelessChangeDetection`): Zustand über `signal`/`computed`/`effect`, keine Abhängigkeit von Zone.js.
 - Dependency Injection mit `inject()` (kein Konstruktor-Injection-Stil), Services `@Injectable({ providedIn: 'root' })`, Zustand als `signal` (z. B. `skills`, `isLoading`) exponieren.
 - Für signalbasierte HTTP-Ressourcen bestehende Muster wie `rxResource` verwenden; Lade- und Fehlerzustände explizit behandeln.

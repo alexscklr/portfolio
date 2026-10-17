@@ -15,4 +15,5 @@ alwaysApply: false
 - Stil: Prettier (2 Leerzeichen, Single Quotes, trailing commas, 100 Zeichen); nur angefasste Zeilen umformatieren. `console.error` bleibt Standard.
 - Animationen mit `prefers-reduced-motion` und Fokus-/Screenreader-Zustände bewahren.
 - Projektfilter: Query-Parameter `skills`, UND-Semantik, Facetten nur für gemeinsam vorkommende Skills.
-- Sprache liegt in `LanguageService` (Signal, persistiert in `localStorage`).
+- Sprache steckt in der URL (`:lang`); `LanguageService` leitet sie daraus ab und merkt die Wahl in `localStorage` (nur im Browser). Links mit `localizedUrl()` bilden.
+- Seite wird statisch prerendert (SSG): Browser-APIs nur in `afterNextRender`/hinter `isPlatformBrowser`, kein `append`, neue Seiten in `app.routes.server.ts` und Sitemap eintragen.

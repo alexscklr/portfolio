@@ -1,6 +1,10 @@
 {
 	"projects.card.titleLabel": "Projekt",
 	"projects.card.imageAlt": "Projektvorschau für {title}",
+	"projects.card.more": "Mehr anzeigen",
+	"projects.card.live": "Live-Demo",
+	"projects.card.source": "Quellcode",
+	"projects.card.ongoing": "heute",
 	"projects.card.view": "Zum Projekt",
 	"projects.card.generativePreview": "// Generative Vorschau",
 	"projects.page.eyebrow": "Projekte",

@@ -1,6 +1,10 @@
 {
 	"projects.card.titleLabel": "Project",
 	"projects.card.imageAlt": "Project preview for {title}",
+	"projects.card.more": "Show more",
+	"projects.card.live": "Live demo",
+	"projects.card.source": "Source code",
+	"projects.card.ongoing": "present",
 	"projects.card.view": "View project",
 	"projects.card.generativePreview": "// Generative preview",
 	"projects.page.eyebrow": "Projects",

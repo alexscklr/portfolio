@@ -9,7 +9,7 @@ Alles hier stammt aus dem Repository-Stand (Code/Config). Mit `TODO:` markierte 
 
 ### Zweck
 Persönliche **Portfolio-Website** (Autor: Alexander) mit mehrsprachigem Inhalt (Deutsch/Englisch), bestehend aus:
-- **Frontend:** Angular-SPA (`frontend/`), zeigt Profil, Social-Links, Skills (Marquee) und Featured-Projekte.
+- **Frontend:** Angular-SPA (`frontend/`) mit Startseite und Projektübersicht samt Skillfilter, Projektkarten und Medien-Slidern.
 - **Backend:** ASP.NET Core 8 Web API (`backend/Portfolio.Api`) mit PostgreSQL und Azure Blob Storage (lokal: Azurite). Die Datenmodelle (Projekt-Blöcke, Medien, Links, Skill-Tags) bilden eine kleine **CMS-Architektur** (Migration `AddCmsArchitecture`).
 
 TODO: Produktvision / Geschäftsziele in 1–2 Sätzen (z. B. Bewerbung, Freelance-Akquise).
@@ -21,6 +21,8 @@ TODO: Produktvision / Geschäftsziele in 1–2 Sätzen (z. B. Bewerbung, Freelan
   - Sprachumschaltung `de`/`en` (Standard: `de`), Übersetzungen serverseitig (DB) und clientseitig (JSON-Dateien).
   - Frontend-Mock-Modus ohne Backend (`PORTFOLIO_DATA_SOURCE=frontend-mock`).
   - Development-Seeding von Profil, Skills und Demo-Projekten inkl. Avatar-Upload in den Storage.
+  - Projektübersicht unter `/projects`: Skill-Facetten mit UND-Filter, Suche und URL-Parameter `?skills=...`; Projektkarten mit Medien-Slider, Zeitraum und optionalen externen Links.
+  - Die API liefert Projektdetails über `GET /api/projects/{slug}`. Eine Frontend-Detailseite unter `/projects/:slug` ist noch nicht implementiert; unbekannte Frontend-Routen leiten derzeit auf `/` um.
 
 ### Wichtige Qualitätsmerkmale
 - **Mehrsprachigkeit:** Fallback auf Standardsprache `de`, wenn Übersetzung fehlt (`TranslationResolver`).
@@ -40,7 +42,8 @@ portfolio/
 ├── docker-compose.yml         # PostgreSQL 16 + Azurite (Blob Storage)
 ├── .env.example               # POSTGRES_* Variablen
 ├── .editorconfig / .prettierrc
-├── .continue/                 # Continue.dev: prompts/ (rules/ noch leer)
+├── .continue/                 # Continue.dev: prompts/ und rules/
+├── .github/copilot-instructions.md
 ├── backend/
 │   ├── PortfolioBackend.sln
 │   └── Portfolio.Api/
@@ -62,13 +65,15 @@ portfolio/
         ├── environments/      # environment.ts, environment.model.ts, environment.generated.ts (generiert)
         └── app/
             ├── core/          # components (header, footer), config, mocks, models, services
-            ├── features/      # Feature-Module je Seite (aktuell: home/)
-            └── shared/        # wiederverwendbare components, directives, pipes
+            ├── features/      # Seitenspezifische Features: home/ und projects/
+            └── shared/        # Wiederverwendbare Komponenten, Direktiven, Pipes
 ```
 
 ### Architekturmuster
 - **Backend:** Schichtenarchitektur mit ASP.NET-Core-Controllern → `AppDbContext` (EF Core, direkt in Controllern genutzt) → PostgreSQL; Storage über Interface `IStorageService` (DI, Scoped). Mapping über statische Mapper-Klassen, DTOs getrennt von Entitäten.
-- **Frontend:** Standalone-Komponenten (keine NgModules), Feature-Ordner + `core`/`shared`, State über **Signals** in `providedIn: 'root'`-Services, HTTP via `HttpClient`. Daten kommen aus API oder Mock (`environment.dataSource`).
+- **Frontend:** Standalone-Komponenten (keine NgModules), Feature-Ordner + `core`/`shared`, State über **Signals** in Services und Komponenten, HTTP via `HttpClient`/`rxResource`. Daten kommen aus API oder Mock (`environment.dataSource`).
+- **Projektfilter:** Die Skill-Auswahl steht als kommaseparierte Slugs im Query-Parameter `skills`. Projekte werden mit UND-Semantik gefiltert; verfügbare Facetten beschränken sich auf Skills, die gemeinsam mit der aktuellen Auswahl vorkommen. Die Suche filtert die Facettenliste, nicht die Projekte direkt.
+- **Projektkarten:** Der Textbereich verlinkt auf `/projects/:slug`; Medien-Slider und externe Links sind getrennte Interaktionsziele. Pro Karte werden bis zu fünf Skills direkt und weitere als `+N` angezeigt.
 - **Mehrsprachigkeit:** Backend nimmt Sprachcode entgegen und löst Übersetzungen mit Fallback auf; Frontend nutzt `LanguageService`, `TranslationService` und `TranslatePipe` (`{{ 'key' | translate }}`).
 
 ### Namenskonventionen (aus dem Bestand)
@@ -95,10 +100,10 @@ portfolio/
 | Tooling | Node/npm, `concurrently`, Docker Compose | – |
 
 ### Testing, Linting, Formatting
-- **Frontend-Tests:** `ng test` (Builder `@angular/build:unit-test`) mit **Vitest** ^4 und **jsdom**; Specs als `*.spec.ts` neben dem Code (bisher nur `app.spec.ts`).
+- **Frontend-Tests:** `ng test` (Builder `@angular/build:unit-test`) mit **Vitest** ^4 und **jsdom**; Specs als `*.spec.ts` neben dem Code. Abgedeckt sind App-Shell, ProjectService, Projektfilter, Projektseite, Skillfilter, Projektkarte und Medien-Slider.
 - **Formatting:** Prettier ^3.8 (`.prettierrc`: single quotes, trailing commas `all`, printWidth 100, 2 Spaces, Semikolons, `arrowParens: avoid`) und `.editorconfig` (LF, UTF-8, 2 Spaces; `*.cs` 4 Spaces).
 - **Linting:** kein ESLint, keine .NET-Analyzer-Konfiguration vorhanden. TODO: gewünschtes Linting ergänzen.
-- **Backend-Tests:** keine Testprojekte vorhanden. TODO: Framework festlegen (z. B. xUnit).
+- **Backend-Tests:** Es existiert noch kein Testprojekt. TODO: Testframework und Strategie festlegen.
 - TS-Compiler-Flags (`tsconfig.json`): `noImplicitOverride`, `noImplicitReturns`, `noPropertyAccessFromIndexSignature`, `noFallthroughCasesInSwitch`, `isolatedModules`; Angular: `strictInjectionParameters`, `strictInputAccessModifiers`. **`"strict": true` ist nicht gesetzt.**
 
 ### Wichtige Befehle (aus Repo-Root)
@@ -117,6 +122,7 @@ Ports: Frontend `http://localhost:4200`, API `http://localhost:5124/api`, Postgr
 ### Konfiguration
 - Frontend-Env wird durch `scripts/generate-environment.mjs` aus `PORTFOLIO_DATA_SOURCE` (`api` | `frontend-mock`) und `PORTFOLIO_API_URL` generiert (Hooks `prestart`/`prebuild`/`pretest`). `environment.generated.ts` nicht manuell bearbeiten.
 - Backend: Connection String `DefaultConnection`, `Cors:AllowedOrigins` (Development-Fallback `http://localhost:4200`). In Development laufen Migrationen und Seeding automatisch beim Start.
+- Projekt-API: `GET /api/projects` liefert Listendaten; `GET /api/projects/{slug}` liefert Details. `POST /api/projects` nimmt derzeit noch eine `Project`-Entität entgegen; ein Create-DTO ist offener Verbesserungsbedarf.
 
 ---
 
@@ -124,19 +130,21 @@ Ports: Frontend `http://localhost:4200`, API `http://localhost:5124/api`, Postgr
 
 ### Allgemein
 - Änderungen minimal und zielgerichtet; bestehende Muster und Ordnerstruktur beibehalten; keine Secrets committen.
-- Nach Änderungen validieren: Frontend `npm --prefix frontend test` / Build, Backend `dotnet build backend/PortfolioBackend.sln`.
+- Nach Änderungen passend zum Scope validieren: Frontend `npm --prefix frontend test` und bei Bedarf `PORTFOLIO_API_URL=http://localhost:5124/api npm --prefix frontend run build`; Backend `dotnet build backend/PortfolioBackend.sln`.
 - Neue Texte immer in **beiden** Sprachen (`public/i18n/de` und `en`) bzw. beiden Übersetzungen in der DB pflegen; Sprachcodes zentral über `SupportedLanguages` (Backend) / `core/config/languages.ts` (Frontend).
 
 ### Frontend (Angular/TypeScript)
 - Nur **Standalone-Komponenten**, kein NgModule; Routen **lazy** via `loadComponent`.
 - App ist **zoneless** (`provideZonelessChangeDetection`): Zustand über `signal`/`computed`/`effect`, keine Abhängigkeit von Zone.js.
 - Dependency Injection mit `inject()` (kein Konstruktor-Injection-Stil), Services `@Injectable({ providedIn: 'root' })`, Zustand als `signal` (z. B. `skills`, `isLoading`) exponieren.
+- Für signalbasierte HTTP-Ressourcen bestehende Muster wie `rxResource` verwenden; Lade- und Fehlerzustände explizit behandeln.
 - Datenzugriff in Services kapseln; Services müssen beide Datenquellen respektieren (`environment.dataSource === 'frontend-mock'` → Mock aus `core/mocks`).
 - Imports über Alias `@/…` statt tiefer relativer Pfade (lokale Nachbarn dürfen relativ sein).
 - Wiederverwendbares UI nach `shared/` (Komponenten, Direktiven, Pipes), seitenspezifisches nach `features/<name>/`, app-weite Infrastruktur nach `core/`.
 - Prettier-Stil einhalten (single quotes, trailing commas, 100 Zeichen). Hinweis: Teile des Bestands (z. B. `skill.service.ts`) nutzen doppelte Anführungszeichen und 4er-Einrückung – bei neuem Code den Prettier-Stil verwenden, bestehende Dateien nicht unnötig umformatieren.
 - Typisierung: explizite Modelle in `core/models`, kein `any`; `noPropertyAccessFromIndexSignature` beachten.
 - Styling: Tailwind-Utilities plus komponentenlokales SCSS.
+- Projektübersichtsfilter: Auswahl im Query-Parameter `skills` belassen, UND-Semantik und Facetten-Verfügbarkeit konsistent halten. Animationen müssen `prefers-reduced-motion` sowie Tastatur- und Screenreader-Zugänglichkeit berücksichtigen.
 - Async: `HttpClient`/RxJS-Observables an der HTTP-Grenze (`subscribe({ next, error })`), Ergebnisse in Signals ablegen.
 
 ### Backend (C#/ASP.NET Core)
@@ -169,6 +177,6 @@ Ports: Frontend `http://localhost:4200`, API `http://localhost:5124/api`, Postgr
 - [ ] Produktvision, Zielgruppe, Business-Ziele (Abschnitt 1)
 - [ ] Auth/Admin/CMS-Schreibzugriff geplant?
 - [ ] Linting-Setup (ESLint, Roslyn-Analyzer) und TS `strict`
-- [ ] Backend-Teststrategie
+- [ ] Backend-Testframework und -Strategie
 - [ ] Deployment-Ziel/CI (keine CI-/Deploy-Konfiguration im Repo gefunden)
 - [ ] Fehler-/Logging-Standard und Commit-Konvention

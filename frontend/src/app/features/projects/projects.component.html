@@ -1,10 +1,8 @@
 <section class="mx-auto max-w-7xl px-6 pb-24 pt-32">
   <header class="mb-12">
-    <p class="eyebrow">{{ 'projects.page.eyebrow' | translate }}</p>
     <h1 class="font-heading text-4xl font-bold tracking-tight text-white md:text-5xl">
       {{ 'projects.page.title' | translate }}
     </h1>
-    <p class="mt-4 max-w-2xl text-slate-300">{{ 'projects.page.description' | translate }}</p>
   </header>
 
   @if (projectService.isLoading()) {

@@ -56,7 +56,7 @@ describe('SkillFilterComponent', () => {
     await render([group(SkillTagCategory.Language, 'csharp')]);
     await render([]);
 
-    const rows = element.querySelectorAll('[aria-hidden="true"]');
+    const rows = element.querySelectorAll('[inert][aria-hidden="true"]');
     expect(rows).toHaveLength(4);
     expect(rows[0].textContent).toContain('csharp');
     expect(element.textContent).toContain('projects.filter.noSkills');

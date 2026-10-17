@@ -1,24 +1,33 @@
-<div class="rounded-sm border border-secondary-700/60 bg-primary-900/40 p-5 backdrop-blur-sm">
-  <div class="flex flex-wrap items-center justify-between gap-4">
-    <div class="relative w-full max-w-sm">
-      <label class="sr-only" for="skill-search">{{
-        'projects.filter.searchLabel' | translate
-      }}</label>
-      <input
-        id="skill-search"
-        type="search"
-        autocomplete="off"
-        class="w-full rounded-sm border border-secondary-700/60 bg-primary-950/60 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/50"
-        [placeholder]="'projects.filter.searchPlaceholder' | translate"
-        [value]="query()"
-        (input)="onQueryInput($event)"
-      />
-    </div>
+<div>
+  <div
+    class="flex items-center gap-4 border-b border-white/15 focus-within:border-[var(--color-accent-primary)]/70 transition-colors"
+  >
+    <svg
+      class="h-4 w-4 shrink-0 text-slate-500"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+    <label class="sr-only" for="skill-search">{{
+      'projects.filter.searchLabel' | translate
+    }}</label>
+    <input
+      id="skill-search"
+      type="search"
+      autocomplete="off"
+      class="min-w-0 flex-1 bg-transparent py-3 text-base text-slate-200 placeholder:text-slate-500 focus:outline-none"
+      [placeholder]="'projects.filter.searchPlaceholder' | translate"
+      [value]="query()"
+      (input)="onQueryInput($event)"
+    />
 
-    <div class="flex items-center gap-4 text-sm text-slate-300" aria-live="polite">
-      <span
-        >{{ 'projects.filter.shown' | translate }}: {{ resultCount() }} / {{ totalCount() }}</span
-      >
+    <div class="flex shrink-0 items-center gap-4 text-sm" aria-live="polite">
       @if (isFiltering()) {
         <button
           type="button"
@@ -28,10 +37,14 @@
           {{ 'projects.filter.reset' | translate }}
         </button>
       }
+      <span class="font-mono tabular-nums text-slate-300">
+        <span class="sr-only">{{ 'projects.filter.shown' | translate }}: </span>{{ resultCount()
+        }}<span class="text-slate-500"> / {{ totalCount() }}</span>
+      </span>
     </div>
   </div>
 
-  <div class="mt-5">
+  <div class="mt-2">
     @for (row of rows(); track row.category) {
       <div
         class="grid transition-[grid-template-rows,opacity] duration-300 ease-out"
@@ -40,8 +53,10 @@
         [attr.aria-hidden]="row.collapsed ? 'true' : null"
       >
         <div class="min-h-0 overflow-hidden">
-          <div class="flex flex-col gap-2 pb-3 sm:flex-row sm:items-baseline sm:gap-4">
-            <span class="w-28 shrink-0 font-mono text-xs uppercase tracking-wider text-slate-500">
+          <div
+            class="flex flex-col gap-2 border-b border-white/5 py-3 sm:flex-row sm:items-baseline sm:gap-6"
+          >
+            <span class="w-44 shrink-0 font-mono text-xs uppercase tracking-wider text-slate-500">
               {{ categoryStyles[row.category].labelKey | translate }}
             </span>
             <ul class="flex flex-wrap gap-2">
@@ -49,7 +64,7 @@
                 <li>
                   <button
                     type="button"
-                    class="inline-flex cursor-pointer items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-xs transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/50"
+                    class="inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/50"
                     [class]="
                       facet.selected
                         ? categoryStyles[row.category].chipSelected

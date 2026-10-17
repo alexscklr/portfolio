@@ -54,7 +54,7 @@ describe('ProjectCardComponent', () => {
       }),
     );
 
-    const detailLink = element.querySelector<HTMLAnchorElement>('a[href="/projects/demo"]');
+    const detailLink = element.querySelector<HTMLAnchorElement>('a[href="/de/projects/demo"]');
     expect(detailLink?.textContent).toContain('Demo');
     expect(detailLink?.textContent).toContain('Untertitel');
     expect(detailLink?.querySelector('a')).toBeNull();

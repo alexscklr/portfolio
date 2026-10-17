@@ -9,10 +9,10 @@
         {{ 'home.hero.description' | translate }}
       </p>
       <div class="hero-actions">
-        <button appButton variant="primary" size="lg" routerLink="/projects">
+        <button appButton variant="primary" size="lg" [routerLink]="languageService.localizedUrl('/projects')">
           {{ 'home.hero.viewProjects' | translate }}
         </button>
-        <a routerLink="/about" appLink variant="secondary" arrow>{{ 'home.hero.about' | translate }}</a>
+        <a [routerLink]="languageService.localizedUrl('/about')" appLink variant="secondary" arrow>{{ 'home.hero.about' | translate }}</a>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
     <div class="work-heading" appRevealOnScroll>
       <p class="eyebrow">{{ 'home.work.eyebrow' | translate }}</p>
       <h2>{{ 'home.work.title' | translate }}</h2>
-      <a routerLink="/projects" appLink variant="secondary" arrow>{{ 'home.work.allProjects' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/projects')" appLink variant="secondary" arrow>{{ 'home.work.allProjects' | translate }}</a>
     </div>
 
     <div class="project-gallery">

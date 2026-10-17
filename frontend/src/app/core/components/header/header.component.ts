@@ -6,6 +6,7 @@ import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 import { Language, SUPPORTED_LANGUAGES } from '@/app/core/config/languages';
 import { LanguageService } from '@/app/core/services/language.service';
 import { AsyncPipe } from '@angular/common';
+import { SeoService } from '@/app/core/services/seo.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { AsyncPipe } from '@angular/common';
 export class HeaderComponent {
   readonly languageService = inject(LanguageService);
   readonly supportedLanguages = SUPPORTED_LANGUAGES;
+  private readonly seoService = inject(SeoService);
 
   onLanguageChange(event: Event): void {
     const language = (event.target as HTMLSelectElement).value as Language;

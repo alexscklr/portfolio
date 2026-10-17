@@ -21,7 +21,7 @@ import { SkillMarqueeComponent } from './components/skill-marquee/skill-marquee.
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  private readonly languageService = inject(LanguageService);
+  readonly languageService = inject(LanguageService);
   readonly profileService = inject(ProfileService);
   readonly projectService = inject(ProjectService);
   readonly skillsService = inject(SkillService);

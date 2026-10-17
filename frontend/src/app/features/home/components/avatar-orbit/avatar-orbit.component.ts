@@ -1,6 +1,7 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
+import { LanguageService } from '@/app/core/services/language.service';
 import { SocialLink} from '@/app/core/models/profile.model';
 
 @Component({
@@ -12,6 +13,7 @@ import { SocialLink} from '@/app/core/models/profile.model';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AvatarOrbitComponent {
+  readonly languageService = inject(LanguageService);
   readonly sociallinks = input.required<SocialLink[]>();
   readonly avatarurl = input.required<string>();
 

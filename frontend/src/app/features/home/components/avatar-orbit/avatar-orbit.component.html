@@ -4,7 +4,7 @@
   <span class="field-cross field-cross--one" aria-hidden="true"></span>
   <span class="field-cross field-cross--two" aria-hidden="true"></span>
 
-  <a class="avatar-core" routerLink="/about" [attr.aria-label]="'home.avatar.aboutLabel' | translate">
+  <a class="avatar-core" [routerLink]="languageService.localizedUrl('/about')" [attr.aria-label]="'home.avatar.aboutLabel' | translate">
     <img [src]="avatarurl()" alt="Alexander Sickler" />
     <span>Alexander</span>
   </a>

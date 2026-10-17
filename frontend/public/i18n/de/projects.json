@@ -9,5 +9,14 @@
 	"projects.page.loading": "Projekte werden geladen …",
 	"projects.page.error": "Die Projekte konnten nicht geladen werden.",
 	"projects.page.retry": "Erneut versuchen",
-	"projects.page.empty": "Keine Projekte gefunden."
+	"projects.page.empty": "Keine Projekte gefunden.",
+	"projects.filter.searchLabel": "Skills durchsuchen",
+	"projects.filter.searchPlaceholder": "Skill suchen …",
+	"projects.filter.shown": "Angezeigt",
+	"projects.filter.reset": "Filter zurücksetzen",
+	"projects.filter.noSkills": "Keine passenden Skills.",
+	"skills.category.language": "Sprachen",
+	"skills.category.framework": "Frameworks",
+	"skills.category.tool": "Tools & Software",
+	"skills.category.concept": "Konzepte & APIs"
 }

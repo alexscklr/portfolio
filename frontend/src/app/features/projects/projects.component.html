@@ -23,8 +23,20 @@
       </button>
     </div>
   } @else {
+    <app-skill-filter
+      class="mb-10 block"
+      [groups]="facetGroups()"
+      [query]="skillQuery()"
+      [resultCount]="filteredProjects().length"
+      [totalCount]="projectService.projects().length"
+      [isFiltering]="isFiltering()"
+      (skillToggled)="toggleSkill($event)"
+      (queryChanged)="skillQuery.set($event)"
+      (resetRequested)="resetFilters()"
+    />
+
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-      @for (project of projectService.projects(); track project.id) {
+      @for (project of filteredProjects(); track project.id) {
         <app-project-card [project]="project" />
       } @empty {
         <p class="text-slate-400">{{ 'projects.page.empty' | translate }}</p>

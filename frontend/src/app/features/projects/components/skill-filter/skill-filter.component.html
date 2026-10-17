@@ -1,0 +1,68 @@
+<div class="rounded-sm border border-secondary-700/60 bg-primary-900/40 p-5 backdrop-blur-sm">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="relative w-full max-w-sm">
+      <label class="sr-only" for="skill-search">{{
+        'projects.filter.searchLabel' | translate
+      }}</label>
+      <input
+        id="skill-search"
+        type="search"
+        autocomplete="off"
+        class="w-full rounded-sm border border-secondary-700/60 bg-primary-950/60 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-primary)]/50"
+        [placeholder]="'projects.filter.searchPlaceholder' | translate"
+        [value]="query()"
+        (input)="onQueryInput($event)"
+      />
+    </div>
+
+    <div class="flex items-center gap-4 text-sm text-slate-300" aria-live="polite">
+      <span
+        >{{ 'projects.filter.shown' | translate }}: {{ resultCount() }} / {{ totalCount() }}</span
+      >
+      @if (isFiltering()) {
+        <button
+          type="button"
+          class="cursor-pointer text-accent-primary underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/50"
+          (click)="resetRequested.emit()"
+        >
+          {{ 'projects.filter.reset' | translate }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="mt-5 flex flex-col gap-3">
+    @for (group of groups(); track group.category) {
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
+        <span class="w-28 shrink-0 font-mono text-xs uppercase tracking-wider text-slate-500">
+          {{ categoryStyles[group.category].labelKey | translate }}
+        </span>
+        <ul class="flex flex-wrap gap-2">
+          @for (facet of group.facets; track facet.skill.id) {
+            <li>
+              <button
+                type="button"
+                class="inline-flex cursor-pointer items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-xs transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/50"
+                [class]="
+                  facet.selected
+                    ? categoryStyles[group.category].chipSelected
+                    : categoryStyles[group.category].chip
+                "
+                [attr.aria-pressed]="facet.selected"
+                (click)="skillToggled.emit(facet.skill.slug)"
+              >
+                @if (facet.skill.iconKey) {
+                  <iconify-icon [icon]="facet.skill.iconKey" aria-hidden="true"></iconify-icon>
+                }
+                <span>{{ facet.skill.name }}</span>
+                <span class="opacity-60">{{ facet.count }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    } @empty {
+      <p class="text-sm text-slate-400">{{ 'projects.filter.noSkills' | translate }}</p>
+    }
+  </div>
+</div>

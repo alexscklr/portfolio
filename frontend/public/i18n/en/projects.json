@@ -18,5 +18,8 @@
 	"skills.category.language": "Languages",
 	"skills.category.framework": "Frameworks",
 	"skills.category.tool": "Tools & software",
-	"skills.category.concept": "Concepts & APIs"
+	"skills.category.concept": "Concepts & APIs",
+	"projects.slider.previous": "Previous media",
+	"projects.slider.next": "Next media",
+	"projects.slider.goTo": "Go to media"
 }

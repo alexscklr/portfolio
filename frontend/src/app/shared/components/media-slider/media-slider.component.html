@@ -1,0 +1,97 @@
+@if (slides().length > 0) {
+  <div
+    class="group relative aspect-video w-full overflow-hidden bg-primary-900/70"
+    role="region"
+    aria-roledescription="carousel"
+    [attr.aria-label]="label()"
+  >
+    <ul
+      #track
+      class="flex h-full w-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-accent-primary)]/70 [&::-webkit-scrollbar]:hidden"
+      tabindex="0"
+      (scroll)="onScroll()"
+      (keydown.arrowLeft)="onArrowKey($event, -1)"
+      (keydown.arrowRight)="onArrowKey($event, 1)"
+    >
+      @for (slide of slides(); track slide.id; let index = $index) {
+        <li
+          class="h-full w-full shrink-0 snap-center"
+          role="group"
+          aria-roledescription="slide"
+          [attr.aria-label]="index + 1 + ' / ' + slides().length"
+        >
+          @if (slide.isVideo) {
+            <video
+              class="h-full w-full object-cover"
+              [muted]="true"
+              loop
+              playsinline
+              preload="metadata"
+              [attr.data-index]="index"
+              [attr.controls]="prefersReducedMotion() ? '' : null"
+              [attr.poster]="slide.posterUrl ?? null"
+              [attr.aria-label]="slide.alt"
+              [src]="slide.url"
+            ></video>
+          } @else {
+            <img
+              class="h-full w-full object-cover"
+              draggable="false"
+              [attr.loading]="index === 0 ? 'eager' : 'lazy'"
+              [src]="slide.url"
+              [alt]="slide.alt"
+            />
+          }
+        </li>
+      }
+    </ul>
+
+    @if (hasMultipleSlides()) {
+      <button
+        type="button"
+        class="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[var(--color-primary-950)]/80 text-white opacity-0 backdrop-blur-sm transition-opacity hover:bg-[var(--color-primary-950)] focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/70 disabled:pointer-events-none disabled:!opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+        [attr.aria-label]="'projects.slider.previous' | translate"
+        [disabled]="!canGoPrevious()"
+        (click)="previous()"
+      >
+        <span aria-hidden="true">&lsaquo;</span>
+      </button>
+      <button
+        type="button"
+        class="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[var(--color-primary-950)]/80 text-white opacity-0 backdrop-blur-sm transition-opacity hover:bg-[var(--color-primary-950)] focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/70 disabled:pointer-events-none disabled:!opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+        [attr.aria-label]="'projects.slider.next' | translate"
+        [disabled]="!canGoNext()"
+        (click)="next()"
+      >
+        <span aria-hidden="true">&rsaquo;</span>
+      </button>
+
+      <div class="absolute inset-x-0 bottom-2 flex justify-center">
+        <div
+          class="flex gap-1.5 rounded-full bg-[var(--color-primary-950)]/70 px-2 py-1.5 backdrop-blur-sm"
+        >
+          @for (slide of slides(); track slide.id; let index = $index) {
+            <button
+              type="button"
+              class="h-1.5 cursor-pointer rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-primary)]/70"
+              [class]="
+                index === activeIndex()
+                  ? 'w-5 bg-accent-primary'
+                  : 'w-1.5 bg-white/50 hover:bg-white/80'
+              "
+              [attr.aria-label]="('projects.slider.goTo' | translate) + ' ' + (index + 1)"
+              [attr.aria-current]="index === activeIndex()"
+              (click)="goTo(index)"
+            ></button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <div
+    class="flex aspect-video w-full items-center justify-center bg-primary-900 font-mono text-xs text-slate-500"
+  >
+    {{ 'projects.card.generativePreview' | translate }}
+  </div>
+}

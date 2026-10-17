@@ -5,7 +5,7 @@
     <app-media-slider [media]="p.media" [fallbackUrl]="p.previewMediaUrl" [label]="p.title" />
 
     <a
-      [routerLink]="['/projects', p.slug]"
+      [routerLink]="languageService.localizedUrl('/projects/' + p.slug)"
       class="flex flex-1 flex-col p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-500/70"
     >
       <h3

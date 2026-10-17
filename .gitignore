@@ -29,10 +29,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+docs/
 
 # Angular Build Outputs & Cache
 /frontend/.angular/
 /frontend/src/environments/environment.generated.ts
+/frontend/public/sitemap.xml
+/frontend/public/robots.txt
 /frontend/dist/
 /frontend/tmp/
 /frontend/out-tsc/

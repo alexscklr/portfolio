@@ -17,7 +17,7 @@ const MAX_VISIBLE_SKILLS = 5;
   templateUrl: './project-card.component.html',
 })
 export class ProjectCardComponent {
-  private readonly languageService = inject(LanguageService);
+  readonly languageService = inject(LanguageService);
   private readonly translationService = inject(TranslationService);
 
   readonly project = input.required<Project>();

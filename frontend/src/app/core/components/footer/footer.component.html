@@ -16,8 +16,8 @@
     </div>
 
     <div class="flex items-center gap-4 text-xs font-mono">
-      <a routerLink="/impressum" appLink variant="muted">{{ 'footer.imprint' | translate }}</a>
-      <a routerLink="/datenschutz" appLink variant="muted">{{ 'footer.privacy' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/impressum')" appLink variant="muted">{{ 'footer.imprint' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/datenschutz')" appLink variant="muted">{{ 'footer.privacy' | translate }}</a>
     </div>
 
   </div>

@@ -4,7 +4,7 @@ Portfolio-Projekt: Angular 22 (zoneless, Signals) Frontend in `frontend/`, ASP.N
 
 ## Aktueller Stand der Projektseite
 
-- Die Projektübersicht ist unter `/projects` implementiert; eine Frontend-Detailroute `/projects/:slug` ist noch offen. Der Textbereich einer Projektkarte verlinkt bereits auf diesen Pfad, der Routing-Fallback leitet unbekannte Routen derzeit nach `/` um.
+- Die Projektübersicht ist unter `/projects` implementiert; eine Frontend-Detailroute `/projects/:slug` ist noch offen. Der Textbereich einer Projektkarte verlinkt bereits auf diesen Pfad, der Routing-Fallback leitet unbekannte Routen auf die Startseite der jeweiligen Sprache um.
 - Skillfilter: Auswahl im Query-Parameter `skills`, UND-Semantik, Suche auf Skillnamen und Facetten, die mit der aktiven Auswahl in Projekten vorkommen. Filterlogik liegt als reine Funktionen in `features/projects/project-filter.ts`.
 - Die Filterleiste hält leere Kategorien während der Ein-/Ausblendtransition im DOM und markiert sie mit `inert` und `aria-hidden`. Animationen müssen `prefers-reduced-motion` respektieren.
 - Projektkarten verwenden `MediaSliderComponent`; Detailtext-Link, Slider-Steuerung sowie externe Demo-/Quellcode-Links bleiben getrennte Interaktionsziele. Sichtbare Skillchips sind auf fünf begrenzt, weitere erscheinen als `+N`.
@@ -22,6 +22,7 @@ Portfolio-Projekt: Angular 22 (zoneless, Signals) Frontend in `frontend/`, ASP.N
 
 - Striktes Typing: **kein `any`**, `unknown` plus Typeguard oder explizite Modelle aus `core/models`. Beachte `noImplicitReturns`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature`.
 - Nur **Standalone-Komponenten** (keine NgModules); Routen lazy per `loadComponent`.
+- Die App wird per **SSG prerendert**; die Sprache steckt in der URL (`/de`, `/en`), Links über `LanguageService.localizedUrl()`. Browser-APIs nur in `afterNextRender` oder hinter `isPlatformBrowser`. Neue Seiten in `app.routes.server.ts` und der Sitemap (`generate-environment.mjs`) eintragen.
 - App ist **zoneless**: Zustand mit `signal`, `computed`, `effect`; keine Zone.js-Annahmen.
 - Signal-Design: Schreibbare Signals privat halten und nur lesend (`asReadonly()`) oder via `computed` exponieren, wo es sinnvoll ist; abgeleiteten Zustand mit `computed` statt manueller Synchronisation.
 - DI mit `inject()`, Services `providedIn: 'root'`.

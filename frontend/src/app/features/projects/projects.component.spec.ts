@@ -4,9 +4,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { Observable, of } from 'rxjs';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
+import { routes } from '@/app/app.routes';
 import { LanguageService } from '@/app/core/services/language.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { ProjectsComponent } from './projects.component';
+
+const translationStub = {
+  use: (): Observable<void> => of(undefined),
+  translate: (key: string): string => key,
+};
 
 describe('ProjectsComponent', () => {
   let http: HttpTestingController;
@@ -19,14 +27,10 @@ describe('ProjectsComponent', () => {
       h => h.textContent?.trim() ?? '',
     );
 
-  const flushTranslations = (): void =>
-    http.match(req => req.url.includes('/i18n/')).forEach(req => req.flush({}));
-
   const open = async (url: string): Promise<void> => {
     harness = await RouterTestingHarness.create();
     await harness.navigateByUrl(url, ProjectsComponent);
     TestBed.tick();
-    flushTranslations();
   };
 
   const respond = async (): Promise<void> => {
@@ -37,48 +41,49 @@ describe('ProjectsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideRouter([{ path: 'projects', component: ProjectsComponent }]),
+        provideRouter(routes),
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: TranslationService, useValue: translationStub },
       ],
     });
-    TestBed.inject(LanguageService).currentLanguage.set('de');
+    TestBed.inject(LanguageService).setLanguage('de');
     http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    flushTranslations();
     http.verify();
+    localStorage.removeItem('portfolio-language');
   });
 
   it('shows all projects without a filter', async () => {
-    await open('/projects');
+    await open('/de/projects');
     await respond();
 
     expect(cards()).toHaveLength(3);
   });
 
   it('only shows projects containing every selected skill from the URL', async () => {
-    await open('/projects?skills=docker');
+    await open('/de/projects?skills=docker');
     await respond();
 
     expect(cards()).toEqual(['Realtime Pipeline Automation']);
 
-    await harness.navigateByUrl('/projects?skills=docker,angular', ProjectsComponent);
+    await harness.navigateByUrl('/de/projects?skills=docker,angular', ProjectsComponent);
     await settle();
     expect(cards()).toHaveLength(0);
     expect(root().textContent).toContain('projects.page.empty');
   });
 
   it('ignores unknown skill slugs in the URL', async () => {
-    await open('/projects?skills=does-not-exist');
+    await open('/de/projects?skills=does-not-exist');
     await respond();
 
     expect(cards()).toHaveLength(3);
   });
 
   it('writes the selection to the URL when a skill is toggled', async () => {
-    await open('/projects');
+    await open('/de/projects');
     await respond();
 
     const docker = Array.from(
@@ -87,12 +92,12 @@ describe('ProjectsComponent', () => {
     docker?.click();
     await settle();
 
-    expect(TestBed.inject(Router).url).toBe('/projects?skills=docker');
+    expect(TestBed.inject(Router).url).toBe('/de/projects?skills=docker');
     expect(cards()).toHaveLength(1);
   });
 
   it('shows an error state and retries the request', async () => {
-    await open('/projects');
+    await open('/de/projects');
     http
       .expectOne(req => req.url.endsWith('/projects'))
       .flush('fail', { status: 500, statusText: 'Server Error' });

@@ -28,13 +28,16 @@ describe('ProjectService', () => {
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     languageService = TestBed.inject(LanguageService);
-    languageService.currentLanguage.set('de');
+    languageService.setLanguage('de');
     service = TestBed.inject(ProjectService);
     http = TestBed.inject(HttpTestingController);
     TestBed.tick();
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    http.verify();
+    localStorage.removeItem('portfolio-language');
+  });
 
   it('exposes loaded projects and only the featured ones as featured', async () => {
     const projects = getMockProjects('de');
@@ -62,7 +65,7 @@ describe('ProjectService', () => {
   it('cancels the outdated request and loads the new language', async () => {
     const outdated = expectProjectsRequest('de');
 
-    languageService.currentLanguage.set('en');
+    languageService.setLanguage('en');
     TestBed.tick();
 
     expect(outdated.cancelled).toBe(true);

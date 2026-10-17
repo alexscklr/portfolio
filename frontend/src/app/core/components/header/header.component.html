@@ -1,19 +1,19 @@
 <header class="fixed top-0 z-50 w-full backdrop-blur-md">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
     
-    <a routerLink="/" class="group flex items-center gap-2 text-lg font-bold text-white">
+    <a [routerLink]="languageService.localizedUrl('/')" class="group flex items-center gap-2 text-lg font-bold text-white">
       <span class="font-heading">Alexander Sickler <span class="font-mono text-xs text-accent-primary whitespace-nowrap">// portfolio</span></span>
       
     </a>
 
     <nav class="hidden sm:flex items-center gap-6">
-      <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav">{{ 'nav.home' | translate }}</a>
-      <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav">{{ 'nav.projects' | translate }}</a>
-      <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav">{{ 'nav.about' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/')" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav">{{ 'nav.home' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/projects')" routerLinkActive="text-accent-primary" appLink variant="nav">{{ 'nav.projects' | translate }}</a>
+      <a [routerLink]="languageService.localizedUrl('/about')" routerLinkActive="text-accent-primary" appLink variant="nav">{{ 'nav.about' | translate }}</a>
     </nav>
 
     <div class="hidden sm:block">
-      <button appButton variant="secondary" size="sm" routerLink="/contact">
+      <button appButton variant="secondary" size="sm" [routerLink]="languageService.localizedUrl('/contact')">
         {{ 'nav.contact' | translate }}
       </button>
     </div>
@@ -23,9 +23,10 @@
       id="desktop-language"
       class="language-selector hidden sm:block"
       (change)="onLanguageChange($event)"
+      [value]="languageService.currentLanguage()"
     >
-      @for (language of supportedLanguages; track language) {
-        <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+      @for (lang of supportedLanguages; track lang) {
+        <option [value]="lang" [selected]="lang === languageService.currentLanguage()">{{ lang === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
       }
     </select>
 
@@ -38,18 +39,18 @@
 
     <div class="mobile-menu-flyout px-6 py-6">
       <nav class="flex flex-col gap-4 items-end">
-        <a routerLink="/" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav" class="text-base py-2 text-right">
+        <a [routerLink]="languageService.localizedUrl('/')" routerLinkActive="text-accent-primary" [routerLinkActiveOptions]="{exact: true}" appLink variant="nav" class="text-base py-2 text-right">
           {{ 'nav.home' | translate }}
         </a>
-        <a routerLink="/projects" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+        <a [routerLink]="languageService.localizedUrl('/projects')" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
           {{ 'nav.projects' | translate }}
         </a>
-        <a routerLink="/about" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
+        <a [routerLink]="languageService.localizedUrl('/about')" routerLinkActive="text-accent-primary" appLink variant="nav" class="text-base py-2">
           {{ 'nav.about' | translate }}
         </a>
         
         <div class="pt-4">
-          <button appButton variant="secondary" size="md" routerLink="/contact" class="w-full justify-center">
+          <button appButton variant="secondary" size="md" [routerLink]="languageService.localizedUrl('/contact')" class="w-full justify-center">
             {{ 'nav.contactFull' | translate }}
           </button>
         </div>
@@ -59,9 +60,10 @@
           id="mobile-language"
           class="language-selector language-selector--mobile"
           (change)="onLanguageChange($event)"
+          [value]="languageService.currentLanguage()"
         >
-          @for (language of supportedLanguages; track language) {
-            <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+          @for (lang of supportedLanguages; track lang) {
+            <option [value]="lang" [selected]="lang === languageService.currentLanguage()">{{ lang === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
           }
         </select>
       </nav>

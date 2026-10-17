@@ -22,11 +22,10 @@
     <select
       id="desktop-language"
       class="language-selector hidden sm:block"
-      [value]="languageService.currentLanguage()"
       (change)="onLanguageChange($event)"
     >
       @for (language of supportedLanguages; track language) {
-        <option [value]="language">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+        <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
       }
     </select>
 
@@ -59,11 +58,10 @@
         <select
           id="mobile-language"
           class="language-selector language-selector--mobile"
-          [value]="languageService.currentLanguage()"
           (change)="onLanguageChange($event)"
         >
           @for (language of supportedLanguages; track language) {
-            <option [value]="language">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
+            <option [value]="language" [selected]="language === languageService.currentLanguage()">{{ language === 'de' ? '🇩🇪 DE' : '🇬🇧 EN' }}</option>
           }
         </select>
       </nav>

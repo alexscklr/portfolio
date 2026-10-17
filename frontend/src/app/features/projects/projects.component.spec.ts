@@ -4,10 +4,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { Observable, of } from 'rxjs';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
 import { routes } from '@/app/app.routes';
 import { LanguageService } from '@/app/core/services/language.service';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { ProjectsComponent } from './projects.component';
+
+const translationStub = {
+  use: (): Observable<void> => of(undefined),
+  translate: (key: string): string => key,
+};
 
 describe('ProjectsComponent', () => {
   let http: HttpTestingController;
@@ -20,14 +27,10 @@ describe('ProjectsComponent', () => {
       h => h.textContent?.trim() ?? '',
     );
 
-  const flushTranslations = (): void =>
-    http.match(req => req.url.includes('/i18n/')).forEach(req => req.flush({}));
-
   const open = async (url: string): Promise<void> => {
     harness = await RouterTestingHarness.create();
     await harness.navigateByUrl(url, ProjectsComponent);
     TestBed.tick();
-    flushTranslations();
   };
 
   const respond = async (): Promise<void> => {
@@ -37,14 +40,18 @@ describe('ProjectsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter(routes),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: TranslationService, useValue: translationStub },
+      ],
     });
     TestBed.inject(LanguageService).setLanguage('de');
     http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    flushTranslations();
     http.verify();
     localStorage.removeItem('portfolio-language');
   });

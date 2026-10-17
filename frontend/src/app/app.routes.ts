@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
-import { CanMatchFn, Router, Routes, UrlSegment } from '@angular/router';
+import { CanMatchFn, ResolveFn, Router, Routes, UrlSegment } from '@angular/router';
+import { TranslationService } from '@/app/core/services/translation.service';
 import { LanguageRedirectComponent } from '@/app/core/components/language-redirect/language-redirect.component';
 import { DEFAULT_LANGUAGE, isSupportedLanguage } from '@/app/core/config/languages';
 
@@ -12,6 +13,11 @@ export const requireSupportedLanguage: CanMatchFn = (_route, segments: UrlSegmen
   return router.createUrlTree([DEFAULT_LANGUAGE, ...remainingSegments]);
 };
 
+export const loadTranslations: ResolveFn<void> = route => {
+  const language = route.paramMap.get('lang');
+  return isSupportedLanguage(language) ? inject(TranslationService).use(language) : undefined;
+};
+
 export const routes: Routes = [
   {
     path: '',
@@ -21,6 +27,7 @@ export const routes: Routes = [
   {
     path: ':lang',
     canMatch: [requireSupportedLanguage],
+    resolve: { translations: loadTranslations },
     children: [
       {
         path: '',

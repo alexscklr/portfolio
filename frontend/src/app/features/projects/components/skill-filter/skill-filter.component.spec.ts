@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SkillTagCategory } from '@/app/core/models';
-import { SkillFacetGroup } from '../../project-filter';
+import { SkillFacetGroup } from '../../utils/project-filter';
 import { SkillFilterComponent } from './skill-filter.component';
 
 const group = (category: SkillTagCategory, slug: string): SkillFacetGroup => ({

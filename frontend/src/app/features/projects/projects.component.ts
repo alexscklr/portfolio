@@ -6,7 +6,7 @@ import { ProjectCardComponent } from '@/app/shared/components/project-card/proje
 import { ButtonDirective } from '@/app/shared/directives/button.directive';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
 import { SkillFilterComponent } from './components/skill-filter/skill-filter.component';
-import { buildSkillFacets, filterProjectsBySkills, parseSkillSlugs } from './project-filter';
+import { buildSkillFacets, filterProjectsBySkills, parseSkillSlugs } from './utils/project-filter';
 
 const SKILLS_QUERY_PARAM = 'skills';
 

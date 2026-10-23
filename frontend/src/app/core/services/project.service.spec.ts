@@ -74,4 +74,45 @@ describe('ProjectService', () => {
 
     expect(service.projects()[0].subtitle).toBe('Real-time visuals in the browser');
   });
+
+  describe('selected project', () => {
+    const detailRequest = (slug: string): TestRequest =>
+      http.expectOne(req => req.method === 'GET' && req.url.endsWith(`/projects/${slug}`));
+
+    beforeEach(() => {
+      expectProjectsRequest('de').flush([]);
+    });
+
+    it('reports not found for a 404 without flagging a technical error', async () => {
+      service.selectProject('missing');
+      TestBed.tick();
+      detailRequest('missing').flush('nope', { status: 404, statusText: 'Not Found' });
+      await settle();
+
+      expect(service.selectedProject()).toBeNull();
+      expect(service.selectedProjectNotFound()).toBe(true);
+      expect(service.hasSelectedProjectError()).toBe(false);
+    });
+
+    it('reports a technical error for other failures', async () => {
+      service.selectProject('broken');
+      TestBed.tick();
+      detailRequest('broken').flush('fail', { status: 500, statusText: 'Server Error' });
+      await settle();
+
+      expect(service.selectedProjectNotFound()).toBe(false);
+      expect(service.hasSelectedProjectError()).toBe(true);
+    });
+
+    it('exposes the parsed block tree of the selected project', async () => {
+      const project = getMockProjects('de')[0];
+      service.selectProject(project.slug);
+      TestBed.tick();
+      detailRequest(project.slug).flush(project);
+      await settle();
+
+      expect(service.selectedProjectNotFound()).toBe(false);
+      expect(service.selectedProjectBlocks().length).toBeGreaterThan(0);
+    });
+  });
 });

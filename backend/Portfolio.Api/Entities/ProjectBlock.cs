@@ -9,6 +9,11 @@ public class ProjectBlock
     public int DisplayOrder {get; set;}
 
     public Guid ProjectId {get; set;}
+
+    public Guid? ParentBlockId { get; set; }
+    public ProjectBlock? ParentBlock { get; set; }
+    public List<ProjectBlock> ChildBlocks { get; set; } = new();
+
     public Project Project {get; set;} = null!;
     public List<ProjectBlockTranslation> Translations { get; set; } = new();
 }

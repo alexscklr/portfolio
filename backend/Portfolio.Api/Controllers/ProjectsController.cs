@@ -56,6 +56,7 @@ public class ProjectsController : ControllerBase
         }
 
         var projects = await query
+        .AsNoTracking()
         .OrderBy(p => p.DisplayOrder)
         .ThenByDescending(p => p.CreatedAt)
         .ToListAsync();
@@ -79,6 +80,7 @@ public class ProjectsController : ControllerBase
         var languageCode = SupportedLanguages.Resolve(lang);
 
         var project = await _context.Projects
+            .AsNoTracking()
             .Include(p => p.Skills)
             .Include(p => p.Links)
                 .ThenInclude(l => l.Translations)

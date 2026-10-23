@@ -85,6 +85,11 @@ public static class ProjectResponseMapper
     private static ProjectBlockResponse ToResponse(ProjectBlock block, string languageCode)
     {
         var translation = TranslationResolver.Resolve(block.Translations, languageCode, item => item.LanguageCode);
-        return new ProjectBlockResponse(block.Id, block.Type, block.DisplayOrder, translation?.ContentOrConfig);
+        return new ProjectBlockResponse(
+            block.Id,
+            block.Type,
+            block.DisplayOrder,
+            translation?.ContentOrConfig,
+            block.ParentBlockId);
     }
 }

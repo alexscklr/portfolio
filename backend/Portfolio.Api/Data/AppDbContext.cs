@@ -43,6 +43,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<ProjectBlock>()
             .Property(b => b.Type)
             .HasConversion<string>();
+        
+        modelBuilder.Entity<ProjectBlock>()
+            .HasOne(b => b.ParentBlock)
+            .WithMany(b => b.ChildBlocks)
+            .HasForeignKey(b => b.ParentBlockId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ProfileTranslation>()
             .HasIndex(t => new { t.ProfileId, t.LanguageCode })

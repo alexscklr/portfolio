@@ -7,6 +7,12 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: ':lang/projects/:slug',
+    renderMode: RenderMode.Prerender,
+    // Project slugs will be enumerated from the API in phase 4.
+    getPrerenderParams: async () => [],
+  },
+  {
     path: ':lang/**',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => [

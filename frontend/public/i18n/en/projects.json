@@ -24,5 +24,14 @@
 	"skills.category.concept": "Concepts & APIs",
 	"projects.slider.previous": "Previous media",
 	"projects.slider.next": "Next media",
-	"projects.slider.goTo": "Go to media"
+  "projects.slider.goTo": "Go to media",
+  "projects.detail.back": "Back to all projects",
+  "projects.detail.loading": "Loading project …",
+  "projects.detail.error": "The project could not be loaded.",
+  "projects.detail.retry": "Try again",
+  "projects.detail.notFoundTitle": "Project not found",
+  "projects.detail.notFound": "The requested project is not available.",
+  "projects.detail.period": "Period",
+  "projects.detail.skills": "Skills used",
+  "projects.detail.links": "Links"
 }

@@ -24,5 +24,14 @@
 	"skills.category.concept": "Konzepte & APIs",
 	"projects.slider.previous": "Vorheriges Medium",
 	"projects.slider.next": "Nächstes Medium",
-	"projects.slider.goTo": "Gehe zu Medium"
+  "projects.slider.goTo": "Gehe zu Medium",
+  "projects.detail.back": "Zurück zu allen Projekten",
+  "projects.detail.loading": "Projekt wird geladen …",
+  "projects.detail.error": "Das Projekt konnte nicht geladen werden.",
+  "projects.detail.retry": "Erneut versuchen",
+  "projects.detail.notFoundTitle": "Projekt nicht gefunden",
+  "projects.detail.notFound": "Das angeforderte Projekt ist nicht verfügbar.",
+  "projects.detail.period": "Zeitraum",
+  "projects.detail.skills": "Verwendete Skills",
+  "projects.detail.links": "Links"
 }

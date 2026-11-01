@@ -61,6 +61,7 @@ export class ProjectService {
   readonly selectedProject = computed(() =>
     this.selectedProjectResource.hasValue() ? this.selectedProjectResource.value() : null,
   );
+  readonly selectedProjectSlug = this.selectedSlug.asReadonly();
   readonly isSelectedProjectLoading = this.selectedProjectResource.isLoading;
   readonly selectedProjectBlocks = computed(() =>
     parseProjectBlocks(this.selectedProject()?.blocks ?? []),
@@ -81,5 +82,9 @@ export class ProjectService {
 
   selectProject(slug: string): void {
     this.selectedSlug.set(slug);
+  }
+
+  reloadSelectedProject(): void {
+    this.selectedProjectResource.reload();
   }
 }

@@ -20,6 +20,8 @@ Portfolio (DE/EN): Angular-22-SPA in `frontend/`, ASP.NET-Core-8-API in `backend
 - Darstellung → Komponente in `features/` oder `shared/`.
 - HTTP-Endpunkt → Controller; Clientdatenform → DTO + Mapper.
 - Skillfilterlogik → reine Funktionen in `features/projects/project-filter.ts`; Auswahl bleibt in der URL (`skills`).
+- Projektdetailseite (`/projects/:slug`) → `features/projects/project-detail/`; CMS-Blöcke: flache API-Liste → `parseProjectBlocks` → rekursiver `ProjectBlocksComponent` in `features/projects/blocks/` (Container in `container/`, Inhalte in `content/`). Neue Blocktypen als eigene Komponente dort ergänzen, nicht den Dispatcher aufblähen.
+- Seitenmetadaten (Title, Description, `og:image`, JSON-LD) → `SeoService`; Detailseiten rufen `setProject()` auf.
 
 ## Befehle
 

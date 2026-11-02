@@ -31,7 +31,7 @@ At each Development startup the backend applies migrations and seeds the profile
 
 `npm --prefix frontend run build` prerenders the site statically (no Node server at runtime). Output goes to `frontend/dist/frontend/browser`:
 
-- `de/`, `en/` and `{de,en}/projects/` as ready-made HTML (content, titles, canonical/hreflang, Open Graph, JSON-LD), plus `sitemap.xml` and `robots.txt`.
+- `de/`, `en/` and `{de,en}/projects/` and `{de,en}/projects/<slug>/` (slugs fetched from the API at build time, so it must be reachable) as ready-made HTML (content, titles, canonical/hreflang, Open Graph, JSON-LD), plus `sitemap.xml` and `robots.txt`.
 - `/` is a client-side redirect to the preferred language (stored choice, then browser language, otherwise `de`).
 
 The prerender fetches profile, projects and skills from the API at **build time**, so the backend must be reachable at `PORTFOLIO_API_URL` (or build with `PORTFOLIO_DATA_SOURCE=frontend-mock` outside production). The data is embedded via transfer state, so the browser does not request it again on load. For a local check, serve the output with any static server, for example `python3 -m http.server -d frontend/dist/frontend/browser`.

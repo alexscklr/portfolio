@@ -4,7 +4,8 @@ Portfolio-Projekt: Angular 22 (zoneless, Signals) Frontend in `frontend/`, ASP.N
 
 ## Aktueller Stand der Projektseite
 
-- Die Projektübersicht ist unter `/projects` implementiert; eine Frontend-Detailroute `/projects/:slug` ist noch offen. Der Textbereich einer Projektkarte verlinkt bereits auf diesen Pfad, der Routing-Fallback leitet unbekannte Routen auf die Startseite der jeweiligen Sprache um.
+- Die Projektübersicht ist unter `/projects` implementiert; die Detailseite `/projects/:slug` ist implementiert (`features/projects/project-detail/`). Der Textbereich einer Projektkarte verlinkt darauf, der Routing-Fallback leitet unbekannte Routen auf die Startseite der jeweiligen Sprache um.
+- Detailseiten-Blöcke: flache API-Liste → `parseProjectBlocks` → rekursiver `ProjectBlocksComponent` (`features/projects/blocks/`). Container (`Section`, `SplitContainer`) in `blocks/container/`, Inhalte (Markdown, Callout, Code, Galerie, Bild, Video) in `blocks/content/`; neue Blocktypen als eigene Komponente dort ergänzen. Markdown nur über `marked` plus Angular-Sanitizer, Überschriften beginnen bei `h2`. Prerender-Slugs kommen aus `core/config/project-slugs.ts` (API muss zur Build-Zeit erreichbar sein), Seitenmetadaten über `SeoService.setProject()`.
 - Skillfilter: Auswahl im Query-Parameter `skills`, UND-Semantik, Suche auf Skillnamen und Facetten, die mit der aktiven Auswahl in Projekten vorkommen. Filterlogik liegt als reine Funktionen in `features/projects/project-filter.ts`.
 - Die Filterleiste hält leere Kategorien während der Ein-/Ausblendtransition im DOM und markiert sie mit `inert` und `aria-hidden`. Animationen müssen `prefers-reduced-motion` respektieren.
 - Projektkarten verwenden `MediaSliderComponent`; Detailtext-Link, Slider-Steuerung sowie externe Demo-/Quellcode-Links bleiben getrennte Interaktionsziele. Sichtbare Skillchips sind auf fünf begrenzt, weitere erscheinen als `+N`.

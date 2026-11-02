@@ -1,7 +1,15 @@
 @if (sectionBlock(); as section) {
-  <section [class]="sectionClasses(section.cssClass)">
+  <section
+    [class]="sectionClasses(section.cssClass)"
+    [attr.aria-labelledby]="section.title ? 'project-section-' + section.id : null"
+  >
     @if (section.title) {
-      <h2 class="mb-4 font-heading text-2xl font-bold text-white">{{ section.title }}</h2>
+      <h2
+        [id]="'project-section-' + section.id"
+        class="mb-4 font-heading text-2xl font-bold text-white"
+      >
+        {{ section.title }}
+      </h2>
     }
     <ng-container
       [ngTemplateOutlet]="children()"

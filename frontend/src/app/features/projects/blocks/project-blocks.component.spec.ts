@@ -47,7 +47,7 @@ describe('ProjectBlocksComponent', () => {
       },
     ]);
 
-    expect(element.querySelector('section h2')?.textContent).toBe('Overview');
+    expect(element.querySelector('section h2')?.textContent?.trim()).toBe('Overview');
     expect(element.querySelector('.project-split-grid')?.getAttribute('style')).toContain(
       '--split-columns: 1fr 2fr',
     );
@@ -140,8 +140,28 @@ describe('ProjectBlocksComponent', () => {
       },
     ]);
 
-    expect(element.querySelector('h1')?.textContent).toBe('Safe heading');
+    expect(element.querySelector('h2')?.textContent).toBe('Safe heading');
     expect(element.querySelector('script')).toBeNull();
     expect(element.querySelector('img')?.hasAttribute('onerror')).toBe(false);
+  });
+
+  it('labels sections by their heading', async () => {
+    const element = await render([
+      { id: 's1', type: BlockType.Section, displayOrder: 1, title: 'Overview', children: [] },
+    ]);
+    const heading = element.querySelector('section h2');
+
+    expect(heading?.id).toBe('project-section-s1');
+    expect(element.querySelector('section')?.getAttribute('aria-labelledby')).toBe(heading?.id);
+  });
+
+  it('demotes Markdown headings below the page title', async () => {
+    const element = await render([
+      { id: 'm1', type: BlockType.MarkdownText, displayOrder: 1, content: '# Title\n\n## Sub' },
+    ]);
+
+    expect(element.querySelector('h1')).toBeNull();
+    expect(element.querySelector('h2')?.textContent).toBe('Title');
+    expect(element.querySelector('h3')?.textContent).toBe('Sub');
   });
 });

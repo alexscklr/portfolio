@@ -1,9 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProjectLinkType, SkillTag } from '@/app/core/models';
 import { SKILL_CATEGORY_STYLES } from '@/app/core/config/skill-category';
 import { LanguageService } from '@/app/core/services/language.service';
+import { SeoService } from '@/app/core/services/seo.service';
 import { ProjectService } from '@/app/core/services/project.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { ButtonDirective } from '@/app/shared/directives/button.directive';
@@ -23,6 +31,7 @@ export class ProjectDetailComponent {
   protected readonly languageService = inject(LanguageService);
   private readonly translationService = inject(TranslationService);
   private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
 
   private readonly routeParams = toSignal(this.route.paramMap, { requireSync: true });
 
@@ -68,6 +77,8 @@ export class ProjectDetailComponent {
         this.projectService.selectProject(slug);
       }
     });
+    effect(() => this.seoService.setProject(this.project()));
+    inject(DestroyRef).onDestroy(() => this.seoService.setProject(null));
   }
 
   protected skillClass(skill: SkillTag): string {

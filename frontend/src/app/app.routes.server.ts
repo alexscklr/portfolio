@@ -1,5 +1,6 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { SUPPORTED_LANGUAGES } from '@/app/core/config/languages';
+import { getProjectSlugs } from '@/app/core/config/project-slugs';
 
 export const serverRoutes: ServerRoute[] = [
   {
@@ -9,8 +10,10 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: ':lang/projects/:slug',
     renderMode: RenderMode.Prerender,
-    // Project slugs will be enumerated from the API in phase 4.
-    getPrerenderParams: async () => [],
+    getPrerenderParams: async () => {
+      const slugs = await getProjectSlugs();
+      return SUPPORTED_LANGUAGES.flatMap(lang => slugs.map(slug => ({ lang, slug })));
+    },
   },
   {
     path: ':lang/**',

@@ -45,6 +45,23 @@ await writeFile(outputPath, contents);
 const languages = ['de', 'en'];
 const pages = ['', '/projects'];
 
+// Detailseiten kommen aus der API; im Mock-Modus entfallen sie in der Sitemap.
+if (dataSource === 'api') {
+  try {
+    const response = await fetch(`${apiUrl}/projects?lang=de`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    const projects = await response.json();
+    pages.push(...projects.map(project => `/projects/${encodeURIComponent(project.slug)}`));
+  } catch (error) {
+    if (isProductionBuild) {
+      throw new Error(`Project slugs for the sitemap could not be loaded: ${error}`);
+    }
+    console.warn(`Sitemap: project detail pages skipped (${error}).`);
+  }
+}
+
 const sitemapEntries = pages.flatMap(page =>
   languages.map(language => {
     const alternates = languages

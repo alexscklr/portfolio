@@ -1,0 +1,45 @@
+@if (galleryBlock()) {
+  @if (galleryMedia(); as items) {
+    @if (items.length > 0) {
+      <div>
+        <app-media-slider class="block" [media]="items" [label]="label()" />
+      </div>
+    }
+  }
+}
+@if (imageBlock(); as block) {
+  @if (image(); as item) {
+    <figure>
+      <img
+        class="mx-auto max-h-[42rem] w-full rounded-lg object-contain"
+        [src]="item.fileUrl"
+        [alt]="item.altText ?? label()"
+        loading="lazy"
+      />
+      @if (block.caption) {
+        <figcaption class="mt-2 text-center text-sm text-slate-400">
+          {{ block.caption }}
+        </figcaption>
+      }
+    </figure>
+  }
+}
+@if (videoBlock()) {
+  @if (video(); as item) {
+    <figure>
+      <video
+        class="max-h-[42rem] w-full rounded-lg bg-primary-950"
+        controls
+        preload="metadata"
+        [poster]="item.posterUrl ?? null"
+        [src]="item.fileUrl"
+        [attr.aria-label]="item.altText ?? label()"
+      ></video>
+      @if (item.altText) {
+        <figcaption class="mt-2 text-center text-sm text-slate-400">
+          {{ item.altText }}
+        </figcaption>
+      }
+    </figure>
+  }
+}

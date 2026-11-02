@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Api.Entities;
 using Portfolio.Api.Services;
@@ -252,9 +253,10 @@ public static class DevelopmentDataSeeder
 
         string[] galleryImages = ["/media/fixtures/placeholder.svg", "/media/fixtures/japan-route-placeholder.svg"];
         var order = mediaUrl is null ? 1 : 2;
+        var galleryMediaIds = new List<Guid>();
         foreach (var imageUrl in galleryImages)
         {
-            project.Media.Add(new ProjectMedia
+            var galleryMedia = new ProjectMedia
             {
                 FileUrl = imageUrl,
                 FileName = Path.GetFileName(imageUrl),
@@ -265,12 +267,15 @@ public static class DevelopmentDataSeeder
                     new() { LanguageCode = "de", AltText = $"Vorschaubild zu {germanTitle}" },
                     new() { LanguageCode = "en", AltText = $"Preview image for {englishTitle}" }
                 ]
-            });
+            };
+            project.Media.Add(galleryMedia);
+            galleryMediaIds.Add(galleryMedia.Id);
         }
 
+        ProjectMedia? videoMedia = null;
         if (mediaUrl is not null)
         {
-            project.Media.Add(new ProjectMedia
+            videoMedia = new ProjectMedia
             {
                 FileUrl = mediaUrl,
                 FileName = Path.GetFileName(mediaUrl),
@@ -282,9 +287,107 @@ public static class DevelopmentDataSeeder
                     new() { LanguageCode = "de", AltText = germanAltText },
                     new() { LanguageCode = "en", AltText = englishAltText }
                 ]
-            });
+            };
+            project.Media.Add(videoMedia);
         }
 
+        AddLayoutBlocks(project, germanTitle, englishTitle, galleryMediaIds, videoMedia?.Id);
+
         return project;
+    }
+
+    private static void AddLayoutBlocks(
+        Project project,
+        string germanTitle,
+        string englishTitle,
+        IReadOnlyList<Guid> galleryMediaIds,
+        Guid? videoMediaId)
+    {
+        var section = CreateBlock(
+            ProjectBlockType.Section,
+            2,
+            null,
+            JsonSerializer.Serialize(new { title = "Überblick", cssClass = "py-8" }),
+            JsonSerializer.Serialize(new { title = "Overview", cssClass = "py-8" }));
+        var split = CreateBlock(
+            ProjectBlockType.SplitContainer,
+            1,
+            section.Id,
+            JsonSerializer.Serialize(new { columns = "1fr 2fr", gap = "6" }));
+        var text = CreateBlock(
+            ProjectBlockType.MarkdownText,
+            1,
+            split.Id,
+            $"**{germanTitle}** entstand als Portfolio-Projekt.\n\n- Fokus auf Performance\n- Saubere Architektur\n- Barrierefreie Umsetzung",
+            $"**{englishTitle}** was built as a portfolio project.\n\n- Focus on performance\n- Clean architecture\n- Accessible implementation");
+        var gallery = CreateBlock(
+            ProjectBlockType.ImageGallery,
+            2,
+            split.Id,
+            JsonSerializer.Serialize(new { mediaIds = galleryMediaIds }));
+
+        var blocks = new List<ProjectBlock> { section, split, text, gallery };
+
+        if (videoMediaId is { } mediaId)
+        {
+            blocks.Add(CreateBlock(
+                ProjectBlockType.VideoPlayer,
+                3,
+                null,
+                JsonSerializer.Serialize(new { mediaId })));
+        }
+
+        blocks.Add(CreateBlock(
+            ProjectBlockType.Callout,
+            4,
+            null,
+            JsonSerializer.Serialize(new { variant = "result", text = "Ergebnis: spürbar schnellere Ladezeiten bei sauberer Architektur." }),
+            JsonSerializer.Serialize(new { variant = "result", text = "Result: noticeably faster load times with a clean architecture." })));
+
+        if (galleryMediaIds.Count > 1)
+        {
+            blocks.Add(CreateBlock(
+                ProjectBlockType.Image,
+                5,
+                null,
+                JsonSerializer.Serialize(new { mediaId = galleryMediaIds[1], caption = "Beispielansicht aus dem Projekt" }),
+                JsonSerializer.Serialize(new { mediaId = galleryMediaIds[1], caption = "Example view from the project" })));
+        }
+
+        blocks.Add(CreateBlock(
+            ProjectBlockType.CodeSnippet,
+            6,
+            null,
+            JsonSerializer.Serialize(new
+            {
+                language = "typescript",
+                fileName = "example.ts",
+                code = "export const greet = (name: string): string => `Hello, ${name}!`;"
+            })));
+
+        foreach (var block in blocks)
+        {
+            project.Blocks.Add(block);
+        }
+    }
+
+    private static ProjectBlock CreateBlock(
+        ProjectBlockType type,
+        int displayOrder,
+        Guid? parentBlockId,
+        string germanContent,
+        string? englishContent = null)
+    {
+        return new ProjectBlock
+        {
+            Type = type,
+            DisplayOrder = displayOrder,
+            ParentBlockId = parentBlockId,
+            Translations =
+            [
+                new() { LanguageCode = "de", ContentOrConfig = germanContent },
+                new() { LanguageCode = "en", ContentOrConfig = englishContent ?? germanContent }
+            ]
+        };
     }
 }

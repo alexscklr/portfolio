@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { SKILL_CATEGORY_ORDER, SKILL_CATEGORY_STYLES } from '@/app/core/config/skill-category';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
-import { SkillFacetGroup } from '../../project-filter';
+import { SkillFacetGroup } from '../../utils/project-filter';
 
 interface SkillRow extends SkillFacetGroup {
   collapsed: boolean;

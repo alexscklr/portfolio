@@ -15,3 +15,4 @@ alwaysApply: false
 - Kein `any`; Testnamen beschreiben das Verhalten; deterministisch, keine Netzwerkzugriffe.
 - jsdom implementiert `HTMLMediaElement.play()`/`pause()` nicht; Warnungen sind erwartbar.
 - Zu neuem Code passende Tests mitliefern.
+- Detailseite/Blöcke: `RouterTestingHarness` mit `provideRouter(routes)`; Renderer-Tests prüfen Rekursion, Sanitizing, Heading-Hierarchie und `aria-labelledby` der Sections. `SeoService` per `setProject()` testen, nicht über `ProjectService` (löst HTTP aus).

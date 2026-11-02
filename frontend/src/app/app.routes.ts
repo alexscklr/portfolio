@@ -40,6 +40,13 @@ export const routes: Routes = [
           import('@/app/features/projects/projects.component').then(m => m.ProjectsComponent),
       },
       {
+        path: 'projects/:slug',
+        loadComponent: () =>
+          import('@/app/features/projects/project-detail/project-detail.component').then(
+            m => m.ProjectDetailComponent,
+          ),
+      },
+      {
         path: '**',
         redirectTo: '',
       },

@@ -56,4 +56,5 @@ public sealed record ProjectBlockResponse(
     Guid Id,
     ProjectBlockType Type,
     int DisplayOrder,
-    string? ContentOrConfig);
+    string? ContentOrConfig,
+    Guid? ParentBlockId);

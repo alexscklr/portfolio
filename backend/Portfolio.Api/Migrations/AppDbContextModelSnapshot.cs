@@ -144,6 +144,9 @@ namespace Portfolio.Api.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("ParentBlockId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
 
@@ -152,6 +155,8 @@ namespace Portfolio.Api.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentBlockId");
 
                     b.HasIndex("ProjectId");
 
@@ -410,11 +415,18 @@ namespace Portfolio.Api.Migrations
 
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
                 {
+                    b.HasOne("Portfolio.Api.Entities.ProjectBlock", "ParentBlock")
+                        .WithMany("ChildBlocks")
+                        .HasForeignKey("ParentBlockId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Portfolio.Api.Entities.Project", "Project")
                         .WithMany("Blocks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ParentBlock");
 
                     b.Navigation("Project");
                 });
@@ -531,6 +543,8 @@ namespace Portfolio.Api.Migrations
 
             modelBuilder.Entity("Portfolio.Api.Entities.ProjectBlock", b =>
                 {
+                    b.Navigation("ChildBlocks");
+
                     b.Navigation("Translations");
                 });
 

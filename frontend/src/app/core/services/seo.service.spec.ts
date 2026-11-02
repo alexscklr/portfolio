@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
+import { getMockProjects } from '@/app/core/mocks/project.mock';
 import { getMockProfile } from '@/app/core/mocks/profile.mock';
 import { environment } from '@/environments/environment';
 import { SeoService } from './seo.service';
@@ -26,6 +27,7 @@ describe('SeoService', () => {
         provideRouter([
           { path: ':lang', component: TestRouteComponent },
           { path: ':lang/projects', component: TestRouteComponent },
+          { path: ':lang/projects/:slug', component: TestRouteComponent },
         ]),
         { provide: ProfileService, useValue: { profile } },
       ],
@@ -35,7 +37,9 @@ describe('SeoService', () => {
 
   afterEach(() => {
     document.head
-      .querySelectorAll('link[rel="canonical"], link[rel="alternate"], meta[property], script')
+      .querySelectorAll(
+        'link[rel="canonical"], link[rel="alternate"], meta[property], meta[name], script',
+      )
       .forEach(element => element.remove());
     document.documentElement.removeAttribute('lang');
     TestBed.resetTestingModule();
@@ -71,5 +75,37 @@ describe('SeoService', () => {
     expect(json.name).toBe(profile().fullName);
     expect(json.sameAs.length).toBeGreaterThan(0);
     expect(json.sameAs.every(url => url.startsWith('http'))).toBe(true);
+  });
+
+  it('uses project data for title, description, image and CreativeWork data', async () => {
+    const project = getMockProjects('en')[0];
+    TestBed.inject(SeoService).setProject(project);
+    await navigate(`/en/projects/${project.slug}`);
+
+    expect(document.title).toBe(`${project.title} | Alexander Sickler`);
+    expect(attr('meta[name="description"]', 'content')).toBe(project.shortDescription);
+    expect(attr('meta[property="og:type"]', 'content')).toBe('article');
+    expect(attr('meta[property="og:image"]', 'content')).toBe(
+      `${environment.siteUrl}${project.previewMediaUrl}`,
+    );
+    expect(attr('link[rel="canonical"]', 'href')).toBe(
+      `${environment.siteUrl}/en/projects/${project.slug}`,
+    );
+
+    const json = JSON.parse(
+      document.head.querySelector('script[data-seo="project"]')?.textContent ?? '{}',
+    ) as { '@type': string; name: string };
+    expect(json['@type']).toBe('CreativeWork');
+    expect(json.name).toBe(project.title);
+  });
+
+  it('removes project-only tags on other pages', async () => {
+    const project = getMockProjects('en')[0];
+    TestBed.inject(SeoService).setProject(project);
+    await navigate(`/en/projects/${project.slug}`);
+    await navigate('/en');
+
+    expect(document.head.querySelector('script[data-seo="project"]')).toBeNull();
+    expect(document.head.querySelector('meta[property="og:image"]')).toBeNull();
   });
 });

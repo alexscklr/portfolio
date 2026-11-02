@@ -1,9 +1,14 @@
 export enum BlockType {
     MarkdownText = 'MarkdownText',
+    Callout = 'Callout',
     ImageGallery = 'ImageGallery',
     PdfViewer = 'PdfViewer',
     VideoPlayer = 'VideoPlayer',
-    CustomWidget = 'CustomWidget'
+    CustomWidget = 'CustomWidget',
+    Section = 'Section',
+    SplitContainer = 'SplitContainer',
+    Image = 'Image',
+    CodeSnippet = 'CodeSnippet'
 }
 
 export interface ProjectBlock {
@@ -11,4 +16,5 @@ export interface ProjectBlock {
     type: BlockType;
     displayOrder: number;
     contentOrConfig: string;
+    parentBlockId?: string;
 }

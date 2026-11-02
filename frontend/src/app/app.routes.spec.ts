@@ -28,6 +28,10 @@ describe('routes', () => {
     expect(use).toHaveBeenCalledWith('en');
   });
 
+  it('routes project detail pages without falling back to the home page', async () => {
+    expect(await urlAfterNavigation('/en/projects/some-project')).toBe('/en/projects/some-project');
+  });
+
   it('redirects an unsupported language to the default language', async () => {
     expect(await urlAfterNavigation('/fr/projects')).toBe('/de/projects');
     expect(use).toHaveBeenCalledWith('de');

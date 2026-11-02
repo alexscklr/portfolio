@@ -1,8 +1,9 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 import { Project } from '@/app/core/models';
+import { parseProjectBlocks } from '@/app/features/projects/utils/project-block-parser';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
 import { LanguageService } from './language.service';
 import { environment } from '@/environments/environment';
@@ -35,9 +36,15 @@ export class ProjectService {
     stream: ({ params }): Observable<Project | null> =>
       environment.dataSource === 'frontend-mock'
         ? of(getMockProjects(params.lang).find(project => project.slug === params.slug) ?? null)
-        : this.http.get<Project>(`${this.apiUrl}/${params.slug}`, {
-            params: { lang: params.lang },
-          }),
+        : this.http
+            .get<Project>(`${this.apiUrl}/${params.slug}`, { params: { lang: params.lang } })
+            .pipe(
+              catchError((error: unknown) =>
+                error instanceof HttpErrorResponse && error.status === 404
+                  ? of(null)
+                  : throwError(() => error),
+              ),
+            ),
   });
 
   readonly projects = computed(() =>
@@ -54,7 +61,20 @@ export class ProjectService {
   readonly selectedProject = computed(() =>
     this.selectedProjectResource.hasValue() ? this.selectedProjectResource.value() : null,
   );
+  readonly selectedProjectSlug = this.selectedSlug.asReadonly();
   readonly isSelectedProjectLoading = this.selectedProjectResource.isLoading;
+  readonly selectedProjectBlocks = computed(() =>
+    parseProjectBlocks(this.selectedProject()?.blocks ?? []),
+  );
+  readonly selectedProjectNotFound = computed(
+    () =>
+      this.selectedSlug() !== null &&
+      this.selectedProjectResource.status() === 'resolved' &&
+      this.selectedProject() === null,
+  );
+  readonly hasSelectedProjectError = computed(
+    () => this.selectedProjectResource.status() === 'error',
+  );
 
   reload(): void {
     this.projectsResource.reload();
@@ -62,5 +82,9 @@ export class ProjectService {
 
   selectProject(slug: string): void {
     this.selectedSlug.set(slug);
+  }
+
+  reloadSelectedProject(): void {
+    this.selectedProjectResource.reload();
   }
 }

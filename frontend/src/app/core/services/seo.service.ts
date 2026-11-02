@@ -1,11 +1,12 @@
 import { DOCUMENT } from '@angular/common';
-import { DestroyRef, effect, inject, Injectable } from '@angular/core';
+import { DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { DEFAULT_LANGUAGE } from '@/app/core/config/languages';
 import { environment } from '@/environments/environment';
 import { LanguageService } from './language.service';
+import { Project } from '@/app/core/models';
 import { ProfileService } from './profile.service';
 
 const SITE_NAME = 'Alexander Sickler';
@@ -17,6 +18,7 @@ export class SeoService {
   private readonly destroyRef = inject(DestroyRef);
   private readonly languageService = inject(LanguageService);
   private readonly profileService = inject(ProfileService);
+  private readonly project = signal<Project | null>(null);
   private readonly router = inject(Router);
 
   constructor() {
@@ -28,6 +30,15 @@ export class SeoService {
       )
       .subscribe(event => this.update(event.urlAfterRedirects));
     effect(() => this.updateStructuredData(this.languageService.currentLanguage()));
+    effect(() => {
+      this.project();
+      untracked(() => this.update(this.router.url));
+    });
+  }
+
+  /** Setzt die Projektdaten für Metadaten der Detailseite; `null` entfernt sie wieder. */
+  setProject(project: Project | null): void {
+    this.project.set(project);
   }
 
   private update(url: string): void {
@@ -37,20 +48,25 @@ export class SeoService {
     const language = this.languageService.currentLanguage();
     const pagePath = segments[0] === language ? segments.slice(1) : [];
     const isProjectsPage = pagePath[0] === 'projects';
-    const title = isProjectsPage
-      ? language === 'de'
-        ? 'Projekte | Alexander Sickler'
-        : 'Projects | Alexander Sickler'
-      : language === 'de'
-        ? 'Alexander Sickler | Portfolio'
-        : 'Alexander Sickler | Portfolio';
-    const description = isProjectsPage
-      ? language === 'de'
-        ? 'Ausgewählte Projekte von Alexander Sickler.'
-        : 'Selected projects by Alexander Sickler.'
-      : language === 'de'
-        ? 'Portfolio von Alexander Sickler, Entwickler digitaler Produkte.'
-        : 'Portfolio of Alexander Sickler, developer of digital products.';
+    const project = isProjectsPage ? this.detailProject(pagePath[1]) : undefined;
+    const title = project
+      ? `${project.title} | ${SITE_NAME}`
+      : isProjectsPage
+        ? language === 'de'
+          ? 'Projekte | Alexander Sickler'
+          : 'Projects | Alexander Sickler'
+        : language === 'de'
+          ? 'Alexander Sickler | Portfolio'
+          : 'Alexander Sickler | Portfolio';
+    const description = project
+      ? project.shortDescription || project.subtitle || project.title
+      : isProjectsPage
+        ? language === 'de'
+          ? 'Ausgewählte Projekte von Alexander Sickler.'
+          : 'Selected projects by Alexander Sickler.'
+        : language === 'de'
+          ? 'Portfolio von Alexander Sickler, Entwickler digitaler Produkte.'
+          : 'Portfolio of Alexander Sickler, developer of digital products.';
     const localizedPath = pagePath.length > 0 ? `/${pagePath.join('/')}` : '';
 
     this.document.documentElement.lang = language;
@@ -63,14 +79,89 @@ export class SeoService {
     this.ensureLink('alternate', 'en', absoluteUrl('en'));
     this.ensureLink('alternate', 'x-default', absoluteUrl(DEFAULT_LANGUAGE));
     this.ensureMeta('name', 'description', description);
-    this.ensureMeta('property', 'og:type', 'website');
+    const imageUrl = project ? this.absoluteMediaUrl(project.previewMediaUrl) : undefined;
+
+    this.ensureMeta('property', 'og:type', project ? 'article' : 'website');
     this.ensureMeta('property', 'og:site_name', SITE_NAME);
     this.ensureMeta('property', 'og:title', title);
     this.ensureMeta('property', 'og:description', description);
     this.ensureMeta('property', 'og:url', absoluteUrl(language));
     this.ensureMeta('property', 'og:locale', OG_LOCALES[language]);
     this.ensureMeta('property', 'og:locale:alternate', OG_LOCALES[alternateLanguage]);
-    this.ensureMeta('name', 'twitter:card', 'summary');
+    this.ensureMeta('name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary');
+    this.setOptionalMeta('property', 'og:image', imageUrl);
+    this.setOptionalMeta('name', 'twitter:image', imageUrl);
+    this.updateProjectStructuredData(project, title, description, absoluteUrl(language), imageUrl);
+  }
+
+  private detailProject(slug: string | undefined): Project | undefined {
+    const project = this.project();
+    return slug && project && project.slug === slug ? project : undefined;
+  }
+
+  private absoluteMediaUrl(url: string | undefined): string | undefined {
+    if (!url) {
+      return undefined;
+    }
+
+    return /^https?:\/\//.test(url)
+      ? url
+      : `${environment.siteUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+  }
+
+  private updateProjectStructuredData(
+    project: Project | undefined,
+    title: string,
+    description: string,
+    url: string,
+    imageUrl: string | undefined,
+  ): void {
+    const selector = 'script[data-seo="project"]';
+    let script = this.document.querySelector<HTMLScriptElement>(selector);
+
+    if (!project) {
+      script?.remove();
+      return;
+    }
+
+    if (!script) {
+      script = this.document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-seo', 'project');
+      this.document.head.appendChild(script);
+    }
+
+    const data = {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.title,
+      headline: title,
+      description,
+      url,
+      inLanguage: this.languageService.currentLanguage(),
+      author: { '@type': 'Person', name: this.profileService.profile()?.fullName ?? SITE_NAME },
+      ...(imageUrl ? { image: imageUrl } : {}),
+      ...(project.startDate ? { dateCreated: project.startDate } : {}),
+      ...(project.updatedAt ? { dateModified: project.updatedAt } : {}),
+      ...(project.skills.length
+        ? { keywords: project.skills.map(skill => skill.name).join(', ') }
+        : {}),
+    };
+
+    script.textContent = JSON.stringify(data).replace(/</g, '\\u003c');
+  }
+
+  private setOptionalMeta(
+    attribute: 'name' | 'property',
+    key: string,
+    content: string | undefined,
+  ): void {
+    if (content) {
+      this.ensureMeta(attribute, key, content);
+      return;
+    }
+
+    this.document.querySelector(`meta[${attribute}="${key}"]`)?.remove();
   }
 
   private updateStructuredData(language: string): void {
@@ -88,7 +179,7 @@ export class SeoService {
     };
 
     let script = this.document.querySelector<HTMLScriptElement>(
-      'script[type="application/ld+json"]',
+      'script[type="application/ld+json"]:not([data-seo])',
     );
     if (!script) {
       script = this.document.createElement('script');

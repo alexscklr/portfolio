@@ -1,0 +1,32 @@
+<ng-template #nested let-children>
+  <app-project-blocks [blocks]="children" [media]="media()" [label]="label()" />
+</ng-template>
+
+@for (block of blocks(); track block.id) {
+  @switch (block.type) {
+    @case (blockType.MarkdownText) {
+      <app-project-text-block [block]="block" />
+    }
+    @case (blockType.Callout) {
+      <app-project-text-block [block]="block" />
+    }
+    @case (blockType.CodeSnippet) {
+      <app-project-text-block [block]="block" />
+    }
+    @case (blockType.ImageGallery) {
+      <app-project-media-block [block]="block" [media]="media()" [label]="label()" />
+    }
+    @case (blockType.Image) {
+      <app-project-media-block [block]="block" [media]="media()" [label]="label()" />
+    }
+    @case (blockType.VideoPlayer) {
+      <app-project-media-block [block]="block" [media]="media()" [label]="label()" />
+    }
+    @case (blockType.Section) {
+      <app-project-container-block [block]="block" [children]="nested" />
+    }
+    @case (blockType.SplitContainer) {
+      <app-project-container-block [block]="block" [children]="nested" />
+    }
+  }
+}

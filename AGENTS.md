@@ -22,7 +22,7 @@ TODO: Produktvision / Geschäftsziele in 1–2 Sätzen (z. B. Bewerbung, Freelan
   - Frontend-Mock-Modus ohne Backend (`PORTFOLIO_DATA_SOURCE=frontend-mock`).
   - Development-Seeding von Profil, Skills und Demo-Projekten inkl. Avatar-Upload in den Storage.
   - Projektübersicht unter `/projects`: Skill-Facetten mit UND-Filter, Suche und URL-Parameter `?skills=...`; Projektkarten mit Medien-Slider, Zeitraum und optionalen externen Links.
-  - Die API liefert Projektdetails über `GET /api/projects/{slug}`. Eine Frontend-Detailseite unter `/projects/:slug` ist noch nicht implementiert; unbekannte Frontend-Routen leiten auf die Startseite der jeweiligen Sprache um.
+  - Die API liefert Projektdetails über `GET /api/projects/{slug}`. Die Detailseite `/projects/:slug` ist implementiert (`features/projects/project-detail/`): Sie zeigt Metadaten und rendert die CMS-Blöcke als Baum (flache API-Liste mit `parentBlockId` → `parseProjectBlocks` → rekursiver `ProjectBlocksComponent` in `features/projects/blocks/`). Layout-Container (`Section`, `SplitContainer`) liegen in `blocks/container/`, Inhaltsblöcke (Markdown, Callout, Code, Galerie, Bild, Video) in `blocks/content/`. Markdown läuft über `marked` plus Angulars Sanitizer, Überschriften beginnen bei `h2`. Prerender-Slugs kommen zur Build-Zeit aus API bzw. Mock (`core/config/project-slugs.ts`), Titel/Description/`og:image`/JSON-LD `CreativeWork` setzt `SeoService.setProject()`; unbekannte Frontend-Routen leiten auf die Startseite der jeweiligen Sprache um.
 
 ### Wichtige Qualitätsmerkmale
 - **Mehrsprachigkeit:** Fallback auf Standardsprache `de`, wenn Übersetzung fehlt (`TranslationResolver`).
@@ -100,7 +100,7 @@ portfolio/
 | Tooling | Node/npm, `concurrently`, Docker Compose | – |
 
 ### Testing, Linting, Formatting
-- **Frontend-Tests:** `ng test` (Builder `@angular/build:unit-test`) mit **Vitest** ^4 und **jsdom**; Specs als `*.spec.ts` neben dem Code. Abgedeckt sind App-Shell, ProjectService, Projektfilter, Projektseite, Skillfilter, Projektkarte und Medien-Slider.
+- **Frontend-Tests:** `ng test` (Builder `@angular/build:unit-test`) mit **Vitest** ^4 und **jsdom**; Specs als `*.spec.ts` neben dem Code. Abgedeckt sind App-Shell, Routing, ProjectService, SeoService, Projektfilter, Projektseite, Detailseite, Block-Parser und -Renderer, Skillfilter, Projektkarte und Medien-Slider.
 - **Formatting:** Prettier ^3.8 (`.prettierrc`: single quotes, trailing commas `all`, printWidth 100, 2 Spaces, Semikolons, `arrowParens: avoid`) und `.editorconfig` (LF, UTF-8, 2 Spaces; `*.cs` 4 Spaces).
 - **Linting:** kein ESLint, keine .NET-Analyzer-Konfiguration vorhanden. TODO: gewünschtes Linting ergänzen.
 - **Backend-Tests:** Es existiert noch kein Testprojekt. TODO: Testframework und Strategie festlegen.

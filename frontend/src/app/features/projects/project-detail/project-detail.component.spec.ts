@@ -7,6 +7,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { routes } from '@/app/app.routes';
 import { getMockProjects } from '@/app/core/mocks/project.mock';
+import { BlockType } from '@/app/core/models';
 import { LanguageService } from '@/app/core/services/language.service';
 import { TranslationService } from '@/app/core/services/translation.service';
 import { ProjectDetailComponent } from './project-detail.component';
@@ -71,6 +72,15 @@ describe('ProjectDetailComponent', () => {
     expect(
       root().querySelector('a[href="https://github.com/alex/generative-cinema"]'),
     ).not.toBeNull();
+    const markdown = project.blocks.find(block => block.type === BlockType.MarkdownText);
+    expect(root().querySelector('app-project-blocks .project-markdown')?.textContent).toContain(
+      markdown?.contentOrConfig,
+    );
+    expect(root().querySelector('app-project-blocks app-media-slider')).not.toBeNull();
+    expect(root().querySelector('app-project-blocks video[controls]')).not.toBeNull();
+    expect(root().querySelector('app-project-blocks figure code')?.textContent).toContain(
+      'renderProject',
+    );
     expect(TestBed.inject(Router).url).toBe(`/de/projects/${project.slug}`);
   });
 

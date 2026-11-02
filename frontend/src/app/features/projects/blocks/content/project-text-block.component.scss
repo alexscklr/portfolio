@@ -1,0 +1,83 @@
+.project-markdown {
+  color: var(--text-color-secondary);
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.project-markdown :where(p, ul, ol, blockquote, pre, table) {
+  margin-block: 1rem;
+}
+
+.project-markdown > :first-child {
+  margin-top: 0;
+}
+
+.project-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.project-markdown :where(h1, h2, h3, h4) {
+  margin-block: 1.5rem 0.75rem;
+  color: var(--text-color-primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.project-markdown h1 {
+  font-size: 1.875rem;
+}
+
+.project-markdown h2 {
+  font-size: 1.5rem;
+}
+
+.project-markdown h3 {
+  font-size: 1.25rem;
+}
+
+.project-markdown :where(ul, ol) {
+  padding-inline-start: 1.5rem;
+}
+
+.project-markdown ul {
+  list-style: disc;
+}
+
+.project-markdown ol {
+  list-style: decimal;
+}
+
+.project-markdown a {
+  color: var(--color-accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.project-markdown blockquote {
+  border-inline-start: 3px solid var(--color-accent-primary);
+  padding-inline-start: 1rem;
+  color: var(--text-color-secondary);
+}
+
+.project-markdown :not(pre) > code {
+  border-radius: 0.25rem;
+  background: rgb(255 255 255 / 8%);
+  padding: 0.125rem 0.375rem;
+  font-family: var(--font-mono);
+}
+
+.callout-info {
+  border-color: var(--color-accent-secondary);
+  background: color-mix(in srgb, var(--color-accent-secondary) 10%, transparent);
+}
+
+.callout-result {
+  border-color: var(--color-accent-primary);
+  background: color-mix(in srgb, var(--color-accent-primary) 10%, transparent);
+}
+
+.callout-warning {
+  border-color: var(--color-accent-tertiary);
+  background: color-mix(in srgb, var(--color-accent-tertiary) 10%, transparent);
+}

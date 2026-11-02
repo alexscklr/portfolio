@@ -1,0 +1,22 @@
+@if (sectionBlock(); as section) {
+  <section [class]="sectionClasses(section.cssClass)">
+    @if (section.title) {
+      <h2 class="mb-4 font-heading text-2xl font-bold text-white">{{ section.title }}</h2>
+    }
+    <ng-container
+      [ngTemplateOutlet]="children()"
+      [ngTemplateOutletContext]="{ $implicit: section.children }"
+    />
+  </section>
+} @else if (splitBlock(); as split) {
+  <div
+    class="project-split-grid my-6 grid"
+    [style.--split-columns]="columns(split.columns)"
+    [style.--split-gap]="gap(split.gap)"
+  >
+    <ng-container
+      [ngTemplateOutlet]="children()"
+      [ngTemplateOutletContext]="{ $implicit: split.children }"
+    />
+  </div>
+}

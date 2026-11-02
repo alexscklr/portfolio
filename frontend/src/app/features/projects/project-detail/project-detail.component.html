@@ -47,6 +47,12 @@
         }
       </header>
 
+      <app-project-blocks
+        [blocks]="projectService.selectedProjectBlocks()"
+        [media]="p.media"
+        [label]="p.title"
+      />
+
       @if (p.skills.length > 0) {
         <section class="border-b border-white/10 py-6" aria-labelledby="project-skills-heading">
           <h2

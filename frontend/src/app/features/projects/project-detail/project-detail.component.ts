@@ -9,11 +9,12 @@ import { TranslationService } from '@/app/core/services/translation.service';
 import { ButtonDirective } from '@/app/shared/directives/button.directive';
 import { LinkDirective } from '@/app/shared/directives/link.directive';
 import { TranslatePipe } from '@/app/shared/pipes/translate.pipe';
+import { ProjectBlocksComponent } from '../blocks/project-blocks.component';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [RouterLink, ButtonDirective, LinkDirective, TranslatePipe],
+  imports: [RouterLink, ButtonDirective, LinkDirective, TranslatePipe, ProjectBlocksComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
 })

@@ -1,0 +1,25 @@
+.project-split-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--split-gap, 1.5rem);
+}
+
+@media (min-width: 48rem) {
+  .project-split-grid {
+    grid-template-columns: var(--split-columns, minmax(0, 1fr) minmax(0, 1fr));
+  }
+}
+
+/* Äußere Abstände der Zellen entfernen, damit Spalten bündig oben/unten beginnen */
+.project-split-grid > * {
+  align-self: start;
+}
+
+.project-split-grid > * > :first-child,
+.project-split-grid > * > :first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+.project-split-grid > * > :last-child,
+.project-split-grid > * > :last-child > :last-child {
+  margin-bottom: 0 !important;
+}
